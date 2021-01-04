@@ -1,3 +1,6 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes React and other helpers. It's a great starting point while
@@ -12,4 +15,16 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./components/Example');
+require('./components/App');
+
+import App from './components/App';
+
+const routing = (
+  <Router>
+    <div>
+      <Route exact path="/" component={App} />
+    </div>
+  </Router>
+)
+
+ReactDOM.render(routing, document.getElementById('root'));
