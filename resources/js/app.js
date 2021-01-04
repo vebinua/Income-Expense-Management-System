@@ -29,7 +29,7 @@ import Sidebar from './components/partials/Sidebar';
 import Header from './components/partials/Header';
 
 const routing = (
-  <Router>
+  <Router basename={'iems/Income-Expense-Management-System/'}>
     <div className="wrapper">
       <Sidebar />
         <div id="content">
@@ -39,9 +39,9 @@ const routing = (
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route path="/net-worth" component={Networth} />
-          <Route path="/category/listings" component={CategoryListings} />
-          <Route path="/category/add-category" component={AddCategory} />
-          <Route path="/category/add-subcategory" component={AddSubcategory} />
+          <Route path={"/category/listings"} component={CategoryListings} />
+          <Route path={"/category/add-category"} component={AddCategory} />
+          <Route path={"/category/add-subcategory"} component={AddSubcategory} />
         </Switch>
         </div>
     </div>

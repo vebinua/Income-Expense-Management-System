@@ -14,3 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/{path?}','app');
+
+Route::get('{any?}', function ($any = null) {
+  return view('app');
+})->where('any', '.*');
+
+//Route::get({'any?'}, function () {return view('index')})->where('any', '.*');

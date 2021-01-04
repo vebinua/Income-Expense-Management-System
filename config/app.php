@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://www.testing.local/iems/Income-Expense-Management-System/'),
 
     'asset_url' => env('ASSET_URL', null),
 
