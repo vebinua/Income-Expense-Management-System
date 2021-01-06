@@ -3,6 +3,16 @@
 */
 
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+/* poppins-devanagari-300-normal*/
+/*@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins-regular-webfont.woff2') format('woff2'),
+         url('/fonts/poppins-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}*/
+
 body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
@@ -182,4 +192,30 @@ a.article:hover {
     #sidebarCollapse span {
         display: none;
     }
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+.form-container {
+    margin-top: 1.8rem;
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav a {
+        padding-right: .5rem;
+        padding-left: .5rem;
+    }
+}
+.navbar-nav a {
+    padding-right: 0;
+    padding-left: 0;
+    color:rgba(0,0,0,.5);
+}
+.navbar-nav a {
+    display: block;
+    padding: .5rem 1rem;
+}
+navbar-light .navbar-nav a:focus, .navbar-light .navbar-nav a:hover {
+    color: rgba(0,0,0,.7);
 }

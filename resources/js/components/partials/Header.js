@@ -3,42 +3,41 @@ import ReactDOM from 'react-dom';
 import { Route, Link, Switch, BrowserRouter as Router } from 'react-router-dom';
 import { withRouter } from 'react-router';
 
+import TopNavLinks from "./TopNavLinks";
+
 class Header extends React.Component {
 
   render() {
 
-     return( 
-         <div>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <div className="container-fluid">
+    const { location } = this.props;
 
-                    <button type="button" id="sidebarCollapse" className="btn btn-info">
-                        <i className="fas fa-align-left"></i>
-                        <span></span>
-                    </button>
-                    <button className="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i className="fas fa-align-justify"></i>
-                    </button>
+    const dashboardClass = location.pathname === "/" ? "active" : "";
+    const networthClass = location.pathname.match(/^\/net-worth/) ? "active" : "";
+    const categoriesClass = location.pathname.match(/^\/categories/) ? "active" : "";
 
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        {/*<ul className="nav navbar-nav ml-auto">
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#">Page</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Page</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Page</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Page</a>
-                            </li>
-                        </ul>*/}
-                    </div>
-                </div>
-            </nav>
+    let { isLoggedIn } = true;
+
+    return( 
+      <div>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <div className="container-fluid">
+
+              <button type="button" id="sidebarCollapse" className="btn btn-info">
+                  <i className="fas fa-align-left"></i>
+                  <span></span>
+              </button>
+              <button className="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <i className="fas fa-align-justify"></i>
+              </button>
+
+              <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul className="nav navbar-nav ml-auto">
+                  <TopNavLinks isLoggedIn={isLoggedIn} location={location} />
+                </ul>
+              </div>
           </div>
+        </nav>
+      </div>
     );
   }
 }

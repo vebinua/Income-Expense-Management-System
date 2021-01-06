@@ -85,18 +85,3 @@ class Sidebar extends React.Component {
 }
 
 export default withRouter(Sidebar);
-
-/*function Sidebar() {
-
-  const { location } = this.props;
-
-  const dashboardClass = location.pathname === "/" ? "active" : "";
-  const networthClass = location.pathname.match(/^\/net-worth/) ? "active" : "";
-  const contactClass = location.pathname.match(/^\/contact/) ? "active" : "";
-  
-
-
-   
-}*/
-
-//export default Sidebar;

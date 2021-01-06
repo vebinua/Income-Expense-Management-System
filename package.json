@@ -10,8 +10,9 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.12.1",
         "@babel/preset-react": "^7.0.0",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "bootstrap": "^4.0.0",
         "cross-env": "^7.0",
         "jquery": "^3.2",
@@ -25,6 +26,12 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
+        "@fontsource/poppins": "^4.1.0",
+        "@fortawesome/fontawesome-free": "^5.15.1",
+        "@material-ui/core": "^4.11.2",
+        "@material-ui/lab": "^4.0.0-alpha.57",
+        "ladda": "^2.0.1",
+        "react-ladda": "^6.0.0",
         "react-router-dom": "^5.2.0"
     }
 }

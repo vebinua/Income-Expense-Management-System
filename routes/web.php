@@ -15,8 +15,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/{path?}','app');
 
+//catch-all route and prevents 404 error when refreshing pages/components
 Route::get('{any?}', function ($any = null) {
   return view('app');
 })->where('any', '.*');
 
-//Route::get({'any?'}, function () {return view('index')})->where('any', '.*');
+Route::resource('category', 'CategoryController');
+
+
+
