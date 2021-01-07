@@ -8,7 +8,7 @@ const TopNavLinks = props => {
   if(location.pathname.match(/^\/category\/add-category/)){
     return (
         <Fragment>
-            <li className="nav-item"><Link to="/">View Categories</Link></li>
+            <li className="nav-item"><Link to="/category/listings">View Categories</Link></li>
         </Fragment>
     );
   } else {

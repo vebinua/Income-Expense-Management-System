@@ -216,6 +216,6 @@ a.article:hover {
     display: block;
     padding: .5rem 1rem;
 }
-navbar-light .navbar-nav a:focus, .navbar-light .navbar-nav a:hover {
+.navbar-light .navbar-nav a:focus, .navbar-light .navbar-nav a:hover {
     color: rgba(0,0,0,.7);
 }

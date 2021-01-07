@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 //Route::get('users', 'App\Http\Controllers\UsersController@index');
 Route::post('categories', 'App\Http\Controllers\CategoryController@store');
+Route::get('categories', 'App\Http\Controllers\CategoryController@index');

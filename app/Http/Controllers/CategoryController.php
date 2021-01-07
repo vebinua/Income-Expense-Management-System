@@ -14,7 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+
+        return $categories->toJson();
     }
 
     /**
@@ -47,17 +49,6 @@ class CategoryController extends Controller
           'user_id' => 'required'
         ]);*/
  
-        /*$item = Category::create([
-          'category' => $validatedData['category'],
-          'account_type' => $validatedData['account_type'],
-          'user_id' => $validatedData['user_id']
-        ]);*/
-        /*$item = Category::create([
-          'category' => $request->category,
-          'account_type' => $request->account_type,
-          'user_id' => $request->user_id
-        ]);*/
-        //$expense = Category::create($request->all());
         Category::create([
             'category' => $request->data['category'],
             'account_type' => $request->data['account_type'],
