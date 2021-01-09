@@ -26,11 +26,14 @@ const styles = {
 };
 
 
-class AddCategory extends React.Component {
+class EditCategory extends React.Component {
 
    constructor (props) {
+      super(props);
 
-        super(props)
+      console.log('constructor!');
+
+        super(props);
         this.state = {
           categories: [],
           category: '',
@@ -39,7 +42,8 @@ class AddCategory extends React.Component {
           loading: false,
           flash: false,
           severity: 'success',
-          flashMessage: ''
+          flashMessage: '',
+          isLoading: true
         }
         
       
@@ -88,8 +92,31 @@ class AddCategory extends React.Component {
       };
 
       this.ladda.start();
-      
-      axiosInstance.post('/api/categories/', {data},{
+
+      axiosInstance.put('/api/categories/' + this.props.match.params.id, data)
+      .then((res) => {
+
+        _this.setState({ flash: true});
+        
+        if (res.data.status == 'fail') {
+          _this.setState({ severity: 'error'});
+        } else {
+          _this.setState({ severity: 'success'});
+        }
+
+        _this.setState({ flashMessage: res.data.message});
+
+        setTimeout(() => {
+          _this.setState({ flash: false});
+        }, 3500);
+
+        _btn.stop();
+
+      }).catch((error) => {
+        console.log(error)
+      });
+
+      /*axiosInstance.post('/api/categories/', {data},{
         data: null,
         headers: { 
           'Content-Type': 'application/json',
@@ -113,7 +140,7 @@ class AddCategory extends React.Component {
         _btn.stop();
           console.log(error);
           _this.clearFields();
-      });
+      });*/
     }
 
     handleLoad(e) {
@@ -123,8 +150,22 @@ class AddCategory extends React.Component {
 
     componentDidMount() {
       
-      console.log('componentDidMount called');
       this.ladda = Ladda.create(document.querySelector('.btn-submit'));
+      
+      axiosInstance.get('/api/categories/' + this.props.match.params.id)
+      .then(res => {
+        this.setState({
+          category: res.data.category,
+          account_type: res.data.account_type,
+          user_id: res.data.user_id,
+          isLoading: false
+        });
+        console.log(res);
+        console.log(res.data.category);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
 
     runAfterRender() {
@@ -138,6 +179,7 @@ class AddCategory extends React.Component {
 
   render() {
     //const [flash, setFlash] = useState(null);
+    //const { isLoading } = this.state;
 
     return (
        <div>
@@ -150,42 +192,41 @@ class AddCategory extends React.Component {
 
        
         
-            <h2>Add Category</h2>
+            <h2>Edit Category</h2>
             
             <div className="form-container">
               <div className="row">
                 <div className="col-4">
 
-                  <form onSubmit={this.handleSubmit}>
-                
-                    <div className="form-group">
-                      <label htmlFor="Category">Category</label>
-                      <input type="text" className="form-control" id="category" name="category" placeholder="Category" value={this.state.category} 
-                      onChange={this.handleChange}  />
+                        <form onSubmit={this.handleSubmit} className={this.state.isLoading ? "hide-form" : ""}>
+                      
+                          <div className="form-group">
+                            <label htmlFor="Category">Category</label>
+                            <input type="text" className="form-control" id="category" name="category" placeholder="Category" value={this.state.category} 
+                            onChange={this.handleChange}  />
+                          </div>
+
+                          <div className="form-group">
+                            <label>Account Type</label>
+                            <div className="custom-control custom-radio">
+                                <input type="radio" id="asset" name="account_type" value="asset" className="custom-control-input" 
+                                checked={this.state.account_type === 'asset'} 
+                                onChange={this.onOptionChange} />
+                                <label className="custom-control-label" htmlFor="asset">Asset</label>
+                            </div>
+                            <div className="custom-control custom-radio">
+                                <input type="radio" id="liability" name="account_type" value="liability" className="custom-control-input" 
+                                checked={this.state.account_type === 'liability'} 
+                                onChange={this.onOptionChange} />
+                                <label className="custom-control-label" htmlFor="liability">Liability</label>
+                            </div>
+                          </div>
+
+                    <input type="hidden" name="user_id" value={this.state.user_id}/>
+                    <div onLoad={this.runAfterRender}>
+                      <button type="submit" className="btn btn-info btn-submit ladda-button" data-style="expand-left">Update Category</button>
                     </div>
-
-                    <div className="form-group">
-                      <label>Account Type</label>
-                      <div className="custom-control custom-radio">
-                          <input type="radio" id="asset" name="account_type" value="asset" className="custom-control-input" 
-                          checked={this.state.account_type === 'asset'} 
-                          onChange={this.onOptionChange} />
-                          <label className="custom-control-label" htmlFor="asset">Asset</label>
-                      </div>
-                      <div className="custom-control custom-radio">
-                          <input type="radio" id="liability" name="account_type" value="liability" className="custom-control-input" 
-                          checked={this.state.account_type === 'liability'} 
-                          onChange={this.onOptionChange} />
-                          <label className="custom-control-label" htmlFor="liability">Liability</label>
-                      </div>
-                    </div>
-
-              <input type="hidden" name="user_id" value={this.state.user_id}/>
-              <div onLoad={this.runAfterRender}>
-                <button type="submit" className="btn btn-info btn-submit ladda-button" data-style="expand-left">Add Category</button>
-              </div>
-            </form>
-
+                  </form>
                 </div>
               </div>
             </div>
@@ -196,4 +237,4 @@ class AddCategory extends React.Component {
     )
   }
 }
-export default AddCategory;
+export default EditCategory;

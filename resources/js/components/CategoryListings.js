@@ -20,10 +20,19 @@ import EditIcon from '@material-ui/icons/EditRounded';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import deepCopy from "./deepCopy";
-//import CategoryListingsTable from './tables/CategoryListingsTable';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Alert from '@material-ui/lab/Alert';
+import Fade from '@material-ui/core/Fade';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Box from '@material-ui/core/Box';
+
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://www.testing.local/iems/Income-Expense-Management-System',
+  baseURL: window.config.baseUrl,
   //timeout: 1000
 });
 
@@ -36,8 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
    paper: {
     width: "100%",
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(3)
+    marginBottom: theme.spacing(2)
   },
   table: {
     minWidth: 750
@@ -52,6 +60,12 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 20,
     width: 1
+  },
+  progressIndicator: {
+    width: '100%',
+  },
+  progressIndicatorWrapper: {
+    marginTop: theme.spacing(3),
   }
 }));
 
@@ -148,63 +162,56 @@ EnhancedTableHead.propTypes = {
 };
 /**/
 
-
-/*const Categories = ({ categories }) => {
-   const classes = useStyles();
-
-   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Category</TableCell>
-            <TableCell align="right">Account Type</TableCell>
-            <TableCell align="right">Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {categories.map((category) => (
-            <TableRow key={category.category_id}>
-              <TableCell component="th" scope="row">
-                {category.category}
-              </TableCell>
-              <TableCell align="right">{category.account_type}</TableCell>
-              <TableCell align="right">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  startIcon={<EditIcon />}
-                  >
-                  Edit
-                </Button>
-                 <Button
-                  variant="contained"
-                  color="secondary"
-                  className={classes.button}
-                  startIcon={<DeleteIcon />}
-                >
-                  Delete
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+export function AlertDialog(props) {
+  
+  return (
+    <div>
+      <Dialog
+        open={props.isOpen}
+        onClose={props.onAlertClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete Category"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete the selected category?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={(e)=> props.onAlertClose(e, 'cancel')} data-action="cancel" color="primary">
+            Cancel
+          </Button>
+          <Button onClick={(e)=> props.onAlertClose(e, 'confirm')} data-action="confirm" color="primary" autoFocus>
+            Delete category
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
-}*/
+}
 
 
-const EnhancedCategories = ({ rows }) => {
+const EnhancedCategories = ({ rows, handler }) => {
   const classes = useStyles();
 
-  //const [rows] = React.useState("categories");
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("category");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [open, setOpen] = React.useState(false);
+  const [itemId, setItemId] = React.useState(0);
+  const [showProgressIndicator, setShowProgressIndicator] = React.useState(false);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [deletedRows, setDeletedRows] = React.useState([]);
+  //const [rows, setRows] = React.useState(rows);
+  const [items, setItems] = React.useState(rows);
+  const [flash, setFlash] = React.useState(false);
+  const [severity, setSeverity] = React.useState("success");
+  const [flashMessage, setFlashMessage] = React.useState("");
+
+ // setItems(rows);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -226,9 +233,6 @@ const EnhancedCategories = ({ rows }) => {
 
     const selectedIndex = selected.indexOf(name);
 
-    console.log(selectedIndex);
-    console.log(name);
-
     let newSelected = [];
 
     if (selectedIndex === -1) {
@@ -247,6 +251,54 @@ const EnhancedCategories = ({ rows }) => {
     setSelected(newSelected);
   };
 
+  const handleClickAlertDeleteOpen = (e, id, index) => {
+    setOpen(true);
+    setItemId(id);
+    setSelectedRows(index);
+  };
+  const handleClickAlertDeleteClose = (e, action) => {
+
+
+    if (action == 'cancel') {
+      //do nothing?
+    } else if (action == 'confirm') {
+      setShowProgressIndicator(true);
+
+      //add a few delay to show visual affordance for delete activity
+      setTimeout(function(){
+       
+        axiosInstance.delete('/api/categories/'+itemId,{
+          data: null
+        })
+        .then(function (response) {
+          setShowProgressIndicator(false);
+
+          deleteItem(selectedRows, itemId);
+          
+          var flashProps = {
+            "flash": true,
+            "flashMessage": response.data.message,
+            "severity": 'success'
+          }
+          handler(flashProps);
+          
+          setTimeout(() => {
+            flashProps.flash = false;
+            handler(flashProps);
+          }, 3200);
+
+        })
+        .catch(function (error) {
+          setShowProgressIndicator(false);
+        });
+
+        }, 1000);
+    }
+
+    setOpen(false);
+  };
+
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -261,8 +313,28 @@ const EnhancedCategories = ({ rows }) => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+  const Spacer = require('react-spacer');
+
+  const deleteItem= (i, category_id) => {
+    const filteredArray = items.filter((res) => res.category_id !== category_id);
+
+    setItems(filteredArray);
+  }
+
+  React.useEffect(() => {
+    setItems(rows);
+  }, [rows]);
+  
   return ( 
       <div className={classes.root}>
+        <div className={classes.progressIndicatorWrapper}>
+          { showProgressIndicator ?
+          <div className={classes.progressIndicator}>
+            <LinearProgress color="secondary" className="progressIndicator" />
+          </div>
+          :  <Box pt={.5}></Box> }
+        </div>
+      
       <Paper className={classes.paper}>
         <TableContainer>
           <Table
@@ -277,10 +349,10 @@ const EnhancedCategories = ({ rows }) => {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={items.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(items, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.category_id);
@@ -290,7 +362,7 @@ const EnhancedCategories = ({ rows }) => {
                       hover
                       onClick={(event) => handleClick(event, row.category_id, true)} 
                       tabIndex={-1}
-                      key={row.category_id}
+                      key={`row-${index}`}
                       id={index}
                     >
                       <TableCell>{row.category}</TableCell>
@@ -301,10 +373,13 @@ const EnhancedCategories = ({ rows }) => {
                           color="primary"
                           className={classes.button}
                           startIcon={<EditIcon />}
+                          href={window.config.baseUrl+"category/"+row.category_id+"/edit"}
                           >
                           Edit
                         </Button>
                          <Button
+                          id={row.category_id}
+                          onClick={(event) => handleClickAlertDeleteOpen(event, row.category_id, index)}
                           variant="contained"
                           color="secondary"
                           className={classes.button}
@@ -327,51 +402,86 @@ const EnhancedCategories = ({ rows }) => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={items.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
+      
+
+      <AlertDialog onAlertOpen={handleClickAlertDeleteOpen} onAlertClose={handleClickAlertDeleteClose} isOpen={open} itemId={itemId} />
+  
     </div>
   );
 }
 
+const styles = {
+  alert: {
+    left: '0',
+    pointerEvents: 'none',
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: '1500',
+  }
+};
 
 class CategoryListings extends React.Component {
 
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
-      categories: []
+      categories: [],
+      category: '',
+      flash: false,
+      severity: 'success',
+      flashMessage: 'foo',
+      someProp: 'propbar'
     }
 
+    //this.handler = this.handler.bind(this);    
+  }
+
+  handler = (prop) => {
+    //this.setState('flash', props.flash);
+    //this.setState('flashMessage', props.flashMessage);
+   /*this.setState('flash', flash);
+   this.setState('severity', severity);
+   this.setState('flashMessage', flashMessage);*/
+
+   //this.state.severity = severity;
+   //this.state.flashMessage = flashMessage; 
     
+    this.setState({ flashMessage: prop.flashMessage});
+    this.setState({ flash: prop.flash});
   }
 
   componentDidMount () {
     axiosInstance.get('/api/categories').then(response => {
       this.setState({
-        categories: response.data
+        categories: response.data,
       })
     })
   }
 
   render() {
 
-    const { categories } = this.state;
+    const { categories, open, setOpen } = this.state;
     
-
-
     return (
        <div>
-        
-            <h2>Category Listings</h2>
-            
-             {<EnhancedCategories rows={categories} />}
+          {
+            <Fade in={this.state.flash} timeout={{ enter: 300, exit: 1000 }}>
+            <Alert style={styles.alert} onClose={() => {}} severity={this.state.severity}>{this.state.flashMessage}</Alert>
+            </Fade>
+          }
 
-            {/*<Categories categories={categories} />*/}
+          <h2>Category Listings</h2>
+              
+          {<EnhancedCategories rows={categories} handler= {this.handler} />}
+         
         </div>
     )
   }

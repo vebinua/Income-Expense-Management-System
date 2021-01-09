@@ -20,7 +20,7 @@ Route::get('{any?}', function ($any = null) {
   return view('app');
 })->where('any', '.*');
 
-Route::resource('category', 'CategoryController');
+Route::resource('category', 'App\Http\Controllers\CategoryController');
 
 
 

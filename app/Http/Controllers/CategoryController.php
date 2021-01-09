@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Http\Resources\Category as CategoryResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 class CategoryController extends Controller
 {
@@ -37,12 +40,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {   
-        //$data = json_decode($request->getContent());
-        //$data = $request->getContent();
-
-        $category = $request->input('category');
-
-        //$title = $request->input('title');
+        //implement validation later
         /*$validatedData = $request->validate([
           'category' => 'required',
           'account_type' => 'required',
@@ -66,7 +64,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        CategoryResource::withoutWrapping();
+        return new CategoryResource(Category::findOrFail($id));
     }
 
     /**
@@ -77,7 +76,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        //we don't need this since we'll be showing the edit form in a react component view
     }
 
     /**
@@ -89,7 +88,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+
+            $category = Category::findOrFail($id);
+
+            $input = $request->all();
+            $category->fill($input)->save();
+
+            return response()->json(['status' => 'success', 'message' => 'Category has been Successfully updated.']);
+        
+        } catch(ModelNotFoundException $e) {
+            return response()->json(['status' => 'fail', 'message' => 'Unable to update category. Please try again.']);
+        }
     }
 
     /**
@@ -100,6 +110,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $category->delete();
+
+        return response()->json(['status' => 'success', 'message' => 'Category has been Successfully deleted.']);
     }
 }

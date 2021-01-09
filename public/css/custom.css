@@ -219,3 +219,7 @@ a.article:hover {
 .navbar-light .navbar-nav a:focus, .navbar-light .navbar-nav a:hover {
     color: rgba(0,0,0,.7);
 }
+
+.hide-form {
+    display: none;
+}

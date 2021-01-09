@@ -22,6 +22,7 @@ import Dashboard from './components/Dashboard';
 import Networth from './components/Networth';
 import CategoryListings from './components/CategoryListings';
 import AddCategory from './components/AddCategory';
+import EditCategory from './components/EditCategory';
 import AddSubcategory from './components/AddSubcategory';
 
 import Sidebar from './components/partials/Sidebar';
@@ -41,6 +42,7 @@ const routing = (
           <Route path={"/category/listings"} component={CategoryListings} />
           <Route path={"/category/add-category"} component={AddCategory} />
           <Route path={"/category/add-subcategory"} component={AddSubcategory} />
+          <Route path={"/category/:id/edit"} component={EditCategory} />
         </Switch>
         </div>
     </div>
