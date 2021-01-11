@@ -14,9 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('users', 'App\Http\Controllers\UsersController@index');
 Route::post('categories', 'App\Http\Controllers\CategoryController@store');
 Route::put('categories/{id}', 'App\Http\Controllers\CategoryController@update');
 Route::get('categories/{id}', 'App\Http\Controllers\CategoryController@show');
+
+Route::group([
+    'middleware' => 'jwt.auth',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+
+});
+
 Route::get('categories', 'App\Http\Controllers\CategoryController@index');
+
 Route::delete('categories/{id}', 'App\Http\Controllers\CategoryController@destroy');
+
+Route::post('users', 'App\Http\Controllers\UserController@store');
+Route::post('users/login', 'App\Http\Controllers\UserController@login');

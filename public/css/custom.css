@@ -223,3 +223,5 @@ a.article:hover {
 .hide-form {
     display: none;
 }
+
+.content-full {width: 100% !important; padding:0 !important;}

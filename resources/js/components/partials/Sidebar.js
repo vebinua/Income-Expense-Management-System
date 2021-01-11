@@ -17,7 +17,12 @@ class Sidebar extends React.Component {
     const networthClass = location.pathname.match(/^\/net-worth/) ? "active" : "";
     const categoriesClass = location.pathname.match(/^\/categories/) ? "active" : "";
     
-     return( 
+    //set auth here
+    const isLoggedIn =  localStorage.getItem('access_token') ? true : false;
+    
+     return(
+        !isLoggedIn ? null
+        : (
         <nav id="sidebar">
             <div className="sidebar-header">
                 <h3>IEMS</h3>
@@ -79,7 +84,7 @@ class Sidebar extends React.Component {
                     </ul>
                 </li>
             </ul>
-        </nav>
+        </nav>)
     );
   }
 }

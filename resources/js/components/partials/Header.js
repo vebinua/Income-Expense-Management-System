@@ -15,9 +15,11 @@ class Header extends React.Component {
     const networthClass = location.pathname.match(/^\/net-worth/) ? "active" : "";
     const categoriesClass = location.pathname.match(/^\/categories/) ? "active" : "";
 
-    let { isLoggedIn } = true;
-
+    const isLoggedIn =  localStorage.getItem('access_token') ? true : false;
+    
     return( 
+      !isLoggedIn ? null:
+      (
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container-fluid">
@@ -37,7 +39,7 @@ class Header extends React.Component {
               </div>
           </div>
         </nav>
-      </div>
+      </div>)
     );
   }
 }

@@ -459,10 +459,34 @@ class CategoryListings extends React.Component {
   }
 
   componentDidMount () {
-    axiosInstance.get('/api/categories').then(response => {
+    const token = localStorage.getItem('access_token');
+
+    const settingCredentialsConfig = {
+      withCredentials:true, 
+      headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+      }
+    }
+
+    settingCredentialsConfig.headers.Authorization = "Bearer " + token;
+
+    //const JWTtoken = `Bearer ${localStorage.getItem('access_token')}`;
+    //window.axios.defaults.headers.common['Authorization'] = JWTtoken;
+
+    console.log('token from mount: ' + token);
+    axiosInstance.get('/api/categories', {
+      headers: {
+        'Authorization': 'Bearer '+ localStorage.getItem('access_token')
+      }
+    })
+    .then(response => {
       this.setState({
         categories: response.data,
       })
+    })
+    .catch((error) => {
+      console.error('error on fetching category listing: ' + error)
     })
   }
 

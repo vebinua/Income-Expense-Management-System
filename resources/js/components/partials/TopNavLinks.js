@@ -1,30 +1,48 @@
-import React, {Fragment} from "react";
-import { Route, Link, Switch, BrowserRouter as Router } from 'react-router-dom';
+import React, {Fragment,useState} from "react";
+import { Redirect, Route, Link, Switch, BrowserRouter as Router } from 'react-router-dom';
 
 const TopNavLinks = props => {
-  let { isLoggedIn } = props; //use for authenticated views (later)
-  let { location } = props;
+	let { isLoggedIn } = props; //use for authenticated views (later)
+	let { location } = props;
 
-  let button = null;
+	let button = null;
 
-    if(location.pathname.match(/^\/category\/add-category/)){
-        button = <li className="nav-item"><Link to="/category/listings">View Categories</Link></li>;
-    } else if (location.pathname.match(/^\/category\/listings/)) { 
-        button = <li className="nav-item"><Link to="/category/add-category">Add Category</Link></li>;
-    } else if (location.pathname.match(/^\/category\/(\d+)\/edit/)) {
-        button = ( 
-            <Fragment>
-                <li className="nav-item"><Link to="/category/listings">View Categories</Link></li>
-                <li className="nav-item"><Link to="/category/add-category">Add Category</Link></li>
-            </Fragment>
-        )
-    } else {
-        button = <button>Login - abc</button>;
-    }
+  	const [redirect, setRedirect] = useState(false);
+  
+	const handleLogout = (e) => {
+		e.preventDefault();
 
-    return (
-        <Fragment>{button}</Fragment>
-    );
+		localStorage.removeItem("access_token");
+     	localStorage.removeItem("expires_in");
+     	localStorage.removeItem("user_id");
+     	localStorage.removeItem("first_name");
+     	setRedirect(true);
+  };
+
+	if(location.pathname.match(/^\/category\/add-category/)){
+		button = <li className="nav-item"><Link to="/category/listings">View Categories</Link></li>;
+	} else if (location.pathname.match(/^\/category\/listings/)) { 
+		button = <li className="nav-item"><Link to="/category/add-category">Add Category</Link></li>;
+	} else if (location.pathname.match(/^\/category\/(\d+)\/edit/)) {
+		button = ( 
+			<Fragment>
+				<li className="nav-item"><Link to="/category/listings">View Categories</Link></li>
+				<li className="nav-item"><Link to="/category/add-category">Add Category</Link></li>
+			</Fragment>
+		)
+	} else {
+	}
+
+	return (
+	  	<Fragment>
+      {redirect ? (
+          <Redirect to='/login' />  
+       ): null }
+		
+		{button}
+		<li className="nav-item"><Link to="/logout" onClick={handleLogout}>Logout</Link></li>
+		</Fragment>
+	);
 };
 
 
