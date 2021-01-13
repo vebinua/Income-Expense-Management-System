@@ -7,26 +7,26 @@ const TopNavLinks = props => {
 
 	let button = null;
 
-  	const [redirect, setRedirect] = useState(false);
+	const [redirect, setRedirect] = useState(false);
   
 	const handleLogout = (e) => {
 		e.preventDefault();
 
 		localStorage.removeItem("access_token");
-     	localStorage.removeItem("expires_in");
-     	localStorage.removeItem("user_id");
-     	localStorage.removeItem("first_name");
-     	setRedirect(true);
+   	localStorage.removeItem("expires_in");
+   	localStorage.removeItem("user_id");
+   	localStorage.removeItem("first_name");
+   	setRedirect(true);
   };
 
 	if(location.pathname.match(/^\/category\/add-category/)){
-		button = <li className="nav-item"><Link to="/category/listings">View Categories</Link></li>;
-	} else if (location.pathname.match(/^\/category\/listings/)) { 
+		button = <li className="nav-item"><Link to="/category/view">View Categories</Link></li>;
+	} else if (location.pathname.match(/^\/category\/view/)) { 
 		button = <li className="nav-item"><Link to="/category/add-category">Add Category</Link></li>;
 	} else if (location.pathname.match(/^\/category\/(\d+)\/edit/)) {
 		button = ( 
 			<Fragment>
-				<li className="nav-item"><Link to="/category/listings">View Categories</Link></li>
+				<li className="nav-item"><Link to="/category/view">View Categories</Link></li>
 				<li className="nav-item"><Link to="/category/add-category">Add Category</Link></li>
 			</Fragment>
 		)
