@@ -15,7 +15,6 @@ import SignUp from './SignUp';
 import MainLayout from './partials/MainLayout';
 import AuthLayout from './partials/AuthLayout';
 
-
 import LandingAfterSignup from './landings/AfterSignup';
 
 
@@ -24,36 +23,33 @@ class App extends Component {
   constructor (props) {
 
     super(props);
-    this.state = {
-      isLogged: false
-    }
   }
 
   render() {
-    const isLoggedIn =  localStorage.getItem('access_token') ? true : false;
-    
-    let wrapperClassName = (isLoggedIn) ? 'content-logged' : 'content-full';
     let authRoutesPath = [
       '/',
       '/category/listings',
-      '/category/add-category'
+      '/category/add-category',
+      'category/:id/edit'
     ];
 
     return (
       <Router basename={'iems/Income-Expense-Management-System/'}>
         <div className="wrapper">
         <Switch>
-          <Route path={['/login', '/signup']}>
+          <Route path={['/login', '/signup', '/thank-you']}>
             <MainLayout>
-                <Route path={"/login"} component={Login} />
-                <Route path={"/signup"} component={SignUp} />
+              <Route path={"/login"} component={Login} />
+              <Route path={"/signup"} component={SignUp} />
+              <Route path={"/thank-you"} component={LandingAfterSignup} />
             </MainLayout>
           </Route>
-          <Route path={['/', '/category/listings']}>
+          <Route path={authRoutesPath}>
             <AuthLayout>
-                <PrivateRoute exact path={"/"} component={Dashboard} />
-                <PrivateRoute path={"/category/listings"} component={CategoryListings} />
-                <PrivateRoute path={"/category/add-category"} component={AddCategory} />
+              <PrivateRoute exact path={"/"} component={Dashboard} />
+              <PrivateRoute path={"/category/listings"} component={CategoryListings} />
+              <PrivateRoute path={"/category/add-category"} component={AddCategory} />
+              <PrivateRoute path={"/category/:id/edit"} component={EditCategory} />
             </AuthLayout>
           </Route>
         </Switch>

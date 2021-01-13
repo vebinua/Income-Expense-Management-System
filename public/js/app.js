@@ -101251,6 +101251,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Fade */ "./node_modules/@material-ui/core/esm/Fade/index.js");
 /* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ladda/dist/ladda-themeless.min.css */ "./node_modules/ladda/dist/ladda-themeless.min.css");
 /* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helpers/HandleLogout */ "./resources/js/components/helpers/HandleLogout.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -101284,9 +101285,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  // import the ladda theme directly from the ladda package.
 
 
-var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: window.config.baseUrl //timeout: 1000
 
+var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+  baseURL: window.config.baseUrl
 });
 var styles = {
   alert: {
@@ -101313,12 +101314,15 @@ var AddCategory = /*#__PURE__*/function (_React$Component) {
     _this2.state = {
       categories: [],
       category: '',
-      account_type: 'asset',
-      user_id: 1,
+      accountType: 'asset',
       loading: false,
       flash: false,
+      flashHandle: false,
       severity: 'success',
-      flashMessage: ''
+      flashMessage: '',
+      isLogged: props.isLogged,
+      loggedUserId: props.loggedUserId,
+      redirect: false
     }; // bind
 
     _this2.handleLoad = _this2.handleLoad.bind(_assertThisInitialized(_this2));
@@ -101326,8 +101330,7 @@ var AddCategory = /*#__PURE__*/function (_React$Component) {
     _this2.handleSubmit = _this2.handleSubmit.bind(_assertThisInitialized(_this2));
     _this2.onOptionChange = _this2.onOptionChange.bind(_assertThisInitialized(_this2));
     _this2.runAfterRender = _this2.runAfterRender.bind(_assertThisInitialized(_this2));
-    window.addEventListener('load', _this2.handleLoad); //this.ladda = Ladda.create(document.querySelector('.btn-submit'));
-
+    window.addEventListener('load', _this2.handleLoad);
     return _this2;
   }
 
@@ -101338,22 +101341,20 @@ var AddCategory = /*#__PURE__*/function (_React$Component) {
         category: ''
       });
       this.setState({
-        account_type: 'asset'
+        accountType: 'asset'
       });
     }
   }, {
     key: "onOptionChange",
     value: function onOptionChange(e) {
       this.setState({
-        account_type: e.target.value
+        accountType: e.target.value
       });
-      console.log('onOptionChange', e.target.value);
     }
   }, {
     key: "handleChange",
     value: function handleChange(e) {
       this.setState(_defineProperty({}, e.target.name, e.target.value));
-      console.log('onChange', e.target.name);
     }
   }, {
     key: "handleSubmit",
@@ -101363,34 +101364,61 @@ var AddCategory = /*#__PURE__*/function (_React$Component) {
 
       var _this = this;
 
+      var severity = 'success';
+      var flashMessage = '';
       var data = {
         'category': this.state.category,
-        'account_type': this.state.account_type,
-        'user_id': this.state.user_id
+        'account_type': this.state.accountType,
+        'user_id': this.state.loggedUserId
       };
       this.ladda.start();
+      var token = localStorage.getItem('access_token');
+      axiosInstance.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
       axiosInstance.post('/api/categories/', {
         data: data
       }, {
-        data: null,
+        params: {
+          token: token
+        },
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
         }
       }).then(function (response) {
+        if (response.data.action == 'JWT_FAIL_TOKEN_INVALID' || response.data.action == 'JWT_FAIL_TOKEN_EXPIRED') {
+          Object(_helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__["HandleLogout"])();
+
+          _this.setState({
+            redirect: true
+          });
+
+          return false;
+        } else if (response.data.action == 'JWT_FAIL_TOKEN_MISSING') {
+          severity = 'error';
+          flashMessage = 'You are unauthorized to add a category. We will log you out and try signing in again.';
+          Object(_helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__["HandleLogout"])();
+
+          _this.setState({
+            redirect: true
+          });
+        } else {
+          severity = 'success';
+          flashMessage = 'Category has been successfully added.';
+        }
+
         _this.setState({
           flash: true
         });
 
         _this.setState({
-          severity: 'success'
+          severity: severity
         });
 
         _this.setState({
-          flashMessage: 'Category has been successfully added.'
+          flashMessage: flashMessage
         });
 
-        setTimeout(function () {
+        _this.flashHandle = setTimeout(function () {
           _this.setState({
             flash: false
           });
@@ -101409,28 +101437,30 @@ var AddCategory = /*#__PURE__*/function (_React$Component) {
     }
   }, {
     key: "handleLoad",
-    value: function handleLoad(e) {//this.ladda = Ladda.create(document.querySelector('.btn-submit'));
-    }
+    value: function handleLoad(e) {}
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log('componentDidMount called');
-      this.ladda = ladda__WEBPACK_IMPORTED_MODULE_4__["create"](document.querySelector('.btn-submit'));
+      this.ladda = ladda__WEBPACK_IMPORTED_MODULE_4__["create"](document.querySelector('.btn-submit')); //const userId = this.state.loggedUserId;
+      //console.log('from componentDidMount@AddCategory.js ' + userId); 
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearTimeout(this.flashHandle);
     }
   }, {
     key: "runAfterRender",
     value: function runAfterRender() {
       console.log('rendered!');
     }
-    /*initLadda() {
-      this.ladda.btn = Ladda.create(document.querySelector('.btn-info'));
-    }*/
-
   }, {
     key: "render",
     value: function render() {
       //const [flash, setFlash] = useState(null);
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, this.state.redirect ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Redirect"], {
+        to: "/login"
+      })) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__["default"], {
         "in": this.state.flash,
         timeout: {
           enter: 300,
@@ -101470,7 +101500,7 @@ var AddCategory = /*#__PURE__*/function (_React$Component) {
         name: "account_type",
         value: "asset",
         className: "custom-control-input",
-        checked: this.state.account_type === 'asset',
+        checked: this.state.accountType === 'asset',
         onChange: this.onOptionChange
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "custom-control-label",
@@ -101483,7 +101513,7 @@ var AddCategory = /*#__PURE__*/function (_React$Component) {
         name: "account_type",
         value: "liability",
         className: "custom-control-input",
-        checked: this.state.account_type === 'liability',
+        checked: this.state.accountType === 'liability',
         onChange: this.onOptionChange
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         className: "custom-control-label",
@@ -101491,7 +101521,7 @@ var AddCategory = /*#__PURE__*/function (_React$Component) {
       }, "Liability"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "hidden",
         name: "user_id",
-        value: this.state.user_id
+        value: this.state.loggedUserId
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         onLoad: this.runAfterRender
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
@@ -101644,37 +101674,32 @@ var App = /*#__PURE__*/function (_Component) {
   var _super = _createSuper(App);
 
   function App(props) {
-    var _this;
-
     _classCallCheck(this, App);
 
-    _this = _super.call(this, props);
-    _this.state = {
-      isLogged: false
-    };
-    return _this;
+    return _super.call(this, props);
   }
 
   _createClass(App, [{
     key: "render",
     value: function render() {
-      var isLoggedIn = localStorage.getItem('access_token') ? true : false;
-      var wrapperClassName = isLoggedIn ? 'content-logged' : 'content-full';
-      var authRoutesPath = ['/', '/category/listings', '/category/add-category'];
+      var authRoutesPath = ['/', '/category/listings', '/category/add-category', 'category/:id/edit'];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
         basename: 'iems/Income-Expense-Management-System/'
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "wrapper"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-        path: ['/login', '/signup']
+        path: ['/login', '/signup', '/thank-you']
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_MainLayout__WEBPACK_IMPORTED_MODULE_12__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/login",
         component: _Login__WEBPACK_IMPORTED_MODULE_10__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/signup",
         component: _SignUp__WEBPACK_IMPORTED_MODULE_11__["default"]
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        path: "/thank-you",
+        component: _landings_AfterSignup__WEBPACK_IMPORTED_MODULE_14__["default"]
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-        path: ['/', '/category/listings']
+        path: authRoutesPath
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_AuthLayout__WEBPACK_IMPORTED_MODULE_13__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
         exact: true,
         path: "/",
@@ -101685,6 +101710,9 @@ var App = /*#__PURE__*/function (_Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
         path: "/category/add-category",
         component: _AddCategory__WEBPACK_IMPORTED_MODULE_7__["default"]
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        path: "/category/:id/edit",
+        component: _EditCategory__WEBPACK_IMPORTED_MODULE_8__["default"]
       }))))))
       /*<Router basename={'iems/Income-Expense-Management-System/'}>
         <div className="wrapper">
@@ -101764,6 +101792,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @material-ui/core/Fade */ "./node_modules/@material-ui/core/esm/Fade/index.js");
 /* harmony import */ var _material_ui_core_LinearProgress__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @material-ui/core/LinearProgress */ "./node_modules/@material-ui/core/esm/LinearProgress/index.js");
 /* harmony import */ var _material_ui_core_Box__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @material-ui/core/Box */ "./node_modules/@material-ui/core/esm/Box/index.js");
+/* harmony import */ var _helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./helpers/HandleLogout */ "./resources/js/components/helpers/HandleLogout.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -101799,6 +101828,7 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -101996,7 +102026,9 @@ function AlertDialog(props) {
 
 var EnhancedCategories = function EnhancedCategories(_ref2) {
   var rows = _ref2.rows,
-      handler = _ref2.handler;
+      handler = _ref2.handler,
+      loggedUserId = _ref2.loggedUserId;
+  console.log('loggedUserId from EC: ' + loggedUserId);
   var classes = useStyles();
 
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState("asc"),
@@ -102114,28 +102146,64 @@ var EnhancedCategories = function EnhancedCategories(_ref2) {
   };
 
   var handleClickAlertDeleteClose = function handleClickAlertDeleteClose(e, action) {
+    console.log(action + ' ' + loggedUserId);
+
     if (action == 'cancel') {//do nothing?
     } else if (action == 'confirm') {
-      setShowProgressIndicator(true); //add a few delay to show visual affordance for delete activity
+      setShowProgressIndicator(true);
+      var token = localStorage.getItem('access_token');
+      var userId = loggedUserId;
+      var _severity = 'error';
+      var _flashMessage = '';
+      var forceLogout = false;
+      var redirect = false;
+      axiosInstance.defaults.headers.common['Authorization'] = "Bearer ".concat(token); //add a few delay to show visual affordance for delete activity
+      //could be better removed on prod
 
       setTimeout(function () {
         axiosInstance["delete"]('/api/categories/' + itemId, {
-          data: null
+          params: {
+            token: token,
+            userId: userId
+          }
         }).then(function (response) {
-          setShowProgressIndicator(false);
-          deleteItem(selectedRows, itemId);
+          console.log(response);
+
+          if (response.data.action == 'JWT_FAIL_TOKEN_INVALID' || response.data.action == 'JWT_FAIL_TOKEN_EXPIRED') {
+            _severity = 'error';
+            _flashMessage = 'You\'re session has expired. Please login again.';
+            forceLogout = true;
+          } else if (response.data.action == 'JWT_FAIL_TOKEN_MISSING') {
+            _severity = 'error';
+            _flashMessage = 'You are not allowed to delete. We will log you out and try signing in again.';
+            forceLogout = true;
+          } else {
+            console.log(response);
+            _severity = 'success';
+            _flashMessage = response.data.message;
+            deleteItem(selectedRows, itemId);
+          }
+
           var flashProps = {
             "flash": true,
-            "flashMessage": response.data.message,
-            "severity": 'success'
+            "flashMessage": _flashMessage,
+            "severity": _severity,
+            "redirect": redirect
           };
+          setShowProgressIndicator(false);
           handler(flashProps);
           setTimeout(function () {
             flashProps.flash = false;
             handler(flashProps);
-          }, 3200);
+
+            if (forceLogout) {
+              Object(_helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_31__["HandleLogout"])();
+              flashProps.redirect = true;
+              handler(flashProps);
+            }
+          }, 1500);
         })["catch"](function (error) {
-          setShowProgressIndicator(false);
+          console.log(error);
         });
       }, 1000);
     }
@@ -102161,6 +102229,7 @@ var EnhancedCategories = function EnhancedCategories(_ref2) {
   var Spacer = __webpack_require__(/*! react-spacer */ "./node_modules/react-spacer/index.js");
 
   var deleteItem = function deleteItem(i, category_id) {
+    console.log('from deleteItem! ');
     var filteredArray = items.filter(function (res) {
       return res.category_id !== category_id;
     });
@@ -102268,23 +102337,20 @@ var CategoryListings = /*#__PURE__*/function (_React$Component) {
 
     _classCallCheck(this, CategoryListings);
 
+    console.log(props);
     _this = _super.call(this, props);
 
     _defineProperty(_assertThisInitialized(_this), "handler", function (prop) {
-      //this.setState('flash', props.flash);
-      //this.setState('flashMessage', props.flashMessage);
-
-      /*this.setState('flash', flash);
-      this.setState('severity', severity);
-      this.setState('flashMessage', flashMessage);*/
-      //this.state.severity = severity;
-      //this.state.flashMessage = flashMessage; 
       _this.setState({
         flashMessage: prop.flashMessage
       });
 
       _this.setState({
         flash: prop.flash
+      });
+
+      _this.setState({
+        redirect: prop.redirect
       });
     });
 
@@ -102293,9 +102359,12 @@ var CategoryListings = /*#__PURE__*/function (_React$Component) {
       category: '',
       flash: false,
       severity: 'success',
-      flashMessage: 'foo',
-      someProp: 'propbar'
-    }; //this.handler = this.handler.bind(this);    
+      flashMessage: '',
+      redirect: false,
+      userId: false,
+      isLogged: props.isLogged,
+      loggedUserId: props.loggedUserId
+    }; //this.handler = this.handler.bind(this);
 
     return _this;
   }
@@ -102306,25 +102375,24 @@ var CategoryListings = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       var token = localStorage.getItem('access_token');
-      var settingCredentialsConfig = {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      };
-      settingCredentialsConfig.headers.Authorization = "Bearer " + token; //const JWTtoken = `Bearer ${localStorage.getItem('access_token')}`;
-      //window.axios.defaults.headers.common['Authorization'] = JWTtoken;
-
-      console.log('token from mount: ' + token);
-      axiosInstance.get('/api/categories', {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      var userId = this.state.loggedUserId;
+      axiosInstance.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
+      axiosInstance.get('/api/categories/' + userId, {
+        params: {
+          token: token
         }
       }).then(function (response) {
-        _this2.setState({
-          categories: response.data
-        });
+        if (response.data.action == 'JWT_FAIL_TOKEN_INVALID' || response.data.action == 'JWT_FAIL_TOKEN_EXPIRED') {
+          Object(_helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_31__["HandleLogout"])();
+
+          _this2.setState({
+            redirect: true
+          });
+        } else {
+          _this2.setState({
+            categories: response.data
+          });
+        }
       })["catch"](function (error) {
         console.error('error on fetching category listing: ' + error);
       });
@@ -102335,8 +102403,11 @@ var CategoryListings = /*#__PURE__*/function (_React$Component) {
       var _this$state = this.state,
           categories = _this$state.categories,
           open = _this$state.open,
-          setOpen = _this$state.setOpen;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_28__["default"], {
+          setOpen = _this$state.setOpen,
+          redirect = _this$state.redirect;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, redirect ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Redirect"], {
+        to: "/login"
+      })) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_28__["default"], {
         "in": this.state.flash,
         timeout: {
           enter: 300,
@@ -102348,7 +102419,8 @@ var CategoryListings = /*#__PURE__*/function (_React$Component) {
         severity: this.state.severity
       }, this.state.flashMessage)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Category Listings"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(EnhancedCategories, {
         rows: categories,
-        handler: this.handler
+        handler: this.handler,
+        loggedUserId: this.state.loggedUserId
       }));
     }
   }]);
@@ -102449,6 +102521,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Fade */ "./node_modules/@material-ui/core/esm/Fade/index.js");
 /* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ladda/dist/ladda-themeless.min.css */ "./node_modules/ladda/dist/ladda-themeless.min.css");
 /* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helpers/HandleLogout */ "./resources/js/components/helpers/HandleLogout.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -102482,9 +102555,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  // import the ladda theme directly from the ladda package.
 
 
-var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: window.config.baseUrl //timeout: 1000
 
+var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+  baseURL: window.config.baseUrl
 });
 var styles = {
   alert: {
@@ -102514,21 +102587,23 @@ var EditCategory = /*#__PURE__*/function (_React$Component) {
       categories: [],
       category: '',
       account_type: 'asset',
-      user_id: 1,
+      user_id: 0,
       loading: false,
       flash: false,
+      flashHandle: false,
       severity: 'success',
       flashMessage: '',
-      isLoading: true
+      isLoading: true,
+      isLogged: props.isLogged,
+      loggedUserId: props.loggedUserId,
+      redirect: false,
+      forceLogout: false
     }; // bind
 
-    _this2.handleLoad = _this2.handleLoad.bind(_assertThisInitialized(_this2));
     _this2.handleChange = _this2.handleChange.bind(_assertThisInitialized(_this2));
     _this2.handleSubmit = _this2.handleSubmit.bind(_assertThisInitialized(_this2));
     _this2.onOptionChange = _this2.onOptionChange.bind(_assertThisInitialized(_this2));
     _this2.runAfterRender = _this2.runAfterRender.bind(_assertThisInitialized(_this2));
-    window.addEventListener('load', _this2.handleLoad); //this.ladda = Ladda.create(document.querySelector('.btn-submit'));
-
     return _this2;
   }
 
@@ -102559,109 +102634,181 @@ var EditCategory = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
+      var _this3 = this;
+
       e.preventDefault();
       var _btn = this.ladda;
 
       var _this = this;
 
+      var severity = 'success';
+      var flashMessage = '';
       var data = {
         'category': this.state.category,
         'account_type': this.state.account_type,
         'user_id': this.state.user_id
       };
       this.ladda.start();
-      axiosInstance.put('/api/categories/' + this.props.match.params.id, data).then(function (res) {
+      var token = localStorage.getItem('access_token');
+      axiosInstance.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
+      axiosInstance.put('/api/categories/' + this.props.match.params.id, {
+        data: data
+      }, {
+        params: {
+          token: token
+        }
+      }).then(function (response) {
+        console.log('ON PUT!');
+        console.log(response);
+
+        if (response.data.action == 'JWT_FAIL_TOKEN_INVALID' || response.data.action == 'JWT_FAIL_TOKEN_EXPIRED') {
+          severity = 'error';
+          flashMessage = 'You\'re session has expired. Please login again.';
+
+          _this.setState({
+            forceLogout: true
+          });
+        } else if (response.data.action == 'JWT_FAIL_TOKEN_MISSING') {
+          severity = 'error';
+          flashMessage = 'You are unauthorized to update a category. We will log you out and try signing in again.';
+
+          _this.setState({
+            forceLogout: true
+          });
+        } else {
+          console.log(response);
+          /*_this.setState({
+               	category: response.data.category,
+              		account_type: response.data.account_type,
+               	user_id: response.data.user_id
+             	});*/
+
+          severity = 'success';
+          flashMessage = response.data.message;
+
+          _this3.ladda.stop();
+        }
+
         _this.setState({
           flash: true
         });
 
-        if (res.data.status == 'fail') {
-          _this.setState({
-            severity: 'error'
-          });
-        } else {
-          _this.setState({
-            severity: 'success'
-          });
-        }
-
         _this.setState({
-          flashMessage: res.data.message
+          severity: severity
         });
 
-        setTimeout(function () {
+        _this.setState({
+          flashMessage: flashMessage
+        });
+
+        _this.flashHandle = setTimeout(function () {
           _this.setState({
             flash: false
           });
-        }, 3500);
 
-        _btn.stop();
+          if (_this3.state.forceLogout) {
+            Object(_helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__["HandleLogout"])();
+
+            _this.setState({
+              redirect: true
+            });
+          }
+        }, 3500);
       })["catch"](function (error) {
         console.log(error);
       });
-      /*axiosInstance.post('/api/categories/', {data},{
-        data: null,
-        headers: { 
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        }
-      
-      })
-      .then(function (response) {
-        _this.setState({ flash: true});
-        _this.setState({ severity: 'success'});
-        _this.setState({ flashMessage: 'Category has been successfully added.'});
-         setTimeout(() => {
-          _this.setState({ flash: false});
-        }, 3500);
-         _btn.stop();
-        _this.clearFields();
-      })
-      .catch(function (error) {
-        _btn.stop();
-          console.log(error);
-          _this.clearFields();
-      });*/
-    }
-  }, {
-    key: "handleLoad",
-    value: function handleLoad(e) {//this.ladda = Ladda.create(document.querySelector('.btn-submit'));
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.ladda = ladda__WEBPACK_IMPORTED_MODULE_4__["create"](document.querySelector('.btn-submit'));
-      axiosInstance.get('/api/categories/' + this.props.match.params.id).then(function (res) {
-        _this3.setState({
-          category: res.data.category,
-          account_type: res.data.account_type,
-          user_id: res.data.user_id,
-          isLoading: false
+      var token = localStorage.getItem('access_token');
+      var userId = this.state.loggedUserId;
+
+      var _this = this;
+
+      var severity = 'success';
+      var flashMessage = '';
+      axiosInstance.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
+      axiosInstance.get('/api/categories/' + this.props.match.params.id + '/edit', {
+        params: {
+          token: token
+        }
+      }).then(function (response) {
+        if (response.data.action == 'JWT_FAIL_TOKEN_INVALID' || response.data.action == 'JWT_FAIL_TOKEN_EXPIRED') {
+          severity = 'error';
+          flashMessage = 'You\'re session has expired. Please login again.';
+
+          _this.setState({
+            forceLogout: true
+          });
+        } else if (response.data.action == 'JWT_FAIL_TOKEN_MISSING') {
+          severity = 'error';
+          flashMessage = 'You are unauthorized to add a category. We will log you out and try signing in again.';
+
+          _this.setState({
+            forceLogout: true
+          });
+        } else {
+          console.log(response);
+
+          _this.setState({
+            category: response.data.category,
+            account_type: response.data.account_type,
+            user_id: response.data.user_id,
+            isLoading: false
+          });
+
+          return false;
+        }
+
+        _this.setState({
+          flash: true
         });
 
-        console.log(res);
-        console.log(res.data.category);
+        _this.setState({
+          severity: severity
+        });
+
+        _this.setState({
+          flashMessage: flashMessage
+        });
+
+        _this.flashHandle = setTimeout(function () {
+          _this.setState({
+            flash: false
+          });
+
+          if (_this4.state.forceLogout) {
+            Object(_helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__["HandleLogout"])();
+
+            _this.setState({
+              redirect: true
+            });
+          }
+        }, 3500);
       })["catch"](function (error) {
         console.log(error);
       });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearTimeout(this.flashHandle);
     }
   }, {
     key: "runAfterRender",
     value: function runAfterRender() {
       console.log('rendered!');
     }
-    /*initLadda() {
-      this.ladda.btn = Ladda.create(document.querySelector('.btn-info'));
-    }*/
-
   }, {
     key: "render",
     value: function render() {
-      //const [flash, setFlash] = useState(null);
-      //const { isLoading } = this.state;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, this.state.redirect ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Redirect"], {
+        to: "/login"
+      })) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__["default"], {
         "in": this.state.flash,
         timeout: {
           enter: 300,
@@ -102890,18 +103037,18 @@ var Login = function Login() {
         'X-Requested-With': 'XMLHttpRequest'
       }
     }).then(function (response) {
-      console.log(response.data.user);
-
+      //console.log(response.data.user);
       if (response.data.access_token && response.data.expires_in) {
         var access_token = response.data.access_token;
         var expires_in = response.data.expires_in;
         var user_id = response.data.user.user_id;
         var first_name = response.data.user.first_name;
+        var user = response.data.user;
         localStorage.setItem("access_token", access_token);
         localStorage.setItem("expires_in", expires_in);
         localStorage.setItem("user_id", user_id);
-        localStorage.setItem("first_name", first_name); //localStorage.setItem("user_id")
-
+        localStorage.setItem("first_name", first_name);
+        localStorage.setItem("user", user);
         setRedirect(true);
       }
     })["catch"](function (error) {
@@ -103351,6 +103498,26 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/helpers/HandleLogout.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/helpers/HandleLogout.js ***!
+  \*********************************************************/
+/*! exports provided: HandleLogout */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HandleLogout", function() { return HandleLogout; });
+function HandleLogout() {
+  //console.log('HandleLogout called!');
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("expires_in");
+  localStorage.removeItem("user_id");
+  localStorage.removeItem("first_name");
+}
+
+/***/ }),
+
 /***/ "./resources/js/components/helpers/PrivateRoute.js":
 /*!*********************************************************!*\
   !*** ./resources/js/components/helpers/PrivateRoute.js ***!
@@ -103378,14 +103545,21 @@ var PrivateRoute = function PrivateRoute(_ref) {
       rest = _objectWithoutProperties(_ref, ["component"]);
 
   // Add your own authentication on the below line.
-  var isLoggedIn = !localStorage.getItem('access_token') ? false : true;
+  var isLogged = !localStorage.getItem('access_token') ? false : true;
+  var loggedUserId = localStorage.getItem('user_id') ? localStorage.getItem('user_id') : false;
+  console.log('isLoggedIn from PrivateRoute ' + isLogged + ' user id: ' + loggedUserId);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], _extends({}, rest, {
     render: function render(props) {
-      return isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Component, props) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
+      return isLogged ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Component, _extends({}, props, {
+        foo: "bar",
+        isLogged: isLogged,
+        loggedUserId: loggedUserId
+      })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
         to: {
           pathname: '/login',
           state: {
-            from: props.location
+            from: props.location,
+            user_id: loggedUserId
           }
         }
       });
@@ -103850,7 +104024,7 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
         "data-toggle": "collapse",
         "aria-expanded": "false",
         className: "dropdown-toggle"
-      }, "Categories"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+      }, "Account Categories"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "collapse list-unstyled",
         id: "categories"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {

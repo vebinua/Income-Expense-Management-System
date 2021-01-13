@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
 class UserController extends Controller
 {
 
  	public function __construct() {
-    $this->middleware('auth:api', ['except' => ['login', 'store', 'create']]);
+    //$this->middleware('jwt.verify', ['except' => ['login', 'store', 'create']]);
   }
 
 
@@ -110,11 +113,25 @@ class UserController extends Controller
     
     $token = null;
     
-    if (! $token = auth('api')->attempt($data)) {
+    /*if (! $token = auth('api')->attempt($data)) {
       return response()->json(['error' => 'Unauthorized', 'data_creds' => $data], 401);
-    }
+    }*/
 
-    return $this->createNewToken($token);
+      	try {
+            if (!$token = JWTAuth::attempt($data)) {
+                return response()->json(['invalid_email_or_password'], 422);
+            }
+        } catch (JWTAuthException $e) {
+            return response()->json(['failed_to_create_token'], 500);
+        }
+
+        return $this->createNewToken($token);
+
+
+        //return response()->json(compact('token'));
+
+    //return $token;
+    //return $this->createNewToken($token);
 
     //return response()->json('login credentials: ' . print_r($credentials));
         /*try {

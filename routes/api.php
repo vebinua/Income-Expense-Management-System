@@ -14,22 +14,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('categories', 'App\Http\Controllers\CategoryController@store');
-Route::put('categories/{id}', 'App\Http\Controllers\CategoryController@update');
-Route::get('categories/{id}', 'App\Http\Controllers\CategoryController@show');
 
-Route::group([
-    'middleware' => 'jwt.auth',
-    'prefix' => 'auth'
+/*Route::group([
+		'middleware' => 'jwt.auth'
 
 ], function ($router) {
 
+	Route::get('categories/{id}', 'App\Http\Controllers\CategoryController@show');
 
+});*/
+Route::group(['middleware' => ['jwt.verify']], function() {
+	Route::get('categories/{id}', 'App\Http\Controllers\CategoryController@showByUser');
+   Route::get('categories/{id}/edit', 'App\Http\Controllers\CategoryController@show');
+   Route::post('categories', 'App\Http\Controllers\CategoryController@store');
+   Route::put('categories/{id}', 'App\Http\Controllers\CategoryController@update');
+   Route::delete('categories/{id}', 'App\Http\Controllers\CategoryController@destroy');
 });
 
-Route::get('categories', 'App\Http\Controllers\CategoryController@index');
+//Route::get('categories/{id}', 'App\Http\Controllers\CategoryController@show');
+//Route::get('categories', 'App\Http\Controllers\CategoryController@index');
 
-Route::delete('categories/{id}', 'App\Http\Controllers\CategoryController@destroy');
+
+//Route::get('categories', 'App\Http\Controllers\CategoryController@index');
+
 
 Route::post('users', 'App\Http\Controllers\UserController@store');
 Route::post('users/login', 'App\Http\Controllers\UserController@login');

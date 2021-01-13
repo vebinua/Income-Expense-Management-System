@@ -91,19 +91,20 @@ const Login = () => {
     })
     .then(function (response) {
 
-      console.log(response.data.user);
+      //console.log(response.data.user);
 
       if (response.data.access_token && response.data.expires_in){
         let access_token = response.data.access_token;
         let expires_in = response.data.expires_in;
         let user_id = response.data.user.user_id;
         let first_name = response.data.user.first_name;
+        let user = response.data.user;
 
         localStorage.setItem("access_token", access_token);
         localStorage.setItem("expires_in", expires_in);
         localStorage.setItem("user_id", user_id);
         localStorage.setItem("first_name", first_name);
-        //localStorage.setItem("user_id")
+        localStorage.setItem("user", user);
         setRedirect(true);
       }
 

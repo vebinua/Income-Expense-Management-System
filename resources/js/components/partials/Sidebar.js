@@ -70,7 +70,7 @@ class Sidebar extends React.Component {
                     </ul>
                 </li>
                 <li className={categoriesClass}>
-                    <a href="#categories" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Categories</a>
+                    <a href="#categories" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Account Categories</a>
                     <ul className="collapse list-unstyled" id="categories">
                         <li>
                             <Link to="/category/listings" aria-expanded="false">Listings</Link>
