@@ -16,6 +16,7 @@ class Sidebar extends React.Component {
     const dashboardClass = location.pathname === "/" ? "active" : "";
     const networthClass = location.pathname.match(/^\/net-worth/) ? "active" : "";
     const categoriesClass = location.pathname.match(/^\/categories/) ? "active" : "";
+    const walletClass = location.pathname.match(/^\/wallet/) ? "active" : "";
     
     //set auth here
     const isLoggedIn =  localStorage.getItem('access_token') ? true : false;
@@ -32,6 +33,9 @@ class Sidebar extends React.Component {
                 <p>Income & Expense Manager</p>
                 <li className={dashboardClass}>
                   <Link to="/" aria-expanded="false">Dashboard</Link>
+                </li>
+                <li className={networthClass}>
+                  <Link to="/wallet" aria-expanded="false">Wallet</Link>
                 </li>
                 <li className={networthClass}>
                   <Link to="/net-worth" aria-expanded="false">Net Worth</Link>
@@ -51,10 +55,10 @@ class Sidebar extends React.Component {
                     <a href="#pageAssets" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Assets</a>
                     <ul className="collapse list-unstyled" id="pageAssets">
                         <li>
-                            <a href="#">Listings</a>
+                            <a href="#">View Assets</a>
                         </li>
                         <li>
-                            <a href="#">Add</a>
+                            <Link to="/asset/add" aria-expanded="false">Add</Link>
                         </li>
                     </ul>
                 </li>

@@ -103962,7 +103962,8 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
       var location = this.props.location;
       var dashboardClass = location.pathname === "/" ? "active" : "";
       var networthClass = location.pathname.match(/^\/net-worth/) ? "active" : "";
-      var categoriesClass = location.pathname.match(/^\/categories/) ? "active" : ""; //set auth here
+      var categoriesClass = location.pathname.match(/^\/categories/) ? "active" : "";
+      var walletClass = location.pathname.match(/^\/wallet/) ? "active" : ""; //set auth here
 
       var isLoggedIn = localStorage.getItem('access_token') ? true : false;
       return !isLoggedIn ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
@@ -103977,6 +103978,11 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
         to: "/",
         "aria-expanded": "false"
       }, "Dashboard")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        className: networthClass
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        to: "/wallet",
+        "aria-expanded": "false"
+      }, "Wallet")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         className: networthClass
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: "/net-worth",
@@ -104003,8 +104009,9 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
         id: "pageAssets"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         href: "#"
-      }, "Listings")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        href: "#"
+      }, "View Assets")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        to: "/asset/add",
+        "aria-expanded": "false"
       }, "Add")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         href: "#pageLiabilities",
         "data-toggle": "collapse",

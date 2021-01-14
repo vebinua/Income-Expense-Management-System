@@ -21,6 +21,7 @@ class CreateAccountTransactionsTable extends Migration
             $table->text('note');
             $table->enum('transaction_type',['income','expense'])->default('income');
             $table->integer('user_id')->unsigned();
+            $table->integer('wallet_id')->unsigned();
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users');
         });
