@@ -9,6 +9,8 @@ import ViewCategory from './ViewCategory';
 import AddCategory from './AddCategory';
 import EditCategory from './EditCategory';
 import AddSubcategory from './AddSubcategory';
+import Wallet from './Wallet';
+import AddWallet from './AddWallet';
 import Login from './Login';
 import SignUp from './SignUp';
 
@@ -30,7 +32,8 @@ class App extends Component {
       '/',
       '/category/listings',
       '/category/add-category',
-      'category/:id/edit'
+      'category/:id/edit',
+      '/wallet/add'
     ];
 
     return (
@@ -50,6 +53,7 @@ class App extends Component {
               <PrivateRoute path={"/category/view"} component={ViewCategory} />
               <PrivateRoute path={"/category/add-category"} component={AddCategory} />
               <PrivateRoute path={"/category/:id/edit"} component={EditCategory} />
+              <PrivateRoute path={"/wallet/add"} component={AddWallet} />
             </AuthLayout>
           </Route>
         </Switch>

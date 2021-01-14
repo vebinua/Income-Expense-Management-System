@@ -101604,6 +101604,153 @@ var AddSubcategory = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
+/***/ "./resources/js/components/AddWallet.js":
+/*!**********************************************!*\
+  !*** ./resources/js/components/AddWallet.js ***!
+  \**********************************************/
+/*! exports provided: axiosInstance, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "axiosInstance", function() { return axiosInstance; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var ladda__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ladda */ "./node_modules/ladda/js/ladda.js");
+/* harmony import */ var _material_ui_lab_Alert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/lab/Alert */ "./node_modules/@material-ui/lab/esm/Alert/index.js");
+/* harmony import */ var _material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Fade */ "./node_modules/@material-ui/core/esm/Fade/index.js");
+/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ladda/dist/ladda-themeless.min.css */ "./node_modules/ladda/dist/ladda-themeless.min.css");
+/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helpers/HandleLogout */ "./resources/js/components/helpers/HandleLogout.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+ // import the ladda theme directly from the ladda package.
+
+
+
+var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+  baseURL: window.config.baseUrl
+});
+var styles = {
+  alert: {
+    left: '0',
+    pointerEvents: 'none',
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: '1500'
+  }
+};
+
+var AddWallet = function AddWallet() {
+  var ladda = null;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({
+    wallet_name: '',
+    initial_balance: '',
+    currency_id: ''
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      wallet = _useState2[0],
+      setWallet = _useState2[1];
+
+  var handleSubmit = function handleSubmit(e) {
+    e.preventDefault();
+    ladda.start();
+  };
+
+  var handleChange = function handleChange(e) {
+    var name = e.target.name;
+    var value = e.target.value;
+    wallet[name] = value;
+    setWallet(wallet);
+  };
+
+  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
+    ladda = ladda__WEBPACK_IMPORTED_MODULE_4__["create"](document.querySelector('.ladda-button'));
+  }, []);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Add wallet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-container"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "wallet_name"
+  }, "Wallet name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "text",
+    className: "form-control",
+    id: "wallet_name",
+    name: "wallet_name",
+    placeholder: "",
+    onChange: handleChange
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-group col-md-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "initial_balance"
+  }, "Initial balance"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "email",
+    className: "form-control",
+    id: "initial_balance",
+    name: "initial_balance",
+    placeholder: "",
+    onChange: handleChange
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-group col-md-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "currency_id"
+  }, "Currency"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+    id: "currency_id",
+    name: "currency_id",
+    className: "form-control",
+    onChange: handleChange,
+    defaultValue: "b"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "a"
+  }, "Select currency..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "b"
+  }, "...")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "hidden",
+    name: "user_id",
+    value: ''
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    type: "submit",
+    className: "btn btn-info btn-submit ladda-button",
+    "data-style": "expand-left"
+  }, "Save")))))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (AddWallet);
+
+/***/ }),
+
 /***/ "./resources/js/components/App.js":
 /*!****************************************!*\
   !*** ./resources/js/components/App.js ***!
@@ -101625,11 +101772,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AddCategory__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./AddCategory */ "./resources/js/components/AddCategory.js");
 /* harmony import */ var _EditCategory__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./EditCategory */ "./resources/js/components/EditCategory.js");
 /* harmony import */ var _AddSubcategory__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AddSubcategory */ "./resources/js/components/AddSubcategory.js");
-/* harmony import */ var _Login__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Login */ "./resources/js/components/Login.js");
-/* harmony import */ var _SignUp__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./SignUp */ "./resources/js/components/SignUp.js");
-/* harmony import */ var _partials_MainLayout__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./partials/MainLayout */ "./resources/js/components/partials/MainLayout.js");
-/* harmony import */ var _partials_AuthLayout__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./partials/AuthLayout */ "./resources/js/components/partials/AuthLayout.js");
-/* harmony import */ var _landings_AfterSignup__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./landings/AfterSignup */ "./resources/js/components/landings/AfterSignup.js");
+/* harmony import */ var _Wallet__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Wallet */ "./resources/js/components/Wallet.js");
+/* harmony import */ var _AddWallet__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./AddWallet */ "./resources/js/components/AddWallet.js");
+/* harmony import */ var _Login__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Login */ "./resources/js/components/Login.js");
+/* harmony import */ var _SignUp__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./SignUp */ "./resources/js/components/SignUp.js");
+/* harmony import */ var _partials_MainLayout__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./partials/MainLayout */ "./resources/js/components/partials/MainLayout.js");
+/* harmony import */ var _partials_AuthLayout__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./partials/AuthLayout */ "./resources/js/components/partials/AuthLayout.js");
+/* harmony import */ var _landings_AfterSignup__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./landings/AfterSignup */ "./resources/js/components/landings/AfterSignup.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -101668,6 +101817,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
+
 var App = /*#__PURE__*/function (_Component) {
   _inherits(App, _Component);
 
@@ -101682,25 +101833,25 @@ var App = /*#__PURE__*/function (_Component) {
   _createClass(App, [{
     key: "render",
     value: function render() {
-      var authRoutesPath = ['/', '/category/listings', '/category/add-category', 'category/:id/edit'];
+      var authRoutesPath = ['/', '/category/listings', '/category/add-category', 'category/:id/edit', '/wallet/add'];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
         basename: 'iems/Income-Expense-Management-System/'
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "wrapper"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: ['/login', '/signup', '/thank-you']
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_MainLayout__WEBPACK_IMPORTED_MODULE_12__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_MainLayout__WEBPACK_IMPORTED_MODULE_14__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/login",
-        component: _Login__WEBPACK_IMPORTED_MODULE_10__["default"]
+        component: _Login__WEBPACK_IMPORTED_MODULE_12__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/signup",
-        component: _SignUp__WEBPACK_IMPORTED_MODULE_11__["default"]
+        component: _SignUp__WEBPACK_IMPORTED_MODULE_13__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/thank-you",
-        component: _landings_AfterSignup__WEBPACK_IMPORTED_MODULE_14__["default"]
+        component: _landings_AfterSignup__WEBPACK_IMPORTED_MODULE_16__["default"]
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: authRoutesPath
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_AuthLayout__WEBPACK_IMPORTED_MODULE_13__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_AuthLayout__WEBPACK_IMPORTED_MODULE_15__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
         exact: true,
         path: "/",
         component: _Dashboard__WEBPACK_IMPORTED_MODULE_4__["default"]
@@ -101713,6 +101864,9 @@ var App = /*#__PURE__*/function (_Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
         path: "/category/:id/edit",
         component: _EditCategory__WEBPACK_IMPORTED_MODULE_8__["default"]
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        path: "/wallet/add",
+        component: _AddWallet__WEBPACK_IMPORTED_MODULE_11__["default"]
       }))))))
       /*<Router basename={'iems/Income-Expense-Management-System/'}>
         <div className="wrapper">
@@ -103480,6 +103634,285 @@ var ViewCategory = /*#__PURE__*/function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (ViewCategory);
+
+/***/ }),
+
+/***/ "./resources/js/components/Wallet.js":
+/*!*******************************************!*\
+  !*** ./resources/js/components/Wallet.js ***!
+  \*******************************************/
+/*! exports provided: axiosInstance, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "axiosInstance", function() { return axiosInstance; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var ladda__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ladda */ "./node_modules/ladda/js/ladda.js");
+/* harmony import */ var _material_ui_lab_Alert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/lab/Alert */ "./node_modules/@material-ui/lab/esm/Alert/index.js");
+/* harmony import */ var _material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Fade */ "./node_modules/@material-ui/core/esm/Fade/index.js");
+/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ladda/dist/ladda-themeless.min.css */ "./node_modules/ladda/dist/ladda-themeless.min.css");
+/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helpers/HandleLogout */ "./resources/js/components/helpers/HandleLogout.js");
+
+
+
+
+
+
+ // import the ladda theme directly from the ladda package.
+
+
+
+var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+  baseURL: window.config.baseUrl
+});
+var styles = {
+  alert: {
+    left: '0',
+    pointerEvents: 'none',
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: '1500'
+  }
+};
+
+var Wallet = function Wallet() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Wallet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-container"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "Category"
+  }, "Category"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "text",
+    className: "form-control",
+    id: "category",
+    name: "category",
+    placeholder: "Category",
+    value: '',
+    onChange: ''
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "hidden",
+    name: "user_id",
+    value: ''
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    onLoad: ''
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    type: "submit",
+    className: "btn btn-info btn-submit ladda-button",
+    "data-style": "expand-left"
+  }, "Add Category")))))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Wallet);
+/*class Wallet extends React.Component {
+
+  constructor (props) {
+
+    super(props)
+    this.state = {
+      categories: [],
+      category: '',
+      accountType: 'asset',
+      loading: false,
+      flash: false,
+      flashHandle: false,
+      severity: 'success',
+      flashMessage: '',
+      isLogged: props.isLogged,
+      loggedUserId: props.loggedUserId,
+      redirect: false
+    }
+        
+    // bind
+    this.handleLoad = this.handleLoad.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onOptionChange = this.onOptionChange.bind(this);
+    this.runAfterRender = this.runAfterRender.bind(this);
+
+    window.addEventListener('load', this.handleLoad);
+  }
+
+    clearFields() {
+      this.setState({ category: ''});
+      this.setState({ accountType: 'asset'});
+    }
+
+    onOptionChange(e) {
+      this.setState({
+        accountType: e.target.value
+      });
+    }
+
+    handleChange(e) {
+      this.setState({
+        [e.target.name]: e.target.value
+      });
+    }
+
+    handleSubmit(e) {
+      e.preventDefault();
+      
+      let _btn = this.ladda;
+      let _this = this;
+      let severity = 'success';
+      let flashMessage = '';
+
+      const data = {
+        'category': this.state.category,
+        'account_type': this.state.accountType,
+        'user_id': this.state.loggedUserId
+      };
+
+      this.ladda.start();
+      
+      const token = localStorage.getItem('access_token');
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      axiosInstance.post('/api/categories/', {data},{
+        params: {
+          token: token
+        },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        }
+      })
+      .then(function (response) {
+
+        if (response.data.action == 'JWT_FAIL_TOKEN_INVALID' || response.data.action == 'JWT_FAIL_TOKEN_EXPIRED') {
+
+          HandleLogout();
+          _this.setState({redirect: true});
+
+          return false;
+        } else if (response.data.action == 'JWT_FAIL_TOKEN_MISSING') {
+          severity = 'error';
+          flashMessage = 'You are unauthorized to add a category. We will log you out and try signing in again.';
+                    
+          HandleLogout();
+          _this.setState({redirect: true});
+        } else {
+          severity = 'success';
+          flashMessage = 'Category has been successfully added.';
+        }
+
+        _this.setState({ flash: true});
+        _this.setState({ severity: severity});
+        _this.setState({ flashMessage: flashMessage});
+
+        _this.flashHandle = setTimeout(() => {
+          _this.setState({ flash: false});
+        }, 3500);
+
+        _btn.stop();
+        _this.clearFields();
+      })
+      .catch(function (error) {
+        _btn.stop();
+          console.log(error);
+          _this.clearFields();
+      });
+    }
+
+  handleLoad(e) {
+  }
+
+  componentDidMount() {
+    
+    this.ladda = Ladda.create(document.querySelector('.btn-submit'));
+
+    //const userId = this.state.loggedUserId;
+
+    //console.log('from componentDidMount@AddCategory.js ' + userId); 
+  }
+
+  componentWillUnmount() {
+
+    clearTimeout(this.flashHandle);
+
+  }
+
+  runAfterRender() {
+    console.log('rendered!');
+  }
+
+  render() {
+    //const [flash, setFlash] = useState(null);
+
+    return (
+      <div>
+        {this.state.redirect ? (
+        <Fragment>
+          <Redirect to='/login' />  
+        </Fragment>
+        ): null }
+
+        {
+          <Fade in={this.state.flash} timeout={{ enter: 300, exit: 1000 }}>
+          <Alert style={styles.alert} onClose={() => {}} severity={this.state.severity}>{this.state.flashMessage}</Alert>
+          </Fade>
+        }
+
+        <h2>Wallet</h2>
+        
+        <div className="form-container">
+          <div className="row">
+            <div className="col-4">
+
+              <form onSubmit={this.handleSubmit}>
+            
+                <div className="form-group">
+                  <label htmlFor="Category">Category</label>
+                  <input type="text" className="form-control" id="category" name="category" placeholder="Category" value={this.state.category} 
+                  onChange={this.handleChange}  />
+                </div>
+
+                <div className="form-group">
+                  <label>Account Type</label>
+                  <div className="custom-control custom-radio">
+                      <input type="radio" id="asset" name="account_type" value="asset" className="custom-control-input" 
+                      checked={this.state.accountType === 'asset'} 
+                      onChange={this.onOptionChange} />
+                      <label className="custom-control-label" htmlFor="asset">Asset</label>
+                  </div>
+                  <div className="custom-control custom-radio">
+                      <input type="radio" id="liability" name="account_type" value="liability" className="custom-control-input" 
+                      checked={this.state.accountType === 'liability'} 
+                      onChange={this.onOptionChange} />
+                      <label className="custom-control-label" htmlFor="liability">Liability</label>
+                  </div>
+                </div>
+
+                <input type="hidden" name="user_id" value={this.state.loggedUserId}/>
+                <div onLoad={this.runAfterRender}>
+                  <button type="submit" className="btn btn-info btn-submit ladda-button" data-style="expand-left">Add Category</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    )}
+}
+
+export default Wallet;
+*/
 
 /***/ }),
 
