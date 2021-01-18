@@ -16,7 +16,17 @@ class Header extends React.Component {
     const categoriesClass = location.pathname.match(/^\/categories/) ? "active" : "";
 
     const isLoggedIn =  localStorage.getItem('access_token') ? true : false;
-    
+
+    const handleOnClick = (e) => {
+      e.preventDefault();
+      
+      var sidebar = document.querySelector('#sidebar');
+      var content = document.querySelector('#content');
+      
+      sidebar.classList.toggle('active');
+      content.classList.toggle('active');
+    }
+  
     return( 
       !isLoggedIn ? null:
       (
@@ -24,7 +34,7 @@ class Header extends React.Component {
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container-fluid">
 
-              <button type="button" id="sidebarCollapse" className="btn btn-info">
+              <button onClick={handleOnClick} type="button" id="sidebarCollapse" className="btn btn-info">
                   <i className="fas fa-align-left"></i>
                   <span></span>
               </button>
@@ -45,18 +55,3 @@ class Header extends React.Component {
 }
 
 export default withRouter(Header);
-
-/*function Sidebar() {
-
-  const { location } = this.props;
-
-  const dashboardClass = location.pathname === "/" ? "active" : "";
-  const networthClass = location.pathname.match(/^\/net-worth/) ? "active" : "";
-  const contactClass = location.pathname.match(/^\/contact/) ? "active" : "";
-  
-
-
-   
-}*/
-
-//export default Sidebar;

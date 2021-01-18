@@ -24,11 +24,11 @@
                 $user = JWTAuth::parseToken()->authenticate();
             } catch (Exception $e) {
                 if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
-                    return response()->json(['status' => 'Token is Invalid', 'action' =>'JWT_FAIL_TOKEN_INVALID']);
+                    return response()->json(['status' => 'Token is Invalid', 'action' =>'JWT_FAIL_TOKEN_INVALID', 'isUnauthorized' => true]);
                 }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
-                    return response()->json(['status' => 'Token is Expired', 'action' =>'JWT_FAIL_TOKEN_EXPIRED']);
+                    return response()->json(['status' => 'Token is Expired', 'action' =>'JWT_FAIL_TOKEN_EXPIRED', 'isUnauthorized' => true]);
                 }else{
-                    return response()->json(['status' => 'Authorization Token not found', 'action' =>'JWT_FAIL_TOKEN_MISSING']);
+                    return response()->json(['status' => 'Authorization Token not found', 'action' =>'JWT_FAIL_TOKEN_MISSING', 'isUnauthorized' => true]);
                 }
             }
             return $next($request);

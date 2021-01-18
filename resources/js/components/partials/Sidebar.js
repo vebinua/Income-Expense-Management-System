@@ -35,7 +35,7 @@ class Sidebar extends React.Component {
                   <Link to="/" aria-expanded="false">Dashboard</Link>
                 </li>
                 <li className={networthClass}>
-                  <Link to="/wallet" aria-expanded="false">Wallet</Link>
+                  <Link to="/wallets" aria-expanded="false">Wallets</Link>
                 </li>
                 <li className={networthClass}>
                   <Link to="/net-worth" aria-expanded="false">Net Worth</Link>

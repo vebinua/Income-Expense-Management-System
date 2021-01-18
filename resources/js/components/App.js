@@ -9,7 +9,7 @@ import ViewCategory from './ViewCategory';
 import AddCategory from './AddCategory';
 import EditCategory from './EditCategory';
 import AddSubcategory from './AddSubcategory';
-import Wallet from './Wallet';
+import Wallets from './Wallets';
 import AddWallet from './AddWallet';
 import Login from './Login';
 import SignUp from './SignUp';
@@ -33,31 +33,37 @@ class App extends Component {
       '/category/listings',
       '/category/add-category',
       'category/:id/edit',
-      '/wallet/add'
+      '/wallets/add',
+      '/wallets'
     ];
 
     return (
       <Router basename={'iems/Income-Expense-Management-System/'}>
-        <div className="wrapper">
-        <Switch>
-          <Route path={['/login', '/signup', '/thank-you']}>
-            <MainLayout>
-              <Route path={"/login"} component={Login} />
-              <Route path={"/signup"} component={SignUp} />
-              <Route path={"/thank-you"} component={LandingAfterSignup} />
-            </MainLayout>
-          </Route>
-          <Route path={authRoutesPath}>
-            <AuthLayout>
-              <PrivateRoute exact path={"/"} component={Dashboard} />
-              <PrivateRoute path={"/category/view"} component={ViewCategory} />
-              <PrivateRoute path={"/category/add-category"} component={AddCategory} />
-              <PrivateRoute path={"/category/:id/edit"} component={EditCategory} />
-              <PrivateRoute path={"/wallet/add"} component={AddWallet} />
-            </AuthLayout>
-          </Route>
-        </Switch>
-        </div>
+         <div className="wrapper">
+         <Switch>
+            <Route path={['/login', '/signup', '/thank-you']}>
+               <MainLayout>
+                 <Switch>
+                    <Route path={"/login"} component={Login} />
+                    <Route path={"/signup"} component={SignUp} />
+                    <Route path={"/thank-you"} component={LandingAfterSignup} />
+                  </Switch>
+               </MainLayout>
+            </Route>
+            <Route path={authRoutesPath}>
+               <AuthLayout>
+                  <Switch>
+                    <PrivateRoute exact path={"/"} component={Dashboard} />
+                    <PrivateRoute path={"/category/view"} component={ViewCategory} />
+                    <PrivateRoute path={"/category/add-category"} component={AddCategory} />
+                    <PrivateRoute path={"/category/:id/edit"} component={EditCategory} />
+                    <PrivateRoute path={"/wallets/add"} component={AddWallet} />
+                     <PrivateRoute path={"/wallets"} component={Wallets} />
+                  </Switch>
+               </AuthLayout>
+            </Route>
+         </Switch>
+         </div>
       </Router>
       /*<Router basename={'iems/Income-Expense-Management-System/'}>
         <div className="wrapper">

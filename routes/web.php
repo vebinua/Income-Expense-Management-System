@@ -23,4 +23,3 @@ Route::get('{any?}', function ($any = null) {
 Route::resource('category', 'App\Http\Controllers\CategoryController');
 
 
-

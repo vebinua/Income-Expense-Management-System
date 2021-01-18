@@ -2851,6 +2851,132 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/@material-ui/core/esm/CardActionArea/CardActionArea.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@material-ui/core/esm/CardActionArea/CardActionArea.js ***!
+  \*****************************************************************************/
+/*! exports provided: styles, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "styles", function() { return styles; });
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js");
+/* harmony import */ var _styles_withStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../styles/withStyles */ "./node_modules/@material-ui/core/esm/styles/withStyles.js");
+/* harmony import */ var _ButtonBase__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ButtonBase */ "./node_modules/@material-ui/core/esm/ButtonBase/index.js");
+
+
+
+
+
+
+
+var styles = function styles(theme) {
+  return {
+    /* Styles applied to the root element. */
+    root: {
+      display: 'block',
+      textAlign: 'inherit',
+      width: '100%',
+      '&:hover $focusHighlight': {
+        opacity: theme.palette.action.hoverOpacity
+      },
+      '&$focusVisible $focusHighlight': {
+        opacity: 0.12
+      }
+    },
+
+    /* Pseudo-class applied to the ButtonBase root element if the action area is keyboard focused. */
+    focusVisible: {},
+
+    /* Styles applied to the overlay that covers the action area when it is keyboard focused. */
+    focusHighlight: {
+      overflow: 'hidden',
+      pointerEvents: 'none',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      borderRadius: 'inherit',
+      opacity: 0,
+      backgroundColor: 'currentcolor',
+      transition: theme.transitions.create('opacity', {
+        duration: theme.transitions.duration.short
+      })
+    }
+  };
+};
+var CardActionArea = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__["forwardRef"](function CardActionArea(props, ref) {
+  var children = props.children,
+      classes = props.classes,
+      className = props.className,
+      focusVisibleClassName = props.focusVisibleClassName,
+      other = Object(_babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__["default"])(props, ["children", "classes", "className", "focusVisibleClassName"]);
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__["createElement"](_ButtonBase__WEBPACK_IMPORTED_MODULE_6__["default"], Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    className: Object(clsx__WEBPACK_IMPORTED_MODULE_4__["default"])(classes.root, className),
+    focusVisibleClassName: Object(clsx__WEBPACK_IMPORTED_MODULE_4__["default"])(focusVisibleClassName, classes.focusVisible),
+    ref: ref
+  }, other), children, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__["createElement"]("span", {
+    className: classes.focusHighlight
+  }));
+});
+ true ? CardActionArea.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
+
+  /**
+   * The content of the component.
+   */
+  children: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.node,
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css) below for more details.
+   */
+  classes: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.object,
+
+  /**
+   * @ignore
+   */
+  className: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string,
+
+  /**
+   * @ignore
+   */
+  focusVisibleClassName: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string
+} : undefined;
+/* harmony default export */ __webpack_exports__["default"] = (Object(_styles_withStyles__WEBPACK_IMPORTED_MODULE_5__["default"])(styles, {
+  name: 'MuiCardActionArea'
+})(CardActionArea));
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/core/esm/CardActionArea/index.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@material-ui/core/esm/CardActionArea/index.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CardActionArea__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CardActionArea */ "./node_modules/@material-ui/core/esm/CardActionArea/CardActionArea.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _CardActionArea__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+
+
+/***/ }),
+
 /***/ "./node_modules/@material-ui/core/esm/CardActions/CardActions.js":
 /*!***********************************************************************!*\
   !*** ./node_modules/@material-ui/core/esm/CardActions/CardActions.js ***!
@@ -3243,6 +3369,152 @@ var CardHeader = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__["forwardRef"](f
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CardHeader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CardHeader */ "./node_modules/@material-ui/core/esm/CardHeader/CardHeader.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _CardHeader__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/core/esm/CardMedia/CardMedia.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@material-ui/core/esm/CardMedia/CardMedia.js ***!
+  \*******************************************************************/
+/*! exports provided: styles, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "styles", function() { return styles; });
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js");
+/* harmony import */ var _styles_withStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../styles/withStyles */ "./node_modules/@material-ui/core/esm/styles/withStyles.js");
+/* harmony import */ var _material_ui_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/utils */ "./node_modules/@material-ui/utils/esm/index.js");
+
+
+
+
+
+
+
+var styles = {
+  /* Styles applied to the root element. */
+  root: {
+    display: 'block',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center'
+  },
+
+  /* Styles applied to the root element if `component="video, audio, picture, iframe, or img"`. */
+  media: {
+    width: '100%'
+  },
+
+  /* Styles applied to the root element if `component="picture or img"`. */
+  img: {
+    // ⚠️ object-fit is not supported by IE 11.
+    objectFit: 'cover'
+  }
+};
+var MEDIA_COMPONENTS = ['video', 'audio', 'picture', 'iframe', 'img'];
+var CardMedia = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__["forwardRef"](function CardMedia(props, ref) {
+  var children = props.children,
+      classes = props.classes,
+      className = props.className,
+      _props$component = props.component,
+      Component = _props$component === void 0 ? 'div' : _props$component,
+      image = props.image,
+      src = props.src,
+      style = props.style,
+      other = Object(_babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__["default"])(props, ["children", "classes", "className", "component", "image", "src", "style"]);
+
+  var isMediaComponent = MEDIA_COMPONENTS.indexOf(Component) !== -1;
+  var composedStyle = !isMediaComponent && image ? Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    backgroundImage: "url(\"".concat(image, "\")")
+  }, style) : style;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__["createElement"](Component, Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    className: Object(clsx__WEBPACK_IMPORTED_MODULE_4__["default"])(classes.root, className, isMediaComponent && classes.media, "picture img".indexOf(Component) !== -1 && classes.img),
+    ref: ref,
+    style: composedStyle,
+    src: isMediaComponent ? image || src : undefined
+  }, other), children);
+});
+ true ? CardMedia.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
+
+  /**
+   * The content of the component.
+   */
+  children: Object(_material_ui_utils__WEBPACK_IMPORTED_MODULE_6__["chainPropTypes"])(prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.node, function (props) {
+    if (!props.children && !props.image && !props.src && !props.component) {
+      return new Error('Material-UI: Either `children`, `image`, `src` or `component` prop must be specified.');
+    }
+
+    return null;
+  }),
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css) below for more details.
+   */
+  classes: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.object,
+
+  /**
+   * @ignore
+   */
+  className: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string,
+
+  /**
+   * The component used for the root node.
+   * Either a string to use a HTML element or a component.
+   */
+  component: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a
+  /* @typescript-to-proptypes-ignore */
+  .elementType,
+
+  /**
+   * Image to be displayed as a background image.
+   * Either `image` or `src` prop must be specified.
+   * Note that caller must specify height otherwise the image will not be visible.
+   */
+  image: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string,
+
+  /**
+   * An alias for `image` property.
+   * Available only with media components.
+   * Media components: `video`, `audio`, `picture`, `iframe`, `img`.
+   */
+  src: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string,
+
+  /**
+   * @ignore
+   */
+  style: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.object
+} : undefined;
+/* harmony default export */ __webpack_exports__["default"] = (Object(_styles_withStyles__WEBPACK_IMPORTED_MODULE_5__["default"])(styles, {
+  name: 'MuiCardMedia'
+})(CardMedia));
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/core/esm/CardMedia/index.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@material-ui/core/esm/CardMedia/index.js ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CardMedia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CardMedia */ "./node_modules/@material-ui/core/esm/CardMedia/CardMedia.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _CardMedia__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
 
 
@@ -20325,6 +20597,68 @@ function useIsFocusVisible() {
     ref: ref
   };
 }
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/icons/AccountBalance.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@material-ui/icons/AccountBalance.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "./node_modules/@babel/runtime/helpers/interopRequireWildcard.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var React = _interopRequireWildcard(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/React.createElement("path", {
+  d: "M4 10h3v7H4zM10.5 10h3v7h-3zM2 19h20v3H2zM17 10h3v7h-3zM12 1L2 6v2h20V6z"
+}), 'AccountBalance');
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/icons/Add.js":
+/*!************************************************!*\
+  !*** ./node_modules/@material-ui/icons/Add.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "./node_modules/@babel/runtime/helpers/interopRequireWildcard.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var React = _interopRequireWildcard(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/React.createElement("path", {
+  d: "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+}), 'Add');
+
+exports.default = _default;
 
 /***/ }),
 
@@ -101608,12 +101942,11 @@ var AddSubcategory = /*#__PURE__*/function (_React$Component) {
 /*!**********************************************!*\
   !*** ./resources/js/components/AddWallet.js ***!
   \**********************************************/
-/*! exports provided: axiosInstance, default */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "axiosInstance", function() { return axiosInstance; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -101622,11 +101955,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var ladda__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ladda */ "./node_modules/ladda/js/ladda.js");
-/* harmony import */ var _material_ui_lab_Alert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/lab/Alert */ "./node_modules/@material-ui/lab/esm/Alert/index.js");
-/* harmony import */ var _material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Fade */ "./node_modules/@material-ui/core/esm/Fade/index.js");
-/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ladda/dist/ladda-themeless.min.css */ "./node_modules/ladda/dist/ladda-themeless.min.css");
-/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helpers/HandleLogout */ "./resources/js/components/helpers/HandleLogout.js");
+/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ladda/dist/ladda-themeless.min.css */ "./node_modules/ladda/dist/ladda-themeless.min.css");
+/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _partials_FadeFlash__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./partials/FadeFlash */ "./resources/js/components/partials/FadeFlash.js");
+/* harmony import */ var _helpers_services_ApiService__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./helpers/services/ApiService */ "./resources/js/components/helpers/services/ApiService.js");
+/* harmony import */ var _helpers_DynamicDropdown__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helpers/DynamicDropdown */ "./resources/js/components/helpers/DynamicDropdown.js");
+/* harmony import */ var _helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./helpers/HandleLogout */ "./resources/js/components/helpers/HandleLogout.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -101645,39 +101979,78 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
- // import the ladda theme directly from the ladda package.
 
 
 
-var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: window.config.baseUrl
-});
-var styles = {
-  alert: {
-    left: '0',
-    pointerEvents: 'none',
-    position: 'fixed',
-    top: 0,
-    width: '100%',
-    zIndex: '1500'
-  }
-};
 
-var AddWallet = function AddWallet() {
-  var ladda = null;
 
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({
+var AddWallet = function AddWallet(props) {
+  var loggedUserId = props.loggedUserId;
+  var isServiceValid = false;
+  var optionItems = false;
+  var history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useHistory"])();
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      shouldRedirect = _useState2[0],
+      setShouldRedirect = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
+      _useState4 = _slicedToArray(_useState3, 2),
+      currencyOptions = _useState4[0],
+      setCurrencyOptions = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      flash = _useState6[0],
+      setFlash = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('success'),
+      _useState8 = _slicedToArray(_useState7, 2),
+      severity = _useState8[0],
+      setSeverity = _useState8[1];
+
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
+      _useState10 = _slicedToArray(_useState9, 2),
+      flashMessage = _useState10[0],
+      setFlashMessage = _useState10[1];
+
+  var ladda = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(false);
+
+  var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({
     wallet_name: '',
     initial_balance: '',
-    currency_id: ''
+    currency_id: '',
+    user_id: loggedUserId
   }),
-      _useState2 = _slicedToArray(_useState, 2),
-      wallet = _useState2[0],
-      setWallet = _useState2[1];
+      _useState12 = _slicedToArray(_useState11, 2),
+      wallet = _useState12[0],
+      setWallet = _useState12[1];
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
-    ladda.start();
+    ladda.current.start();
+    _helpers_services_ApiService__WEBPACK_IMPORTED_MODULE_7__["default"].postWallet(wallet).then(function (response) {
+      isServiceValid = _helpers_services_ApiService__WEBPACK_IMPORTED_MODULE_7__["default"].validateServiceResponse(response);
+
+      if (isServiceValid) {
+        history.push({
+          pathname: '/wallets'
+        });
+      } else {
+        showFlashMessage(true, 'error', 'Your session may have already expired, please login again.');
+        Object(_helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_9__["HandleLogout"])();
+        history.push({
+          pathname: '/login'
+        });
+      }
+
+      ladda.current.stop();
+      console.log(isServiceValid);
+    })["catch"](function (error) {
+      showFlashMessage(true, 'error', 'Error on saving wallet. ' + error);
+      ladda.current.stop();
+    });
   };
 
   var handleChange = function handleChange(e) {
@@ -101687,10 +102060,40 @@ var AddWallet = function AddWallet() {
     setWallet(wallet);
   };
 
+  var showFlashMessage = function showFlashMessage(show, severity, flashMessage) {
+    setFlash(show);
+    setSeverity(severity);
+    setFlashMessage(flashMessage);
+    setTimeout(function () {
+      setFlash(false);
+    }, 3500);
+  };
+
   react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
-    ladda = ladda__WEBPACK_IMPORTED_MODULE_4__["create"](document.querySelector('.ladda-button'));
+    ladda.current = ladda__WEBPACK_IMPORTED_MODULE_4__["create"](document.querySelector('.btn-submit'));
+    _helpers_services_ApiService__WEBPACK_IMPORTED_MODULE_7__["default"].getCurrencies().then(function (response) {
+      isServiceValid = _helpers_services_ApiService__WEBPACK_IMPORTED_MODULE_7__["default"].validateServiceResponse(response);
+
+      if (isServiceValid) {
+        setCurrencyOptions(response.data);
+      } else {
+        showFlashMessage(true, 'error', 'Your session may have already expired, please login again.');
+        Object(_helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_9__["HandleLogout"])();
+        history.push({
+          pathname: '/login'
+        });
+      }
+
+      console.log(isServiceValid);
+    })["catch"](function (error) {
+      showFlashMessage(true, 'error', 'Error on fetching currency listings. ' + error);
+    });
   }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Add wallet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_partials_FadeFlash__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    isFlash: flash,
+    severity: severity,
+    message: flashMessage
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Add wallet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "row"
@@ -101716,7 +102119,7 @@ var AddWallet = function AddWallet() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
     htmlFor: "initial_balance"
   }, "Initial balance"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-    type: "email",
+    type: "text",
     className: "form-control",
     id: "initial_balance",
     name: "initial_balance",
@@ -101731,12 +102134,14 @@ var AddWallet = function AddWallet() {
     name: "currency_id",
     className: "form-control",
     onChange: handleChange,
-    defaultValue: "b"
+    defaultValue: "-"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
-    value: "a"
-  }, "Select currency..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
-    value: "b"
-  }, "...")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    value: "-"
+  }, "Select currency..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_helpers_DynamicDropdown__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    data: currencyOptions,
+    optionKey: 'currency_id',
+    optionValue: 'currency_symbol'
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
     type: "hidden",
     name: "user_id",
     value: ''
@@ -101772,7 +102177,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AddCategory__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./AddCategory */ "./resources/js/components/AddCategory.js");
 /* harmony import */ var _EditCategory__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./EditCategory */ "./resources/js/components/EditCategory.js");
 /* harmony import */ var _AddSubcategory__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AddSubcategory */ "./resources/js/components/AddSubcategory.js");
-/* harmony import */ var _Wallet__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Wallet */ "./resources/js/components/Wallet.js");
+/* harmony import */ var _Wallets__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Wallets */ "./resources/js/components/Wallets.js");
 /* harmony import */ var _AddWallet__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./AddWallet */ "./resources/js/components/AddWallet.js");
 /* harmony import */ var _Login__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Login */ "./resources/js/components/Login.js");
 /* harmony import */ var _SignUp__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./SignUp */ "./resources/js/components/SignUp.js");
@@ -101833,14 +102238,14 @@ var App = /*#__PURE__*/function (_Component) {
   _createClass(App, [{
     key: "render",
     value: function render() {
-      var authRoutesPath = ['/', '/category/listings', '/category/add-category', 'category/:id/edit', '/wallet/add'];
+      var authRoutesPath = ['/', '/category/listings', '/category/add-category', 'category/:id/edit', '/wallets/add', '/wallets'];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
         basename: 'iems/Income-Expense-Management-System/'
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "wrapper"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: ['/login', '/signup', '/thank-you']
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_MainLayout__WEBPACK_IMPORTED_MODULE_14__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_MainLayout__WEBPACK_IMPORTED_MODULE_14__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/login",
         component: _Login__WEBPACK_IMPORTED_MODULE_12__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
@@ -101849,9 +102254,9 @@ var App = /*#__PURE__*/function (_Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/thank-you",
         component: _landings_AfterSignup__WEBPACK_IMPORTED_MODULE_16__["default"]
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: authRoutesPath
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_AuthLayout__WEBPACK_IMPORTED_MODULE_15__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_partials_AuthLayout__WEBPACK_IMPORTED_MODULE_15__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
         exact: true,
         path: "/",
         component: _Dashboard__WEBPACK_IMPORTED_MODULE_4__["default"]
@@ -101865,9 +102270,12 @@ var App = /*#__PURE__*/function (_Component) {
         path: "/category/:id/edit",
         component: _EditCategory__WEBPACK_IMPORTED_MODULE_8__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        path: "/wallet/add",
+        path: "/wallets/add",
         component: _AddWallet__WEBPACK_IMPORTED_MODULE_11__["default"]
-      }))))))
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_helpers_PrivateRoute__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        path: "/wallets",
+        component: _Wallets__WEBPACK_IMPORTED_MODULE_10__["default"]
+      })))))))
       /*<Router basename={'iems/Income-Expense-Management-System/'}>
         <div className="wrapper">
           <Sidebar />
@@ -102457,7 +102865,7 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_14__["m
   };
 });
 
-var Login = function Login() {
+var Login = function Login(props) {
   var classes = useStyles();
 
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
@@ -102479,6 +102887,10 @@ var Login = function Login() {
       _useState8 = _slicedToArray(_useState7, 2),
       password = _useState8[0],
       setPassword = _useState8[1];
+
+  var isLogged = props.isLogged;
+  var loggedUserId = props.loggedUserId;
+  var history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useHistory"])();
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
@@ -102514,8 +102926,11 @@ var Login = function Login() {
         localStorage.setItem("expires_in", expires_in);
         localStorage.setItem("user_id", user_id);
         localStorage.setItem("first_name", first_name);
-        localStorage.setItem("user", user);
-        setRedirect(true);
+        localStorage.setItem("user", user); // setRedirect(true);
+
+        history.push({
+          pathname: '/'
+        });
       }
     })["catch"](function (error) {
       setShowProgressIndicator(false);
@@ -102524,9 +102939,7 @@ var Login = function Login() {
     return false;
   };
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, redirect ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-    to: "/"
-  })) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: classes.progressIndicatorWrapper
   }, showProgressIndicator ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: classes.progressIndicator
@@ -103637,29 +104050,68 @@ var ViewCategory = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
-/***/ "./resources/js/components/Wallet.js":
-/*!*******************************************!*\
-  !*** ./resources/js/components/Wallet.js ***!
-  \*******************************************/
-/*! exports provided: axiosInstance, default */
+/***/ "./resources/js/components/Wallets.js":
+/*!********************************************!*\
+  !*** ./resources/js/components/Wallets.js ***!
+  \********************************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "axiosInstance", function() { return axiosInstance; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var ladda__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ladda */ "./node_modules/ladda/js/ladda.js");
-/* harmony import */ var _material_ui_lab_Alert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/lab/Alert */ "./node_modules/@material-ui/lab/esm/Alert/index.js");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 /* harmony import */ var _material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Fade */ "./node_modules/@material-ui/core/esm/Fade/index.js");
-/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ladda/dist/ladda-themeless.min.css */ "./node_modules/ladda/dist/ladda-themeless.min.css");
-/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helpers/HandleLogout */ "./resources/js/components/helpers/HandleLogout.js");
+/* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/esm/Card/index.js");
+/* harmony import */ var _material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/CardActionArea */ "./node_modules/@material-ui/core/esm/CardActionArea/index.js");
+/* harmony import */ var _material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/CardActions */ "./node_modules/@material-ui/core/esm/CardActions/index.js");
+/* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/esm/CardContent/index.js");
+/* harmony import */ var _material_ui_core_CardMedia__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/CardMedia */ "./node_modules/@material-ui/core/esm/CardMedia/index.js");
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_lab_Alert__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/lab/Alert */ "./node_modules/@material-ui/lab/esm/Alert/index.js");
+/* harmony import */ var _material_ui_core_Icon__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core/Icon */ "./node_modules/@material-ui/core/esm/Icon/index.js");
+/* harmony import */ var _material_ui_icons_Add__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/icons/Add */ "./node_modules/@material-ui/icons/Add.js");
+/* harmony import */ var _material_ui_icons_Add__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Add__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
+/* harmony import */ var _material_ui_icons_AccountBalance__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @material-ui/icons/AccountBalance */ "./node_modules/@material-ui/icons/AccountBalance.js");
+/* harmony import */ var _material_ui_icons_AccountBalance__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_AccountBalance__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ladda/dist/ladda-themeless.min.css */ "./node_modules/ladda/dist/ladda-themeless.min.css");
+/* harmony import */ var ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(ladda_dist_ladda_themeless_min_css__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var _partials_FadeFlash__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./partials/FadeFlash */ "./resources/js/components/partials/FadeFlash.js");
+/* harmony import */ var _helpers_services_ApiService__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./helpers/services/ApiService */ "./resources/js/components/helpers/services/ApiService.js");
+/* harmony import */ var _helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./helpers/HandleLogout */ "./resources/js/components/helpers/HandleLogout.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -103670,9 +104122,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
-  baseURL: window.config.baseUrl
-});
+
+
 var styles = {
   alert: {
     left: '0',
@@ -103681,238 +104132,192 @@ var styles = {
     top: 0,
     width: '100%',
     zIndex: '1500'
+  },
+  container: {
+    "float": 'left'
+  },
+  root: {
+    maxWidth: 345
+  },
+  media: {
+    height: 100,
+    width: 100
+  }
+};
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_5__["makeStyles"])(function (theme) {
+  return {
+    root: {
+      maxWidth: 345
+    },
+    media: {
+      height: 140
+    },
+    button: {
+      margin: theme.spacing(1)
+    }
+  };
+});
+
+var renderRows = function renderRows(items, key) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "row mb-4",
+    key: 'row-' + key
+  }, items);
+};
+
+var loopData = function loopData(data) {
+  console.log('looping data foo');
+
+  for (var i = 1; i <= data.length; i++) {
+    var index = i - 1;
+    console.log(data[index]);
+    var walletId = data[index].wallet_id;
+    var walletName = data[index].wallet_name;
+    console.log('wallet id: ' + walletId);
+    console.log('wallet name: ' + walletName);
   }
 };
 
-var Wallet = function Wallet() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Wallet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "form-container"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+var renderCards = function renderCards(data) {
+  var index = 0;
+  var key = 0;
+  var walletId = 0;
+  var walletName = '';
+  var card = '';
+  var rows = [];
+  var items = [];
+  console.log('data length: ' + data.length);
+
+  for (var i = 1; i <= data.length; i++) {
+    key = key + 1;
+    index = i - 1;
+    walletId = data[index].wallet_id;
+    walletName = data[index].wallet_name;
+    console.log(index);
+    console.log('from render ' + walletId + ' ' + walletName);
+    items.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      className: "col col-3",
+      id: 'card-' + key,
+      key: 'key-' + key
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      styles: styles.root
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_8__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CardMedia__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      className: "ico-wallet",
+      styles: styles.media,
+      image: window.config.baseUrl + "images/ico_wallet.svg",
+      title: "Contemplative Reptile"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_10__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13__["default"], {
+      gutterBottom: true,
+      variant: "h5",
+      component: "h2"
+    }, walletName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13__["default"], {
+      variant: "body2",
+      color: "textSecondary",
+      component: "p"
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_9__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_12__["default"], {
+      size: "small",
+      color: "primary"
+    }, "Edit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_12__["default"], {
+      size: "small",
+      color: "secondary"
+    }, "Delete")))));
+
+    if (i % 4 == 0) {
+      rows.push(renderRows(items, key));
+      items = [];
+    } else if (i == data.length) {
+      //add empty placeholder for spaces
+      console.log(items.length);
+      rows.push(renderRows(items, key));
+    }
+  }
+
+  return rows;
+};
+
+var Wallets = function Wallets(props) {
+  var classes = useStyles();
+  var loggedUserId = props.loggedUserId;
+  var isServiceValid = false;
+  var history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useHistory"])();
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
+      _useState2 = _slicedToArray(_useState, 2),
+      myWallets = _useState2[0],
+      setMyWallets = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      flash = _useState4[0],
+      setFlash = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('success'),
+      _useState6 = _slicedToArray(_useState5, 2),
+      severity = _useState6[0],
+      setSeverity = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
+      _useState8 = _slicedToArray(_useState7, 2),
+      flashMessage = _useState8[0],
+      setFlashMessage = _useState8[1];
+
+  var showFlashMessage = function showFlashMessage(show, severity, flashMessage, callback) {
+    setFlash(show);
+    setSeverity(severity);
+    setFlashMessage(flashMessage);
+    setTimeout(function () {
+      setFlash(false);
+      callback();
+    }, 3500);
+  };
+
+  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
+    _helpers_services_ApiService__WEBPACK_IMPORTED_MODULE_21__["default"].getWalletsByUser(loggedUserId).then(function (response) {
+      isServiceValid = _helpers_services_ApiService__WEBPACK_IMPORTED_MODULE_21__["default"].validateServiceResponse(response);
+
+      if (isServiceValid) {
+        setMyWallets(renderCards(response.data));
+      } else {
+        showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', function () {
+          Object(_helpers_HandleLogout__WEBPACK_IMPORTED_MODULE_22__["HandleLogout"])();
+          history.push({
+            pathname: '/login'
+          });
+        });
+      }
+
+      console.log(isServiceValid);
+    })["catch"](function (error) {
+      showFlashMessage(true, 'error', 'Error on fetching wallets. ' + error);
+    });
+  }, []);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_partials_FadeFlash__WEBPACK_IMPORTED_MODULE_20__["default"], {
+    isFlash: flash,
+    severity: severity,
+    message: flashMessage
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-    htmlFor: "Category"
-  }, "Category"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-    type: "text",
-    className: "form-control",
-    id: "category",
-    name: "category",
-    placeholder: "Category",
-    value: '',
-    onChange: ''
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-    type: "hidden",
-    name: "user_id",
-    value: ''
+    className: "col"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Wallets")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col",
+    align: "right"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    variant: "contained",
+    color: "primary",
+    className: classes.button,
+    startIcon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_icons_Add__WEBPACK_IMPORTED_MODULE_16___default.a, null),
+    href: window.config.baseUrl + 'wallets/add'
+  }, "Add Wallet"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "line"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    onLoad: ''
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    type: "submit",
-    className: "btn btn-info btn-submit ladda-button",
-    "data-style": "expand-left"
-  }, "Add Category")))))));
+    className: "container",
+    key: "key-container",
+    style: styles.container
+  }, myWallets));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Wallet);
-/*class Wallet extends React.Component {
-
-  constructor (props) {
-
-    super(props)
-    this.state = {
-      categories: [],
-      category: '',
-      accountType: 'asset',
-      loading: false,
-      flash: false,
-      flashHandle: false,
-      severity: 'success',
-      flashMessage: '',
-      isLogged: props.isLogged,
-      loggedUserId: props.loggedUserId,
-      redirect: false
-    }
-        
-    // bind
-    this.handleLoad = this.handleLoad.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onOptionChange = this.onOptionChange.bind(this);
-    this.runAfterRender = this.runAfterRender.bind(this);
-
-    window.addEventListener('load', this.handleLoad);
-  }
-
-    clearFields() {
-      this.setState({ category: ''});
-      this.setState({ accountType: 'asset'});
-    }
-
-    onOptionChange(e) {
-      this.setState({
-        accountType: e.target.value
-      });
-    }
-
-    handleChange(e) {
-      this.setState({
-        [e.target.name]: e.target.value
-      });
-    }
-
-    handleSubmit(e) {
-      e.preventDefault();
-      
-      let _btn = this.ladda;
-      let _this = this;
-      let severity = 'success';
-      let flashMessage = '';
-
-      const data = {
-        'category': this.state.category,
-        'account_type': this.state.accountType,
-        'user_id': this.state.loggedUserId
-      };
-
-      this.ladda.start();
-      
-      const token = localStorage.getItem('access_token');
-      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
-      axiosInstance.post('/api/categories/', {data},{
-        params: {
-          token: token
-        },
-        headers: { 
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        }
-      })
-      .then(function (response) {
-
-        if (response.data.action == 'JWT_FAIL_TOKEN_INVALID' || response.data.action == 'JWT_FAIL_TOKEN_EXPIRED') {
-
-          HandleLogout();
-          _this.setState({redirect: true});
-
-          return false;
-        } else if (response.data.action == 'JWT_FAIL_TOKEN_MISSING') {
-          severity = 'error';
-          flashMessage = 'You are unauthorized to add a category. We will log you out and try signing in again.';
-                    
-          HandleLogout();
-          _this.setState({redirect: true});
-        } else {
-          severity = 'success';
-          flashMessage = 'Category has been successfully added.';
-        }
-
-        _this.setState({ flash: true});
-        _this.setState({ severity: severity});
-        _this.setState({ flashMessage: flashMessage});
-
-        _this.flashHandle = setTimeout(() => {
-          _this.setState({ flash: false});
-        }, 3500);
-
-        _btn.stop();
-        _this.clearFields();
-      })
-      .catch(function (error) {
-        _btn.stop();
-          console.log(error);
-          _this.clearFields();
-      });
-    }
-
-  handleLoad(e) {
-  }
-
-  componentDidMount() {
-    
-    this.ladda = Ladda.create(document.querySelector('.btn-submit'));
-
-    //const userId = this.state.loggedUserId;
-
-    //console.log('from componentDidMount@AddCategory.js ' + userId); 
-  }
-
-  componentWillUnmount() {
-
-    clearTimeout(this.flashHandle);
-
-  }
-
-  runAfterRender() {
-    console.log('rendered!');
-  }
-
-  render() {
-    //const [flash, setFlash] = useState(null);
-
-    return (
-      <div>
-        {this.state.redirect ? (
-        <Fragment>
-          <Redirect to='/login' />  
-        </Fragment>
-        ): null }
-
-        {
-          <Fade in={this.state.flash} timeout={{ enter: 300, exit: 1000 }}>
-          <Alert style={styles.alert} onClose={() => {}} severity={this.state.severity}>{this.state.flashMessage}</Alert>
-          </Fade>
-        }
-
-        <h2>Wallet</h2>
-        
-        <div className="form-container">
-          <div className="row">
-            <div className="col-4">
-
-              <form onSubmit={this.handleSubmit}>
-            
-                <div className="form-group">
-                  <label htmlFor="Category">Category</label>
-                  <input type="text" className="form-control" id="category" name="category" placeholder="Category" value={this.state.category} 
-                  onChange={this.handleChange}  />
-                </div>
-
-                <div className="form-group">
-                  <label>Account Type</label>
-                  <div className="custom-control custom-radio">
-                      <input type="radio" id="asset" name="account_type" value="asset" className="custom-control-input" 
-                      checked={this.state.accountType === 'asset'} 
-                      onChange={this.onOptionChange} />
-                      <label className="custom-control-label" htmlFor="asset">Asset</label>
-                  </div>
-                  <div className="custom-control custom-radio">
-                      <input type="radio" id="liability" name="account_type" value="liability" className="custom-control-input" 
-                      checked={this.state.accountType === 'liability'} 
-                      onChange={this.onOptionChange} />
-                      <label className="custom-control-label" htmlFor="liability">Liability</label>
-                  </div>
-                </div>
-
-                <input type="hidden" name="user_id" value={this.state.loggedUserId}/>
-                <div onLoad={this.runAfterRender}>
-                  <button type="submit" className="btn btn-info btn-submit ladda-button" data-style="expand-left">Add Category</button>
-                </div>
-              </form>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-    )}
-}
-
-export default Wallet;
-*/
+/* harmony default export */ __webpack_exports__["default"] = (Wallets);
 
 /***/ }),
 
@@ -103931,6 +104336,43 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/helpers/DynamicDropdown.js":
+/*!************************************************************!*\
+  !*** ./resources/js/components/helpers/DynamicDropdown.js ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var DynamicDropdown = function DynamicDropdown(_ref) {
+  var data = _ref.data,
+      optionKey = _ref.optionKey,
+      optionValue = _ref.optionValue;
+  var items = [];
+  var itemName = '';
+  var key = '';
+
+  for (var item in data) {
+    itemName = data[item][optionValue];
+    key = data[item][optionKey];
+    items.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: key,
+      value: key
+    }, itemName));
+  }
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, items);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (DynamicDropdown);
+
+/***/ }),
+
 /***/ "./resources/js/components/helpers/HandleLogout.js":
 /*!*********************************************************!*\
   !*** ./resources/js/components/helpers/HandleLogout.js ***!
@@ -103942,11 +104384,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HandleLogout", function() { return HandleLogout; });
 function HandleLogout() {
-  //console.log('HandleLogout called!');
   localStorage.removeItem("access_token");
   localStorage.removeItem("expires_in");
   localStorage.removeItem("user_id");
   localStorage.removeItem("first_name");
+  localStorage.removeItem("user");
 }
 
 /***/ }),
@@ -104001,6 +104443,116 @@ var PrivateRoute = function PrivateRoute(_ref) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (PrivateRoute);
+
+/***/ }),
+
+/***/ "./resources/js/components/helpers/services/ApiService.js":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/helpers/services/ApiService.js ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _auth_header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth-header */ "./resources/js/components/helpers/services/auth-header.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+  baseURL: window.config.baseUrl,
+  headers: {
+    "Access-Control-Allow-Origin": "*"
+  }
+});
+axiosInstance.defaults.headers.common['Authorization'] = Object(_auth_header__WEBPACK_IMPORTED_MODULE_1__["default"])();
+axiosInstance.defaults.headers = {
+  'Cache-Control': 'no-cache',
+  'Pragma': 'no-cache'
+};
+
+var ApiService = /*#__PURE__*/function () {
+  function ApiService() {
+    _classCallCheck(this, ApiService);
+  }
+
+  _createClass(ApiService, [{
+    key: "getToken",
+    value: function getToken() {
+      return localStorage.getItem('access_token');
+    }
+  }, {
+    key: "getCurrencies",
+    value: function getCurrencies() {
+      return axiosInstance.get('/api/currencies', {
+        params: {
+          token: this.getToken()
+        }
+      });
+    }
+  }, {
+    key: "postWallet",
+    value: function postWallet(data) {
+      return axiosInstance.post('/api/wallets', {
+        data: data
+      }, {
+        params: {
+          token: this.getToken()
+        }
+      });
+    }
+  }, {
+    key: "getWalletsByUser",
+    value: function getWalletsByUser(userId) {
+      return axiosInstance.get('/api/wallets/' + userId, {
+        params: {
+          token: this.getToken(),
+          uncacher: Date.now()
+        }
+      });
+    }
+  }, {
+    key: "validateServiceResponse",
+    value: function validateServiceResponse(response) {
+      var isValid = false;
+      isValid = response.data.isUnauthorized && response.data.isUnauthorized ? false : true;
+      return isValid;
+    }
+  }]);
+
+  return ApiService;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (new ApiService());
+
+/***/ }),
+
+/***/ "./resources/js/components/helpers/services/auth-header.js":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/helpers/services/auth-header.js ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return authHeader; });
+function authHeader() {
+  var token = localStorage.getItem('access_token');
+
+  if (token) {
+    return "Bearer ".concat(token);
+  } else {
+    return {};
+  }
+}
 
 /***/ }),
 
@@ -104194,6 +104746,54 @@ var AuthLayout = function AuthLayout(_ref) {
 
 /***/ }),
 
+/***/ "./resources/js/components/partials/FadeFlash.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/partials/FadeFlash.js ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Fade */ "./node_modules/@material-ui/core/esm/Fade/index.js");
+/* harmony import */ var _material_ui_lab_Alert__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/lab/Alert */ "./node_modules/@material-ui/lab/esm/Alert/index.js");
+
+
+
+var styles = {
+  alert: {
+    left: '0',
+    pointerEvents: 'none',
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: '1500'
+  }
+};
+
+var FadeFlash = function FadeFlash(_ref) {
+  var isFlash = _ref.isFlash,
+      severity = _ref.severity,
+      message = _ref.message;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Fade__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    "in": isFlash,
+    timeout: {
+      enter: 300,
+      exit: 1000
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_lab_Alert__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    style: styles.alert,
+    onClose: function onClose() {},
+    severity: severity
+  }, message)));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (FadeFlash);
+
+/***/ }),
+
 /***/ "./resources/js/components/partials/Header.js":
 /*!****************************************************!*\
   !*** ./resources/js/components/partials/Header.js ***!
@@ -104257,11 +104857,21 @@ var Header = /*#__PURE__*/function (_React$Component) {
       var networthClass = location.pathname.match(/^\/net-worth/) ? "active" : "";
       var categoriesClass = location.pathname.match(/^\/categories/) ? "active" : "";
       var isLoggedIn = localStorage.getItem('access_token') ? true : false;
+
+      var handleOnClick = function handleOnClick(e) {
+        e.preventDefault();
+        var sidebar = document.querySelector('#sidebar');
+        var content = document.querySelector('#content');
+        sidebar.classList.toggle('active');
+        content.classList.toggle('active');
+      };
+
       return !isLoggedIn ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
         className: "navbar navbar-expand-lg navbar-light bg-light"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: handleOnClick,
         type: "button",
         id: "sidebarCollapse",
         className: "btn btn-info"
@@ -104293,19 +104903,6 @@ var Header = /*#__PURE__*/function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router__WEBPACK_IMPORTED_MODULE_3__["withRouter"])(Header));
-/*function Sidebar() {
-
-  const { location } = this.props;
-
-  const dashboardClass = location.pathname === "/" ? "active" : "";
-  const networthClass = location.pathname.match(/^\/net-worth/) ? "active" : "";
-  const contactClass = location.pathname.match(/^\/contact/) ? "active" : "";
-  
-
-
-   
-}*/
-//export default Sidebar;
 
 /***/ }),
 
@@ -104413,9 +105010,9 @@ var Sidebar = /*#__PURE__*/function (_React$Component) {
       }, "Dashboard")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         className: networthClass
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-        to: "/wallet",
+        to: "/wallets",
         "aria-expanded": "false"
-      }, "Wallet")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      }, "Wallets")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         className: networthClass
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: "/net-worth",

@@ -225,3 +225,19 @@ a.article:hover {
 }
 
 .content-full {width: 100% !important; padding:0 !important;}
+
+.ico-wallet {
+    width: 100px;
+    height: 100px;
+    margin:0 auto;
+    margin-top: 25px;
+}
+
+.MuiCardContent-root h2 {
+    text-align: center;
+    display: block;
+}
+
+.MuiButton-containedPrimary:hover {
+    color:#fff;
+}

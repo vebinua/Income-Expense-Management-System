@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { Fragment,useEffect,useState } from 'react';
-import { Redirect } from "react-router-dom";
+import { useHistory, Redirect } from 'react-router-dom';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -58,13 +59,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Login = () => {
+const Login = (props) => {
   const classes = useStyles();
 
   const [showProgressIndicator, setShowProgressIndicator] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState(""); 
+  const [password, setPassword] = useState("");
+
+  let isLogged = props.isLogged;
+  let loggedUserId = props.loggedUserId;
+
+  let history = useHistory(); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -105,7 +111,9 @@ const Login = () => {
         localStorage.setItem("user_id", user_id);
         localStorage.setItem("first_name", first_name);
         localStorage.setItem("user", user);
-        setRedirect(true);
+        // setRedirect(true);
+        history.push({pathname: '/'});
+      
       }
 
     })
@@ -119,12 +127,7 @@ const Login = () => {
 
   return (
     <div>
-      {redirect ? (
-        <Fragment>
-          <Redirect to='/' />  
-        </Fragment>
-       ): null }
-
+      
       <div className={classes.progressIndicatorWrapper}>
         { showProgressIndicator ?
         <div className={classes.progressIndicator}>

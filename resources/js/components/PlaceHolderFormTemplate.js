@@ -1,102 +1,149 @@
-/*barebone template for rapid development (please remove on prod)*/
 import axios from 'axios';
-import React, { useEffect, useState, Fragment } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useEffect, useState, useRef, Fragment } from 'react';
+import { useHistory, Redirect } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 
 import * as Ladda from 'ladda';
-import Alert from '@material-ui/lab/Alert';
-import Fade from '@material-ui/core/Fade';
 
-// import the ladda theme directly from the ladda package.
 import 'ladda/dist/ladda-themeless.min.css';
+
+import FadeFlash from './partials/FadeFlash';
+import ApiService from "./helpers/services/ApiService";
+import DynamicDropdown from './helpers/DynamicDropdown';
 import { HandleLogout } from './helpers/HandleLogout';
 
-export const axiosInstance = axios.create({
-  baseURL: window.config.baseUrl
-});
+const AddWallet = (props) => {
 
-const styles = {
-  alert: {
-    left: '0',
-    pointerEvents: 'none',
-    position: 'fixed',
-    top: 0,
-    width: '100%',
-    zIndex: '1500',
-  }
-};
+	let loggedUserId = props.loggedUserId;
+	let isServiceValid = false;
+	let optionItems = false;
+	let history = useHistory();
+	
+	const [flash, setFlash] = useState(false);
+	const [shouldRedirect, setShouldRedirect] = useState(false);
+	const [severity, setSeverity] = useState('success');
+	const [flashMessage, setFlashMessage] = useState('');
+	const [currencyOptions, setCurrencyOptions] = useState('');
+	const ladda = useRef(false);
 
-const AddWallet = () => {
+	let [wallet, setWallet] = useState({
+		wallet_name: '',
+		initial_balance: '',
+		currency_id: '',
+		user_id: loggedUserId
+	});
 
-   let ladda = null; 
+	let handleSubmit = (e) => {
+		e.preventDefault();
 
-   let [wallet, setWallet] = useState({
-      wallet_name: '',
-      initial_balance: '',
-      currency_id: ''
-   });
+		ladda.current.start();
 
-   let handleSubmit = (e) => {
-      e.preventDefault();
+		ApiService.postWallet(wallet)
+		.then(response => {
+			
+			isServiceValid = ApiService.validateServiceResponse(response);
+			
+			if (isServiceValid) {
+				history.push({pathname: '/wallets'});
+			} else {
+				showFlashMessage(true, 'error', 'Your session may have already expired, please login again.');
+				HandleLogout();
+				history.push({pathname: '/login'});
+			}
 
-      ladda.start();
-   }   
+			ladda.current.stop();
+			console.log(isServiceValid);
+		})
+		.catch((error) => {
+			showFlashMessage(true, 'error', 'Error on saving wallet. ' + error);
+			ladda.current.stop();
+		})
+	}   
 
-   let handleChange = (e) => {
-      let name = e.target.name;
-      let value = e.target.value;
+	let handleChange = (e) => {
+		let name = e.target.name;
+		let value = e.target.value;
 
-      wallet[name] = value;
-      setWallet(wallet);   
-   }
+		wallet[name] = value;
+		setWallet(wallet);   
+	}
 
-   React.useEffect(() => {
-      ladda = Ladda.create(document.querySelector('.ladda-button'));
-   }, []);
+	let showFlashMessage = (show, severity, flashMessage) => {
+		setFlash(show);
+		setSeverity(severity);
+		setFlashMessage(flashMessage);
 
-   return(
-      <div>
-         <h2>Add wallet</h2>
+		setTimeout(() => {
+    	setFlash(false);
+    }, 3500);	
+	}
 
-         <div className="form-container">
-           <div className="row">
-               <div className="col-4">
+	React.useEffect(() => {
+		ladda.current = Ladda.create(document.querySelector('.btn-submit'));
+		
+		ApiService.getCurrencies()
+		.then(response => {
+			
+			isServiceValid = ApiService.validateServiceResponse(response);
+			
+			if (isServiceValid) {
+				setCurrencyOptions(response.data);
+			} else {
+				showFlashMessage(true, 'error', 'Your session may have already expired, please login again.');
+				HandleLogout();
+				history.push({pathname: '/login'});
+			}
+			console.log(isServiceValid);
+		})
+		.catch((error) => {
+			showFlashMessage(true, 'error', 'Error on fetching currency listings. ' + error);
+		})
+	}, []);
 
-                  <form onSubmit={handleSubmit}>
-                
-                    <div className="form-group">
-                      <label htmlFor="wallet_name">Wallet name</label>
-                      <input type="text" className="form-control" id="wallet_name" name="wallet_name" 
-                      placeholder="" onChange={handleChange} />
-                    </div>
+	return(
+			<div>
+				<FadeFlash isFlash={flash} severity={severity} message={flashMessage}/>
 
-                    <div className="form-row">
-                      <div className="form-group col-md-6">
-                        <label htmlFor="initial_balance">Initial balance</label>
-                        <input type="email" className="form-control" id="initial_balance" name="initial_balance" 
-                        placeholder="" onChange={handleChange} />
-                      </div>
-                      <div className="form-group col-md-6">
-                        <label htmlFor="currency_id">Currency</label>
-                        <select id="currency_id" name="currency_id" className="form-control" onChange={handleChange} defaultValue="b">
-                          <option value="a">Select currency...</option>
-                          <option value="b">...</option>
-                        </select>
-                      </div>
-                    </div>
+				<h2>Add wallet</h2>
 
-                    <input type="hidden" name="user_id" value={''}/>
-                    <div>
-                      <button type="submit" className="btn btn-info btn-submit ladda-button" data-style="expand-left">Save</button>
-                    </div>
-                  </form>
+				 <div className="form-container">
+					 <div className="row">
+							 <div className="col-4">
 
-               </div>
-           </div>
-         </div>
-      </div>
-   );
+									<form onSubmit={handleSubmit}>
+								
+										<div className="form-group">
+											<label htmlFor="wallet_name">Wallet name</label>
+											<input type="text" className="form-control" id="wallet_name" name="wallet_name" 
+											placeholder="" onChange={handleChange} />
+										</div>
+
+										<div className="form-row">
+											<div className="form-group col-md-6">
+												<label htmlFor="initial_balance">Initial balance</label>
+												<input type="text" className="form-control" id="initial_balance" name="initial_balance" 
+												placeholder="" onChange={handleChange} />
+											</div>
+											<div className="form-group col-md-6">
+												<label htmlFor="currency_id">Currency</label>
+												<select id="currency_id" name="currency_id" className="form-control" onChange={handleChange} defaultValue="-">
+													<option value="-">Select currency...</option>
+													<DynamicDropdown data={currencyOptions} optionKey={'currency_id'} optionValue={'currency_symbol'} />
+												</select>
+											</div>
+										</div>
+
+										<input type="hidden" name="user_id" value={''}/>
+										<div>
+											<button type="submit" className="btn btn-info btn-submit ladda-button" data-style="expand-left">Save</button>
+										</div>
+									</form>
+
+							 </div>
+					 </div>
+				 </div>
+			</div>
+	 );
 }
 
 export default AddWallet;
