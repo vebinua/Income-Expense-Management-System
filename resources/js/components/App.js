@@ -58,7 +58,7 @@ class App extends Component {
                     <PrivateRoute path={"/category/add-category"} component={AddCategory} />
                     <PrivateRoute path={"/category/:id/edit"} component={EditCategory} />
                     <PrivateRoute path={"/wallets/add"} component={AddWallet} />
-                     <PrivateRoute path={"/wallets"} component={Wallets} />
+                    <PrivateRoute path={"/wallets"} component={Wallets} />
                   </Switch>
                </AuthLayout>
             </Route>

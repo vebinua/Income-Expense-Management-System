@@ -241,3 +241,14 @@ a.article:hover {
 .MuiButton-containedPrimary:hover {
     color:#fff;
 }
+.MuiCircularProgress-colorSecondary {
+    top:40%;
+    left:40%;
+    position: absolute;
+}
+.aiWrapper {
+    display: none;
+}
+.card-wallet .MuiTypography-colorTextSecondary {
+    text-align: center;
+}
