@@ -193,7 +193,6 @@ export function AlertDialog(props) {
 	);
 }
 
-
 const EnhancedCategories = ({ rows, handler, loggedUserId }) => {
 
 	console.log('loggedUserId from EC: ' + loggedUserId);
@@ -209,13 +208,10 @@ const EnhancedCategories = ({ rows, handler, loggedUserId }) => {
 	const [showProgressIndicator, setShowProgressIndicator] = React.useState(false);
 	const [selectedRows, setSelectedRows] = React.useState([]);
 	const [deletedRows, setDeletedRows] = React.useState([]);
-	//const [rows, setRows] = React.useState(rows);
 	const [items, setItems] = React.useState(rows);
 	const [flash, setFlash] = React.useState(false);
 	const [severity, setSeverity] = React.useState("success");
 	const [flashMessage, setFlashMessage] = React.useState("");
-
- // setItems(rows);
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -476,7 +472,6 @@ const styles = {
 	}
 };
 
-	
 
 class ViewCategory extends React.Component {
 
@@ -496,8 +491,6 @@ class ViewCategory extends React.Component {
 			isLogged: props.isLogged,
 			loggedUserId: props.loggedUserId
 		}
-
-		//this.handler = this.handler.bind(this);
 	}
 
 	handler = (prop) => {
@@ -554,7 +547,9 @@ class ViewCategory extends React.Component {
 				}
 
 				<h2>Category Listings</h2>
-						
+				
+				<div className="line"></div>
+
 				{<EnhancedCategories rows={categories} handler={this.handler} loggedUserId={this.state.loggedUserId} />}
 			 
 			</div>

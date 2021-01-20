@@ -37,19 +37,11 @@ class Sidebar extends React.Component {
                 <li className={networthClass}>
                   <Link to="/wallets" aria-expanded="false">Wallets</Link>
                 </li>
+                <li>
+                  <Link to="/transactions" aria-expanded="false">Transactions</Link>
+                </li>
                 <li className={networthClass}>
                   <Link to="/net-worth" aria-expanded="false">Net Worth</Link>
-                </li>
-                <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Transactions</a>
-                    <ul className="collapse list-unstyled" id="pageSubmenu">
-                        <li>
-                            <a href="#">Add Income</a>
-                        </li>
-                        <li>
-                            <a href="#">Add Expense</a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
                     <a href="#pageAssets" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Assets</a>

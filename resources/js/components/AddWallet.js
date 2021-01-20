@@ -106,7 +106,9 @@ const AddWallet = (props) => {
 
 				<h2>Add wallet</h2>
 
-				 <div className="form-container">
+				<div className="line"></div>
+
+				<div className="form-container">
 					 <div className="row">
 							 <div className="col-4">
 

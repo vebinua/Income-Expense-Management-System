@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
+import renderHTML from 'react-render-html';
 import ReactDOM from 'react-dom';
 
 import * as Ladda from 'ladda';
@@ -29,6 +30,7 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NumberFormat from 'react-number-format';
 
+import AlertNotify from './partials/AlertNotify';
 import FadeFlash from './partials/FadeFlash';
 import ApiService from "./helpers/services/ApiService";
 import { HandleLogout } from './helpers/HandleLogout';
@@ -112,7 +114,7 @@ const renderCards = (data, deleteCallback) => {
               {walletName}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              <NumberFormat value={initialBalance} displayType={'text'} thousandSeparator={true} prefix={'$₱'} fixedDecimalScale={true} decimalScale={2} />
+              <NumberFormat value={initialBalance} displayType={'text'} thousandSeparator={true} prefix={'₱'} fixedDecimalScale={true} decimalScale={2} />
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -200,6 +202,8 @@ const Wallets = (props) => {
   const [alert, setAlert] = React.useState(false);
   const [showProgressIndicator, setShowProgressIndicator] = React.useState(true);  
   const [itemId, setItemId] = React.useState(0);
+  const [alertNotifyMessage, setAlertNotifyMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
   
 
   let showFlashMessage = (show, severity, flashMessage, callback) => {
@@ -262,6 +266,12 @@ const Wallets = (props) => {
           setItemId(itemId);
         }));
 
+        if (response.data.length == 0) {
+          let msg = renderHTML("No wallets found. You must have a wallet to make a transaction. Would you like to <a href='"+window.config.baseUrl+"wallets/add'>add wallet</a> now?");
+          setAlertNotifyMessage(msg);
+          setShowAlert(true);
+        }
+
       } else {
         showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
           HandleLogout();
@@ -301,6 +311,8 @@ const Wallets = (props) => {
       </div>
 
       <div className="line"></div>
+
+      <AlertNotify show={showAlert} message={alertNotifyMessage} />
 
       <div className="container" key="key-container" style={styles.container}>
         {myWallets}

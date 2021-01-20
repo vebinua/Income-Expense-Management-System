@@ -11,6 +11,8 @@ import EditCategory from './EditCategory';
 import AddSubcategory from './AddSubcategory';
 import Wallets from './Wallets';
 import AddWallet from './AddWallet';
+import Transactions from './Transactions';
+import AddTransaction from './AddTransaction';
 import Login from './Login';
 import SignUp from './SignUp';
 
@@ -34,7 +36,9 @@ class App extends Component {
       '/category/add-category',
       'category/:id/edit',
       '/wallets/add',
-      '/wallets'
+      '/wallets',
+      '/transactions',
+      '/transactions/add'
     ];
 
     return (
@@ -59,6 +63,8 @@ class App extends Component {
                     <PrivateRoute path={"/category/:id/edit"} component={EditCategory} />
                     <PrivateRoute path={"/wallets/add"} component={AddWallet} />
                     <PrivateRoute path={"/wallets"} component={Wallets} />
+                    <PrivateRoute path={"/transactions/add"} component={AddTransaction} />
+                    <PrivateRoute path={"/transactions"} component={Transactions} />
                   </Switch>
                </AuthLayout>
             </Route>
