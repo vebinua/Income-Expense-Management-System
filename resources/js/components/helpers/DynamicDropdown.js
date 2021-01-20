@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
 
-const DynamicDropdown = ({data, optionKey, optionValue}) => {
+const DynamicDropdown = ({data, optionKey, optionValue, defaultValueSelected, onChangeCallback}) => {
 
   let items = [];
   let itemName = '';
   let key = '';
+  let defaultValue = '';
+
+  defaultValue = 'PHP';
 
   for (var item in data) {
     itemName = data[item][optionValue];
@@ -14,9 +17,9 @@ const DynamicDropdown = ({data, optionKey, optionValue}) => {
   }
 
   return(
-    <Fragment>
+    <select id="currency_id" name="currency_id" className="form-control" onChange={onChangeCallback} defaultValue={defaultValueSelected}>
     {items}
-  </Fragment>
+    </select>
   )  
 }
 

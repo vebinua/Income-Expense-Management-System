@@ -21,8 +21,10 @@ class CreateTransactionsTable extends Migration
             $table->float('debit_amount', 10, 2);
             $table->timestamp('transaction_date');
             $table->text('note');
+            $table->enum('transaction_status',['pending','completed'])->default('completed');
             $table->integer('category_id')->unsigned();
             $table->integer('subcategory_id')->unsigned();
+            $table->integer('currency_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
 

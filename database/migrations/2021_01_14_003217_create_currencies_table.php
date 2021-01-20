@@ -19,6 +19,11 @@ class CreateCurrenciesTable extends Migration
             $table->string('currency_symbol', 10);
             $table->timestamps();
         });
+
+        DB::table('currencies')->insert([
+            ['currency_name' => 'Philippine Peso', 'currency_symbol' => 'PHP'],
+            ['currency_name' => 'United States Dollar', 'votes' => 'USD']
+        ]);
     }
 
     /**

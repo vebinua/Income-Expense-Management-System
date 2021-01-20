@@ -65,7 +65,7 @@ const AddWallet = (props) => {
 		let value = e.target.value;
 
 		wallet[name] = value;
-		setWallet(wallet);   
+		setWallet(wallet);
 	}
 
 	let showFlashMessage = (show, severity, flashMessage) => {
@@ -88,6 +88,7 @@ const AddWallet = (props) => {
 			
 			if (isServiceValid) {
 				setCurrencyOptions(response.data);
+				//document.querySelector('#currency_id').selectedIndex = 1;
 			} else {
 				showFlashMessage(true, 'error', 'Your session may have already expired, please login again.');
 				HandleLogout();
@@ -128,10 +129,8 @@ const AddWallet = (props) => {
 											</div>
 											<div className="form-group col-md-6">
 												<label htmlFor="currency_id">Currency</label>
-												<select id="currency_id" name="currency_id" className="form-control" onChange={handleChange} defaultValue="-">
-													<option value="-">Select currency...</option>
-													<DynamicDropdown data={currencyOptions} optionKey={'currency_id'} optionValue={'currency_symbol'} />
-												</select>
+													<DynamicDropdown data={currencyOptions} optionKey={'currency_id'} optionValue={'currency_symbol'} onChangeCallback={handleChange}
+													defaultValue="PHP" />
 											</div>
 										</div>
 

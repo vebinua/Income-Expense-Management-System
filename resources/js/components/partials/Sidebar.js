@@ -74,9 +74,6 @@ class Sidebar extends React.Component {
                         <li>
                             <Link to="/category/add-category" aria-expanded="false">Add Category</Link>
                         </li>
-                        <li>
-                            <Link to="/category/add-subcategory" aria-expanded="false">Add Subcategory</Link>
-                        </li>
                     </ul>
                 </li>
             </ul>

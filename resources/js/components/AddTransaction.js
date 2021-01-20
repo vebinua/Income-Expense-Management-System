@@ -93,12 +93,16 @@ const AddTransaction = (props) => {
       isServiceValid = ApiService.validateServiceResponse(response);
       
       if (isServiceValid) {
+
+      	console.log(response.data.length);
         
         if (response.data.length == 0) {
       		let msg = renderHTML("No wallets found. You must have a wallet to make a transaction. Would you like to <a href='"+window.config.baseUrl+"wallets/add'>add wallet</a> now?");
         	setAlertNotifyMessage(msg);
         	setShowAlert(true);
         	setHasWallet(false);
+        } else {
+        	setHasWallet(true);
         }
 
       } else {
@@ -135,10 +139,18 @@ const AddTransaction = (props) => {
 
 							<div className="form-group">
 								<label htmlFor="wallet_name">Wallet name</label>
-								<input type="text" className="form-control" id="wallet_name" name="wallet_name" 
-								placeholder="" onChange={handleChange} />
+								<select id="currency_id" name="currency_id" className="form-control" onChange={handleChange} defaultValue="-">
+									<option value="-">Select wallet...</option>
+									<DynamicDropdown data={currencyOptions} optionKey={'currency_id'} optionValue={'currency_symbol'} />
+								</select>
 							</div>
-
+							<div className="form-group">
+								<label htmlFor="wallet_name">Category</label>
+								<select id="currency_id" name="currency_id" className="form-control" onChange={handleChange} defaultValue="-">
+									<option value="-">Select category...</option>
+									<DynamicDropdown data={currencyOptions} optionKey={'currency_id'} optionValue={'currency_symbol'} />
+								</select>
+							</div>
 							<div className="form-row">
 								<div className="form-group col-md-6">
 									<label htmlFor="initial_balance">Initial balance</label>
