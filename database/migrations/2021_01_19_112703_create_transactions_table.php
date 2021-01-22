@@ -17,8 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->increments('transaction_id');
             $table->integer('wallet_id')->unsigned();
             $table->enum('transaction_type',['income','expense', 'adjustment', 'transfer'])->default('income');
-            $table->float('credit_amount', 10, 2);
-            $table->float('debit_amount', 10, 2);
+            $table->float('amount', 10, 2);
             $table->timestamp('transaction_date');
             $table->text('note');
             $table->enum('transaction_status',['pending','completed'])->default('completed');

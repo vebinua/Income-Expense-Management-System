@@ -316,3 +316,6 @@ a.article:hover {
 .alert a {
   text-decoration: underline;
 }
+button:focus {
+  outline: none !important;
+}

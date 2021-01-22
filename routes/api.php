@@ -34,6 +34,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
   Route::get('wallets/{id}', 'App\Http\Controllers\WalletController@showByUser');
   Route::post('wallets', 'App\Http\Controllers\WalletController@store');
   Route::delete('wallets/{id}', 'App\Http\Controllers\WalletController@destroy');
+
+  Route::post('transactions', 'App\Http\Controllers\TransactionController@store');
 });
 
 //Route::get('categories/{id}', 'App\Http\Controllers\CategoryController@show');

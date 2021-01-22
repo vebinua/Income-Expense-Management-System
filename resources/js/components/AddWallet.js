@@ -68,15 +68,16 @@ const AddWallet = (props) => {
 		setWallet(wallet);
 	}
 
-	let showFlashMessage = (show, severity, flashMessage) => {
-		setFlash(show);
-		setSeverity(severity);
-		setFlashMessage(flashMessage);
+	let showFlashMessage = (show, severity, flashMessage, callback) => {
+    setFlash(show);
+    setSeverity(severity);
+    setFlashMessage(flashMessage);
 
-		setTimeout(() => {
-    	setFlash(false);
-    }, 3500);	
-	}
+    setTimeout(() => {
+      setFlash(false);
+      callback();
+    }, 3500); 
+  }
 
 	React.useEffect(() => {
 		ladda.current = Ladda.create(document.querySelector('.btn-submit'));
@@ -88,12 +89,16 @@ const AddWallet = (props) => {
 			
 			if (isServiceValid) {
 				setCurrencyOptions(response.data);
-				//document.querySelector('#currency_id').selectedIndex = 1;
+				
+				//set first item from list as default value
+    		wallet['currency_id'] = response.data[0].currency_id;
+				setWallet(wallet);
 			} else {
-				showFlashMessage(true, 'error', 'Your session may have already expired, please login again.');
-				HandleLogout();
-				history.push({pathname: '/login'});
-			}
+				showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
+          HandleLogout();
+          history.push({pathname: '/login'});
+        });
+      }
 			console.log(isServiceValid);
 		})
 		.catch((error) => {
@@ -129,8 +134,11 @@ const AddWallet = (props) => {
 											</div>
 											<div className="form-group col-md-6">
 												<label htmlFor="currency_id">Currency</label>
-													<DynamicDropdown data={currencyOptions} optionKey={'currency_id'} optionValue={'currency_symbol'} onChangeCallback={handleChange}
-													defaultValue="PHP" />
+												<DynamicDropdown data={currencyOptions} 
+													optionKey={'currency_id'} 
+													optionValue={'currency_symbol'} 
+													defaultValueSelected="PHP" 
+													onChangeCallback={handleChange} />
 											</div>
 										</div>
 

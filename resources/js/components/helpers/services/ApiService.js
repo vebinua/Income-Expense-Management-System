@@ -29,9 +29,19 @@ class ApiService {
     return axiosInstance.post('/api/wallets', {data}, {params: { token: this.getToken() }});
   }
 
+  postTransaction(data) {
+    return axiosInstance.post('/api/transactions', {data}, {params: { token: this.getToken() }});
+  }
+
   getWalletsByUser(userId) {
     
     return axiosInstance.get('/api/wallets/'+userId, 
+      {params: { token: this.getToken(), uncacher: Date.now()}});
+  }
+
+  getCategoriesByUser(userId) {
+    
+    return axiosInstance.get('/api/categories/'+userId, 
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
 

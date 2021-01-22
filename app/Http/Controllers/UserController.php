@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 use JWTAuth;
+use DB;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
@@ -43,7 +44,16 @@ class UserController extends Controller
 			'email_address' => $data['email_address'],
 			'password' => Hash::make($data['password'])
 		]);
-	}
+
+  }
+
+  private function callDefaults($userId) {
+    //create default categories for user here
+    DB::table('categories')->insert([
+        ['category' => 'Bills & Utilities', 'account_type' => 'liability', 'user_id' => $userId],
+        ['category' => 'Salary', 'account_type' => 'asset', 'user_id' => $userId]
+    ]);
+  }
 
 	/**
 	 * Store a newly created resource in storage.
@@ -57,7 +67,11 @@ class UserController extends Controller
 
 		$res= $this->create($request->all());
 
-	  return response()->json(['status' => 'success', 'message' => 'Registration succesful!']);      
+    if ($res->user_id) {
+      $this->callDefaults($res->user_id);
+    }
+    
+    return response()->json(['status' => 'success', 'message' => 'Registration succesful!', 'userId' => $res->user_id]);      
 	}
 
 	/**

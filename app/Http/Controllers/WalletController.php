@@ -37,9 +37,9 @@ class WalletController extends Controller
 
 		try {
 
-		  		$wallets = Wallet::where('user_id', $id)->get();
+	  	$wallets = Wallet::where('user_id', $id)->get();
 
-		  		return $wallets;
+	  	return $wallets;
 		
 		} catch(ModelNotFoundException $e) {
 			return response()->json(['status' => 'fail', 'message' => $e]);   
