@@ -34,8 +34,12 @@ class ApiService {
   }
 
   getWalletsByUser(userId) {
-    
     return axiosInstance.get('/api/wallets/'+userId, 
+      {params: { token: this.getToken(), uncacher: Date.now()}});
+  }
+
+  getTransactionsByUser(userId) {
+    return axiosInstance.get('/api/transactions/'+userId, 
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
 

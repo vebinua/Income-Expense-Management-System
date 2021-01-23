@@ -68,10 +68,12 @@ class TransactionController extends Controller
             $transactionType = 'expense';
         }
 
+        //amount must be stored in cents so we could set the data type to integer
+
         Transaction::create([
             'wallet_id' => $request->data['wallet_id'],
             'transaction_type' => $transactionType,
-            'amount' => $request->data['amount'],
+            'amount' => $request->data['amount'] * 100,
             'transaction_date' => $transactionDate,
             'note' => $request->data['note'],
             'transaction_status' => $transactionStatus,
@@ -83,6 +85,26 @@ class TransactionController extends Controller
         
         return response()->json('  Added Successfully! ' . print_r($request->data));
     }   
+
+   public function showByUser($id)
+   { 
+
+      try {
+
+         $transactions = Transaction::
+         orderBy('transaction_date', 'desc')
+         ->join('categories', 'categories.category_id', '=', 'transactions.category_id')
+         ->leftJoin('subcategories', 'subcategories.subcategory_id', '=', 'transactions.subcategory_id')
+         ->select('transaction_id', 'wallet_id', 'transaction_date', 'categories.category_id', 'categories.category', 'amount', 'categories.account_type')
+         ->where('transactions.user_id', $id)->get();
+
+         return $transactions;
+        
+      } catch(ModelNotFoundException $e) {
+         return response()->json(['status' => 'fail', 'message' => $e]);   
+      }     
+   }
+
 
     /**
      * Display the specified resource.

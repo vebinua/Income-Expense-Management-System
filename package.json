@@ -37,6 +37,7 @@
         "date-fns": "^2.16.1",
         "ladda": "^2.0.1",
         "material-ui-icons": "^1.0.0-beta.36",
+        "moment": "^2.29.1",
         "react-html-parser": "^2.0.2",
         "react-ladda": "^6.0.0",
         "react-native": "^0.63.4",

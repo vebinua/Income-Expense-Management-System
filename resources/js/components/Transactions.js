@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useHistory, Redirect, Link } from 'react-router-dom';
+import renderHTML from 'react-render-html';
 import ReactDOM from 'react-dom';
 
 import * as Ladda from 'ladda';
@@ -28,10 +29,23 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NumberFormat from 'react-number-format';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import Paper from '@material-ui/core/Paper'
+import Slide from '@material-ui/core/Slide';
+import Avatar from '@material-ui/core/Avatar';
+import { deepOrange, deepPurple, lightGreen, teal, cyan } from '@material-ui/core/colors';
 
+import AlertNotify from './partials/AlertNotify';
 import FadeFlash from './partials/FadeFlash';
 import ApiService from "./helpers/services/ApiService";
 import { HandleLogout } from './helpers/HandleLogout';
+import Moment from 'moment';
 
 const handleAlertWarningClick = (e) => {
   e.preventDefault();
@@ -49,7 +63,8 @@ const styles = {
     zIndex: '1500',
   },
   container: {
-    float: 'left'
+    float: 'left',
+    maxWidth: '100%'
   },
   root: {
     maxWidth: 345
@@ -69,128 +84,34 @@ const useStyles = makeStyles((theme) => ({
   },
   progressIndicatorWrapper: {
     marginTop: theme.spacing(3)
+  },
+  root: {
+    width: '100%'
+  },
+  listItemText:{
+    fontSize:'1.5rem',//Insert your required size
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+  },
+  purple: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: deepPurple[500],
+  },
+  lightGreen: {
+    color: theme.palette.getContrastText(lightGreen[500]),
+    backgroundColor: lightGreen[500],
+  },
+  teal: {
+    color: theme.palette.getContrastText(teal[500]),
+    backgroundColor: teal[500],
+  },
+  cyan: {
+    color: theme.palette.getContrastText(cyan[500]),
+    backgroundColor: cyan[500],
   }
 }));
-
-const renderRows = (items, key) => {
-  return (
-    <div className="row mb-4" key={'row-'+key}>
-      {items}
-    </div>
-  );
-}
-
-const renderCards = (data, deleteCallback) => {
-
-  function handleDeleteCallback(event) {
-
-    deleteCallback(event.currentTarget.dataset.id);
-
-  }  
-
-  let index = 0;
-  let key = 0;
-  let walletId = 0;
-  let initialBalance = 0;
-  let walletName = ''; 
-  let card = '';
-  var rows = [];
-  var items = [];
-
-  for (let i=1; i<=data.length; i++) {
-    key = key + 1;
-    index = i - 1;
-    walletId = data[index].wallet_id;
-    walletName = data[index].wallet_name;
-    initialBalance = data[index].initial_balance;
-    
-    items.push(
-      <div className="col col-3 card-wallet" id={'card-'+walletId} key={'key-'+key}>
-        <Card styles={styles.root}>
-        <CardActionArea>
-          <CardMedia className="ico-wallet"
-            styles={styles.media}
-            image={window.config.baseUrl+"images/ico_wallet.svg"}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {walletName}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              <NumberFormat value={initialBalance} displayType={'text'} thousandSeparator={true} prefix={'₱'} fixedDecimalScale={true} decimalScale={2} />
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          <Button size="small" color="primary">
-            Edit
-          </Button>
-          <Button size="small" color="secondary" data-id={walletId}
-          onClick={handleDeleteCallback}>
-            Delete
-          </Button>
-        </CardActions>
-        <div className="aiWrapper">
-          <CircularProgress color="secondary" />
-        </div>
-        </Card>
-      </div>
-    );
-    
-    if (i % 4 == 0) {
-      rows.push(renderRows(items, key));
-      items = [];
-    } else if (i == data.length) {
-      //add empty placeholder for spaces
-      console.log(items.length);
-      rows.push(renderRows(items, key));
-    }    
-  }
-
-  return rows;
-}
-
-export function AlertDialog({isOpen, itemId, onAlertConfirm, onAlertCancel}) {
-  
-  function handleAlertConfirm(event) {
-    let action = event.currentTarget.dataset.action;
-    let itemId = event.currentTarget.dataset.id;
-
-    onAlertConfirm(itemId, action); 
-  }
-
-  function handleAlertClose(event) {
-    onAlertCancel();
-  }
-
-  return (
-    <div>
-      <Dialog
-        open={isOpen}
-        onClose={handleAlertClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Delete Wallet"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete the selected wallet? All transactions with this wallet will be deleted as well.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleAlertClose} data-action="cancel" color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleAlertConfirm} data-action="confirm" data-id={itemId} color="primary" autoFocus>
-            Yes, Delete wallet
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-}
-
 
 const Transactions = (props) => {
   const classes = useStyles();
@@ -199,15 +120,16 @@ const Transactions = (props) => {
   let isServiceValid = false;
   let history = useHistory();
 
-  const [myWallets, setMyWallets] = useState('');
+  const [myTransactions, setMyTransactions] = useState('');
   const [severity, setSeverity] = useState('success');
   const [flashMessage, setFlashMessage] = useState('');
   const [flash, setFlash] = useState(false);
   const [alert, setAlert] = React.useState(false);
   const [showProgressIndicator, setShowProgressIndicator] = React.useState(true);  
   const [itemId, setItemId] = React.useState(0);
+  const [alertNotifyMessage, setAlertNotifyMessage] = useState('');
+  const [showNotify, setShowNotify] = useState(false);
   
-
   let showFlashMessage = (show, severity, flashMessage, callback) => {
     setFlash(show);
     setSeverity(severity);
@@ -219,42 +141,6 @@ const Transactions = (props) => {
     }, 3500); 
   }
 
-  function handleAlertCancel() {
-    setAlert(false);
-  }
-
-  function handleAlertConfirm(itemId, action) {
-    setAlert(false);
-
-    if (action == 'confirm') {
-
-      document.querySelector("#card-"+itemId+" .aiWrapper").style.display = 'block';
-      document.querySelector("#card-"+itemId+" .MuiButtonBase-root").style.opacity = '.25';
-
-      ApiService.deleteWallet(itemId, loggedUserId)
-      .then(response => {
-      
-        isServiceValid = ApiService.validateServiceResponse(response);
-      
-        if (isServiceValid) {
-          document.querySelector("#card-"+itemId+" .aiWrapper").style.display = 'none';
-          document.querySelector("#card-"+itemId+" .MuiButtonBase-root").style.opacity = '1';
-          fetchWallets();
-        } else {
-          showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
-            HandleLogout();
-            history.push({pathname: '/login'});
-          });
-        }
-      })
-      .catch((error) => {
-        showFlashMessage(true, 'error', 'Error on deleting wallets. ' + error, null);
-      })
-    }
-    
-    console.log('from handle child click item id: ' + itemId + ' action: ' + action);
-  }
-
   function fetchWallets() {
 
     ApiService.getWalletsByUser(loggedUserId)
@@ -263,11 +149,94 @@ const Transactions = (props) => {
       isServiceValid = ApiService.validateServiceResponse(response);
       
       if (isServiceValid) {
-        setMyWallets(renderCards(response.data, (itemId, action) => {
-          setAlert(true);
-          setItemId(itemId);
-        }));
+        //setItemId(itemId);
+       
+      } else {
+        showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
+          HandleLogout();
+          history.push({pathname: '/login'});
+        });
+      }
+    })
+    .catch((error) => {
+      showFlashMessage(true, 'error', 'Error on fetching wallets. ' + error, null);
+    })
+  }
 
+  function formatAmount(amount) {
+    let res = false;
+    let amountString = String(amount/100);
+    
+    res = amountString.split('.');
+
+    if (res.length == 1) {
+      //append 0
+      amountString += '.00';
+    }
+
+    return amountString;
+  }
+
+  const renderTransactions = (data) => {
+
+    let trans = [];
+    let transactionAmountClass = false;
+    let transactionAmount = 0;
+
+    const transactionLists = data.map(transaction =>
+      <Fragment key={'fragment-'+transaction.transaction_id}> 
+      <ListItem
+        button
+        selected={selectedIndex === 0}
+        onClick={(event) => handleListItemClick(event, 0)}
+        disableRipple
+        key={'listItem-'+transaction.transaction_id}
+        data-transaction-id={transaction.transaction_id}
+      >
+        <ListItemIcon>
+          <Avatar className={classes.purple}>NA</Avatar>
+        </ListItemIcon>
+        <ListItemText className={classes.listItemText} primary={
+          <React.Fragment>
+            <Typography
+              component="span"
+              variant="body2"
+              className="transactionDate"
+              color="textPrimary"
+            >
+            {Moment(transaction.transaction_date).format('DD')}
+            </Typography>
+            <div className="transactionData" key={'transactionData-'+transaction.transaction_id}>
+              <span className="transactionCategory">{transaction.category}</span>
+              <span className="transactionDateDetails">{Moment(transaction.transaction_date).format('dddd, MMMM YYYY')}</span>
+            </div>
+          </React.Fragment>
+        } />
+
+        <span className={'transactionAmount '+ (transaction.account_type == 'asset' ? 'amountIncome' : 'amountExpense')}>
+        {(transaction.account_type == 'asset' ? '+' : '-')}<span>&#8369;</span>
+        {formatAmount(transaction.amount)} 
+        </span>
+      </ListItem>
+      <Divider />
+      </Fragment>
+    )
+
+    return transactionLists;
+  }
+
+
+  function fetchTransaction() {
+
+    ApiService.getTransactionsByUser(loggedUserId)
+    .then(response => {
+      
+      isServiceValid = ApiService.validateServiceResponse(response);
+      
+      if (isServiceValid) {
+        //setItemId(itemId);
+        console.log(response.data);
+        setMyTransactions(renderTransactions(response.data));
       } else {
         showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
           HandleLogout();
@@ -281,8 +250,18 @@ const Transactions = (props) => {
   }
 
   React.useEffect(() => {
-    fetchWallets();
+    fetchTransaction();
   }, []);
+
+  const [selectedIndex, setSelectedIndex] = React.useState(false);
+  const [checked, setChecked] = React.useState(false);
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setChecked(true);
+  };
+
+  let classNameHolder = [classes.orange, classes.purple, classes.lightGreen, classes.teal, classes.cyan];
 
   return(
     <div>
@@ -307,14 +286,27 @@ const Transactions = (props) => {
 
       <div className="line"></div>
 
-      <div className="alert alert-warning alert-warning-default" role="alert">
-        <button type="button" className="close-alert" onClick={handleAlertWarningClick}>×</button>
-        No transactions found. <Link to="/transactions/add">Add transaction</Link> now?
-      </div>
-
+      <AlertNotify show={showNotify} message={alertNotifyMessage} />
+        
       <div className="container" key="key-container" style={styles.container}>
-        {myWallets}
-        <AlertDialog  onAlertCancel={handleAlertCancel} onAlertConfirm={handleAlertConfirm} isOpen={alert} itemId={itemId} />
+        <div className={classes.root}>
+          
+          <Grid container spacing={3}>
+            <Grid item xs={5}>
+            <Paper>
+              <List component="nav" aria-label="main mailbox folders">
+                {myTransactions}  
+              </List>
+            </Paper>
+            </Grid>
+            <Grid item xs={7}>
+              <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
+                <Paper className="foo">xs=6</Paper>
+              </Slide>
+            </Grid>
+          </Grid>
+
+        </div>
       </div>
     </div>
   );

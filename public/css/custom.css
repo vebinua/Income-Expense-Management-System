@@ -166,6 +166,7 @@ a.article:hover {
     position: absolute;
     top: 0;
     right: 0;
+    overflow-x: hidden;
 }
 
 #content.active {
@@ -319,3 +320,33 @@ a.article:hover {
 button:focus {
   outline: none !important;
 }
+
+.transactionDate,
+.MuiListItemText-primary {
+  font-size: 28px !important;
+}
+
+.transactionDate {float: left; font-size: 2.6rem !important; 
+  font-weight: 300 !important;
+  color:rgba(0,0,0,.5) !important;
+  
+}
+.transactionData {float: left; margin-left: 15px; margin-top: .5rem}
+.transactionCategory,
+.transactionDateDetails {
+  float: left;
+  clear: both;
+}
+.transactionCategory {font-size: 1.2rem}
+.transactionDateDetails  {font-size:.75rem; color: rgba(0,0,0,.5); margin-top: -5px;}
+
+.amountExpense {
+  color:#e51c23!important;
+}
+.amountIncome {
+  color:#039be5!important;
+}
+.currencyPeso {
+  content: "\20B1";
+}
+.transactionAmount {font-size:1.25rem;}
