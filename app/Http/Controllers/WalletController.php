@@ -56,7 +56,8 @@ class WalletController extends Controller
 	{
 		Wallet::create([
 			'wallet_name' => $request->data['wallet_name'],
-			'initial_balance' => $request->data['initial_balance'],
+			'initial_balance' => $request->data['initial_balance'] * 100,
+			'current_balance' => $request->data['initial_balance'] * 100,
 			'currency_id' => $request->data['currency_id'],
 			'user_id' => $request->data['user_id']
 		]);

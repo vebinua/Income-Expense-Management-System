@@ -350,3 +350,70 @@ button:focus {
   content: "\20B1";
 }
 .transactionAmount {font-size:1.25rem;}
+.transactionDetails {
+}
+.transactionDetailsHeading {padding: 25px; padding-bottom: 15px;}
+.transactionDetailsContent {padding: 25px;}
+.forTransactionDetails {display: none;}
+.transactionAmountSlide {float: left; clear: both; margin-top: 10px}
+.transactionWallet {float: left; clear: both; font-size: .75rem; margin-top: 10px;}
+.walletWrapper {
+  float: left; clear: both;
+  font-size:.9rem;
+}
+.walletWrapper img {
+  margin-right: 10px;
+  float: left;
+}
+.pullLeft {
+  float: left;
+}
+.clear {
+  clear: both;
+}
+.mute {
+  font-size:.75rem;
+  color: rgba(0,0,0,.5);
+}
+
+.tabTransaction {padding-bottom: 50px;}
+.tabTransaction .MuiAppBar-colorPrimary {
+  background-color: #fff;
+  color:rgba(0,0,0,.5) !important;
+}
+.tabTransaction .MuiAppBar-root {
+  box-shadow: none;
+  border-bottom: rgba(0, 0, 0, 0.12) 1px solid;
+}
+.tabTransaction .MuiTabs-indicator {
+  background-color:#6d7fcc;
+}
+#transactionWrapper {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-top: 1px solid rgba(0,0,0,0.2);
+}
+#transactionWrapper nav.MuiList-root {
+  padding-top:0;
+}
+
+.tabTransaction .MuiBox-root {padding: 15px;}
+.inflowOutflow {padding: 0; margin: 0; font-size: .9rem}
+.inflowOutflow li {
+  display: inline; float: left; clear: left; width: 100%;
+  color: rgba(0, 0, 0, 0.87);
+  margin-bottom: 10px;
+}
+.flowsTotal,
+.allInflows,
+.allOutflows {float: right; text-align: right;}
+.allInflows {color:#039be5!important;}
+.allOutflows {color:#e51c23!important;}
+.flowsTotal {
+  font-size: 1.25rem;
+  padding-top: 5px;
+  padding-left: 20px;
+  border-top: rgba(0, 0, 0, 0.12) 1px solid;
+}
+
+.dashboard h6 {color:#546e7a;}

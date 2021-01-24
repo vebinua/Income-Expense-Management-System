@@ -30,7 +30,7 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NumberFormat from 'react-number-format';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import MuiListItem from "@material-ui/core/ListItem";
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
@@ -39,19 +39,15 @@ import DraftsIcon from '@material-ui/icons/Drafts';
 import Paper from '@material-ui/core/Paper'
 import Slide from '@material-ui/core/Slide';
 import Avatar from '@material-ui/core/Avatar';
+import { withStyles } from '@material-ui/core/styles';
 import { deepOrange, deepPurple, lightGreen, teal, cyan } from '@material-ui/core/colors';
 
 import AlertNotify from './partials/AlertNotify';
 import FadeFlash from './partials/FadeFlash';
+import TabTransaction from './partials/TabTransaction';
 import ApiService from "./helpers/services/ApiService";
 import { HandleLogout } from './helpers/HandleLogout';
 import Moment from 'moment';
-
-const handleAlertWarningClick = (e) => {
-  e.preventDefault();
-
-  document.querySelector('.alert-warning-default').remove();
-}
 
 const styles = {
   alert: {
@@ -113,6 +109,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const ListItem = withStyles({
+  root: {
+    "&$selected": {
+    },
+    "&$selected:hover": {
+    },
+    "&:hover": {
+    }
+  },
+  selected: {}
+})(MuiListItem);
+
 const Transactions = (props) => {
   const classes = useStyles();
 
@@ -120,7 +128,8 @@ const Transactions = (props) => {
   let isServiceValid = false;
   let history = useHistory();
 
-  const [myTransactions, setMyTransactions] = useState('');
+  const [myTransactions, setMyTransactions] = useState([]);
+  const [remappedData, setRemappedData] = useState([]);
   const [severity, setSeverity] = useState('success');
   const [flashMessage, setFlashMessage] = useState('');
   const [flash, setFlash] = useState(false);
@@ -129,6 +138,9 @@ const Transactions = (props) => {
   const [itemId, setItemId] = React.useState(0);
   const [alertNotifyMessage, setAlertNotifyMessage] = useState('');
   const [showNotify, setShowNotify] = useState(false);
+  const [transactionDetails, setTransactionDetails] = useState('');
+  const [inflows, setInflows] = useState(0);
+  const [outflows, setOutflows] = useState(0);
   
   let showFlashMessage = (show, severity, flashMessage, callback) => {
     setFlash(show);
@@ -177,24 +189,79 @@ const Transactions = (props) => {
     return amountString;
   }
 
-  const renderTransactions = (data) => {
+  function thousands_separators(num)
+  {
+    var num_parts = num.toString().split(".");
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num_parts.join(".");
+  }
+
+  function reMappedTransactionData(data) {
+
+    console.log('remappping');
+    let remappedArray = [];
+    let transactionId = 0;
+
+    for (var i in data) {
+
+      transactionId = data[i]['transaction_id'];
+
+      remappedArray[transactionId] = data[i];
+    }
+    console.log(remappedArray);
+    setRemappedData(remappedArray);
+  }
+
+  function renderTransactionDetails(e, transactionId) {
+
+    let data = remappedData[transactionId];
+
+    const transactionDetails = (
+      <Fragment>
+      <span className="transactionCategory">{data.category}</span>
+      <span className="transactionDateDetails mute">{Moment(data.transaction_date).format('DD dddd, MMMM YYYY')}</span>
+      <span className={'transactionAmount transactionAmountSlide '+ (data.account_type == 'asset' ? 'amountIncome' : 'amountExpense')}>
+        {(data.account_type == 'asset' ? '+' : '-')}<span>&#8369;</span>
+        {thousands_separators(formatAmount(data.amount))} 
+      </span>
+      <span className="transactionWallet">
+        <span className="walletWrapper">
+          <img src={window.config.baseUrl+"images/ico_wallet.svg"} width="48" />
+          <span className="pullLeft">
+            <span className="pullLeft mute">{(data.account_type == 'asset' ? 'Credit to wallet' : 'Debit from wallet')}</span>
+            <span className="walletName pullLeft clear">
+              {data.wallet_name}
+            </span>
+          </span>
+        </span>
+      </span>
+      </Fragment>
+    ); 
+
+    return transactionDetails;
+  }
+
+  const RenderTransactions = (data) => {
 
     let trans = [];
     let transactionAmountClass = false;
     let transactionAmount = 0;
 
-    const transactionLists = data.map(transaction =>
+    if (data.data.length == 0) return null;
+
+    const transactionLists = data.data.map(transaction =>
       <Fragment key={'fragment-'+transaction.transaction_id}> 
       <ListItem
         button
-        selected={selectedIndex === 0}
-        onClick={(event) => handleListItemClick(event, 0)}
+        selected={selectedIndex === transaction.transaction_id}
+        onClick={(event) => handleListItemClick(event, transaction.transaction_id)}
         disableRipple
         key={'listItem-'+transaction.transaction_id}
         data-transaction-id={transaction.transaction_id}
+        data-wallet-name={transaction.wallet_name}
       >
         <ListItemIcon>
-          <Avatar className={classes.purple}>NA</Avatar>
+          <Avatar className={classes.purple}>{transaction.category.substring(0,2).toUpperCase()}</Avatar>
         </ListItemIcon>
         <ListItemText className={classes.listItemText} primary={
           <React.Fragment>
@@ -215,8 +282,11 @@ const Transactions = (props) => {
 
         <span className={'transactionAmount '+ (transaction.account_type == 'asset' ? 'amountIncome' : 'amountExpense')}>
         {(transaction.account_type == 'asset' ? '+' : '-')}<span>&#8369;</span>
-        {formatAmount(transaction.amount)} 
+        {thousands_separators(formatAmount(transaction.amount))} 
         </span>
+        <div className="forTransactionDetails" id={'forTransactionDetails-'+transaction.transaction_id}>
+          The quick brown fox jumps over the head of the lazy dog
+        </div>
       </ListItem>
       <Divider />
       </Fragment>
@@ -235,8 +305,10 @@ const Transactions = (props) => {
       
       if (isServiceValid) {
         //setItemId(itemId);
-        console.log(response.data);
-        setMyTransactions(renderTransactions(response.data));
+        setMyTransactions(response.data);
+        reMappedTransactionData(response.data);
+        //console.log(response.data);
+        
       } else {
         showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
           HandleLogout();
@@ -249,15 +321,54 @@ const Transactions = (props) => {
     })
   }
 
+
+  function fetchFlows() {
+    let date = new Date();
+    //retrieve current month and year
+    let month = Moment(date).format('MMMM');
+    let year = Moment(date).format('YYYY');
+
+    ApiService.getFlowsByMonthYear(loggedUserId, month, year)
+    .then(response => {
+      
+      isServiceValid = ApiService.validateServiceResponse(response);
+      
+      if (isServiceValid) {
+        console.log(response.data);
+
+        setInflows(formatAmount(response.data.income));
+        setOutflows(formatAmount(response.data.expense));
+      } else {
+        showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
+          HandleLogout();
+          history.push({pathname: '/login'});
+        });
+      }
+    })
+    .catch((error) => {
+      showFlashMessage(true, 'error', 'Error on fetching outflows and inflows. ' + error, null);
+    })
+  }
+
   React.useEffect(() => {
     fetchTransaction();
+    fetchFlows();
   }, []);
 
   const [selectedIndex, setSelectedIndex] = React.useState(false);
   const [checked, setChecked] = React.useState(false);
 
   const handleListItemClick = (event, index) => {
+    
     setSelectedIndex(index);
+
+    event.target.selected = true;
+
+    
+    let transactionDetails = renderTransactionDetails(event, index);
+
+    setTransactionDetails(transactionDetails);
+    
     setChecked(true);
   };
 
@@ -293,15 +404,34 @@ const Transactions = (props) => {
           
           <Grid container spacing={3}>
             <Grid item xs={5}>
-            <Paper>
+            <TabTransaction key="key-tab" inflows={inflows} outflows={outflows} />
+
+            <Paper id="transactionWrapper">
               <List component="nav" aria-label="main mailbox folders">
-                {myTransactions}  
+                <RenderTransactions data={myTransactions} />  
               </List>
             </Paper>
             </Grid>
             <Grid item xs={7}>
               <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
-                <Paper className="foo">xs=6</Paper>
+                <Paper className="transactionDetails">
+                  <div>
+                  <Grid container item xs={12} className="transactionDetailsHeading">
+                    <Grid item xs={8}>
+                      <h4>Transaction Details</h4>
+                    </Grid>
+                    <Grid item xs={4}>
+                    </Grid>
+                  </Grid>
+                  </div>
+                     <Divider />
+                  <Grid container item xs={12} p={10} className="transactionDetailsContent">
+                    <Divider flexItem/>
+                    <div className="transactionDetailsPrimary">
+                    {transactionDetails}
+                    </div>
+                  </Grid>
+                </Paper>
               </Slide>
             </Grid>
           </Grid>

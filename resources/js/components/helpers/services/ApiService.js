@@ -49,6 +49,11 @@ class ApiService {
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
 
+  getFlowsByMonthYear(userId, month, year) {
+    return axiosInstance.get('/api/transactions/'+userId+'/'+month+'/'+year, 
+      {params: { token: this.getToken(), uncacher: Date.now()}});  
+  }
+
   deleteWallet(walletId, userId) {
 
     return axiosInstance.delete('/api/wallets/'+walletId, 

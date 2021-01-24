@@ -87,7 +87,7 @@ const renderCards = (data, deleteCallback) => {
   let index = 0;
   let key = 0;
   let walletId = 0;
-  let initialBalance = 0;
+  let currentBalance = 0;
   let walletName = ''; 
   let card = '';
   var rows = [];
@@ -98,7 +98,7 @@ const renderCards = (data, deleteCallback) => {
     index = i - 1;
     walletId = data[index].wallet_id;
     walletName = data[index].wallet_name;
-    initialBalance = data[index].initial_balance;
+    currentBalance = data[index].current_balance /100;
     
     items.push(
       <div className="col col-3 card-wallet" id={'card-'+walletId} key={'key-'+key}>
@@ -114,7 +114,7 @@ const renderCards = (data, deleteCallback) => {
               {walletName}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              <NumberFormat value={initialBalance} displayType={'text'} thousandSeparator={true} prefix={'₱'} fixedDecimalScale={true} decimalScale={2} />
+              <NumberFormat value={currentBalance} displayType={'text'} thousandSeparator={true} prefix={'₱'} fixedDecimalScale={true} decimalScale={2} />
             </Typography>
           </CardContent>
         </CardActionArea>

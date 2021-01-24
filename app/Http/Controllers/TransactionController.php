@@ -84,18 +84,51 @@ class TransactionController extends Controller
         ]);
         
         return response()->json('  Added Successfully! ' . print_r($request->data));
-    }   
+    }
+
+   public function showFlowsByMonthYear($id, $month, $year) {
+
+      $monthYear = $month . ', ' . $year;
+
+      try {
+
+         $firstDayofMonth = Carbon::parse($monthYear)->startOfMonth()->toDateString();
+         $lastDayofMonth = Carbon::parse($monthYear)->endOfMonth()->toDateString();
+
+         $transactions = Transaction::groupBy('transaction_type')
+         ->selectRaw('sum(amount) as sum, transaction_type')
+         ->pluck('sum','transaction_type');
+
+         return $transactions;
+
+      } catch(ModelNotFoundException $e) {
+         return response()->json(['status' => 'fail', 'message' => $e]);   
+      }
+
+   }   
 
    public function showByUser($id)
    { 
+
+      $selectArray = [
+         'transaction_id', 
+         'wallets.wallet_id', 
+         'transaction_date', 
+         'categories.category_id', 
+         'categories.category', 
+         'amount', 
+         'categories.account_type',
+         'wallets.wallet_name'
+      ];
 
       try {
 
          $transactions = Transaction::
          orderBy('transaction_date', 'desc')
          ->join('categories', 'categories.category_id', '=', 'transactions.category_id')
+         ->join('wallets', 'wallets.wallet_id', '=', 'transactions.wallet_id')
          ->leftJoin('subcategories', 'subcategories.subcategory_id', '=', 'transactions.subcategory_id')
-         ->select('transaction_id', 'wallet_id', 'transaction_date', 'categories.category_id', 'categories.category', 'amount', 'categories.account_type')
+         ->select($selectArray)
          ->where('transactions.user_id', $id)->get();
 
          return $transactions;

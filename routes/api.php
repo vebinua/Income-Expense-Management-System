@@ -37,6 +37,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
   Route::post('transactions', 'App\Http\Controllers\TransactionController@store');
   Route::get('transactions/{id}', 'App\Http\Controllers\TransactionController@showByUser');  
+  Route::get('transactions/{id}/{month}/{year}', 'App\Http\Controllers\TransactionController@showFlowsByMonthYear');  
 });
 
 //Route::get('categories/{id}', 'App\Http\Controllers\CategoryController@show');
