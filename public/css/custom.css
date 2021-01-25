@@ -356,6 +356,7 @@ button:focus {
 .transactionDetailsContent {padding: 25px;}
 .forTransactionDetails {display: none;}
 .transactionAmountSlide {float: left; clear: both; margin-top: 10px}
+.secondary,
 .transactionWallet {float: left; clear: both; font-size: .75rem; margin-top: 10px;}
 .walletWrapper {
   float: left; clear: both;

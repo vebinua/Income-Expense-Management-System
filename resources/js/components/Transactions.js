@@ -216,19 +216,30 @@ const Transactions = (props) => {
 
     let data = remappedData[transactionId];
 
+    let category = data.category;
+    let accountType = data.account_type;
+    let transactionAmount = thousands_separators(formatAmount(data.amount));
+    let secondary = data.note;
+    
+    if (data.transaction_type == 'new wallet') {
+      category = data.wallet_name;
+      accountType = 'asset';
+      secondary = 'New wallet created with initial balance of ' + transactionAmount;
+    }
+
     const transactionDetails = (
       <Fragment>
-      <span className="transactionCategory">{data.category}</span>
+      <span className="transactionCategory">{category}</span>
       <span className="transactionDateDetails mute">{Moment(data.transaction_date).format('DD dddd, MMMM YYYY')}</span>
-      <span className={'transactionAmount transactionAmountSlide '+ (data.account_type == 'asset' ? 'amountIncome' : 'amountExpense')}>
-        {(data.account_type == 'asset' ? '+' : '-')}<span>&#8369;</span>
+      <span className={'transactionAmount transactionAmountSlide '+ (accountType == 'asset' ? 'amountIncome' : 'amountExpense')}>
+        {(accountType == 'asset' ? '+' : '-')}<span>&#8369;</span>
         {thousands_separators(formatAmount(data.amount))} 
       </span>
       <span className="transactionWallet">
         <span className="walletWrapper">
           <img src={window.config.baseUrl+"images/ico_wallet.svg"} width="48" />
           <span className="pullLeft">
-            <span className="pullLeft mute">{(data.account_type == 'asset' ? 'Credit to wallet' : 'Debit from wallet')}</span>
+            <span className="pullLeft mute">{(accountType == 'asset' ? 'Credit to wallet' : 'Debit from wallet')}</span>
             <span className="walletName pullLeft clear">
               {data.wallet_name}
             </span>
@@ -246,10 +257,25 @@ const Transactions = (props) => {
     let trans = [];
     let transactionAmountClass = false;
     let transactionAmount = 0;
+    let category = '';
+    let accountType = '';
+    let secondary = '';
 
     if (data.data.length == 0) return null;
 
-    const transactionLists = data.data.map(transaction =>
+    const transactionLists = data.data.map((transaction) => {
+      
+      category = transaction.category;
+      accountType = transaction.account_type;
+      transactionAmount = thousands_separators(formatAmount(transaction.amount));
+
+      if (transaction.transaction_type == 'new wallet') {
+        category = transaction.wallet_name;
+        accountType = 'asset';
+        secondary = 'New wallet created with initial balance of ' + transactionAmount;
+      }
+
+      return (
       <Fragment key={'fragment-'+transaction.transaction_id}> 
       <ListItem
         button
@@ -261,7 +287,7 @@ const Transactions = (props) => {
         data-wallet-name={transaction.wallet_name}
       >
         <ListItemIcon>
-          <Avatar className={classes.purple}>{transaction.category.substring(0,2).toUpperCase()}</Avatar>
+          <Avatar className={classes.purple}>{category !== null ? category.substring(0,2).toUpperCase() : null}</Avatar>
         </ListItemIcon>
         <ListItemText className={classes.listItemText} primary={
           <React.Fragment>
@@ -274,23 +300,24 @@ const Transactions = (props) => {
             {Moment(transaction.transaction_date).format('DD')}
             </Typography>
             <div className="transactionData" key={'transactionData-'+transaction.transaction_id}>
-              <span className="transactionCategory">{transaction.category}</span>
+              <span className="transactionCategory">{category !== null ? category : null}</span>
               <span className="transactionDateDetails">{Moment(transaction.transaction_date).format('dddd, MMMM YYYY')}</span>
+              <span className="secondary">{secondary}</span>
             </div>
           </React.Fragment>
-        } />
+        }/>
 
-        <span className={'transactionAmount '+ (transaction.account_type == 'asset' ? 'amountIncome' : 'amountExpense')}>
-        {(transaction.account_type == 'asset' ? '+' : '-')}<span>&#8369;</span>
-        {thousands_separators(formatAmount(transaction.amount))} 
+        <span className={'transactionAmount '+ (accountType == 'asset' ? 'amountIncome' : 'amountExpense')}>
+        {(accountType == 'asset' ? '+' : '-')}<span>&#8369;</span>
+        {transactionAmount} 
         </span>
         <div className="forTransactionDetails" id={'forTransactionDetails-'+transaction.transaction_id}>
           The quick brown fox jumps over the head of the lazy dog
         </div>
       </ListItem>
       <Divider />
-      </Fragment>
-    )
+      </Fragment>)
+    });
 
     return transactionLists;
   }
@@ -334,10 +361,11 @@ const Transactions = (props) => {
       isServiceValid = ApiService.validateServiceResponse(response);
       
       if (isServiceValid) {
-        console.log(response.data);
-
-        setInflows(formatAmount(response.data.income));
-        setOutflows(formatAmount(response.data.expense));
+        console.log(response.data.length);
+        if (response.data.length > 0) {
+          setInflows(formatAmount(response.data.income));
+          setOutflows(formatAmount(response.data.expense));
+        }
       } else {
         showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
           HandleLogout();

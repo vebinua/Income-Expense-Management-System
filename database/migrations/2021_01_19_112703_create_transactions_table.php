@@ -16,7 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('transaction_id');
             $table->integer('wallet_id')->unsigned();
-            $table->enum('transaction_type',['income','expense', 'adjustment', 'transfer'])->default('income');
+            $table->enum('transaction_type',['income','expense', 'adjustment', 'transfer', 'new wallet'])->default('income');
             $table->integer('amount')->unsigned();
             $table->timestamp('transaction_date');
             $table->text('note');

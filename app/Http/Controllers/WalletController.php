@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wallet;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 header('Access-Control-Allow-Methods : POST, GET, OPTIONS, PUT, DELETE, HEAD');
 header('Allow: POST, GET, OPTIONS, PUT, DELETE, HEAD');
@@ -54,7 +56,7 @@ class WalletController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		Wallet::create([
+		$wallet = Wallet::create([
 			'wallet_name' => $request->data['wallet_name'],
 			'initial_balance' => $request->data['initial_balance'] * 100,
 			'current_balance' => $request->data['initial_balance'] * 100,
@@ -62,6 +64,33 @@ class WalletController extends Controller
 			'user_id' => $request->data['user_id']
 		]);
 		
+		//we consider this a transaction so we have to insert a record to our Transactions table
+		//make sure the transaction_type is set to 'new wallet'
+
+	 	$userId = $request->data['user_id'];
+  	$categoryId = 0;
+
+    $timestamp = Carbon::now();
+  	$date = Carbon::createFromFormat('Y-m-d H:i:s', $timestamp, 'PST');
+    $date->setTimezone('UTC');
+
+    $transactionStatus = 'completed'; //[pending, completed]
+    $transactionDate = $date;
+    $transactionType = 'new wallet';
+
+    Transaction::create([
+      'wallet_id' => $wallet->wallet_id,
+      'transaction_type' => $transactionType,
+      'amount' => $request->data['initial_balance'] * 100,
+      'transaction_date' => $transactionDate,
+      'note' => 'New wallet created with initial balance of '.$request->data['initial_balance'],
+      'transaction_status' => $transactionStatus,
+      'category_id' => $categoryId,
+      'subcategory_id' => 0,
+      'currency_id' => $request->data['currency_id'],
+      'user_id' => $userId
+    ]);
+
 		return response()->json('  Added Successfully! ');
 	}
 

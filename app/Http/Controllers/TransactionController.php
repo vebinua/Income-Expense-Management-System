@@ -112,6 +112,8 @@ class TransactionController extends Controller
 
       $selectArray = [
          'transaction_id', 
+         'transaction_type',
+         'note',
          'wallets.wallet_id', 
          'transaction_date', 
          'categories.category_id', 
@@ -125,7 +127,7 @@ class TransactionController extends Controller
 
          $transactions = Transaction::
          orderBy('transaction_date', 'desc')
-         ->join('categories', 'categories.category_id', '=', 'transactions.category_id')
+         ->leftjoin('categories', 'categories.category_id', '=', 'transactions.category_id')
          ->join('wallets', 'wallets.wallet_id', '=', 'transactions.wallet_id')
          ->leftJoin('subcategories', 'subcategories.subcategory_id', '=', 'transactions.subcategory_id')
          ->select($selectArray)
