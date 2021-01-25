@@ -44,6 +44,7 @@ const AddWallet = (props) => {
 			isServiceValid = ApiService.validateServiceResponse(response);
 			
 			if (isServiceValid) {
+
 				history.push({pathname: '/wallets'});
 			} else {
 				showFlashMessage(true, 'error', 'Your session may have already expired, please login again.');

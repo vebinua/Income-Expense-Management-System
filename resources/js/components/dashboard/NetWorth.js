@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const NetWorth = ({ className, ...rest }) => {
+const NetWorth = ({ className, totalWalletFunds, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -41,7 +41,7 @@ const NetWorth = ({ className, ...rest }) => {
         >
           <Grid item>
             <h6>NET WORTH</h6>
-            <h3>₱23,200</h3>
+            <h3>{totalWalletFunds}</h3>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>

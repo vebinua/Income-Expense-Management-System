@@ -34,6 +34,19 @@ class WalletController extends Controller
 		//
 	}
 
+	public function showAllCurrentBalance($id) {
+
+	 	try {
+
+	  	$wallets = Wallet::selectRaw('sum(current_balance) as sum')->where('user_id', $id)->get();
+		
+	  	return $wallets;
+		
+		} catch(ModelNotFoundException $e) {
+			return response()->json(['status' => 'fail', 'message' => $e]);   
+		}	  
+	}
+
 	public function showByUser($id)
 	{ 
 

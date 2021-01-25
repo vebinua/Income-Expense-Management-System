@@ -21,6 +21,12 @@ class ApiService {
     return localStorage.getItem('access_token');    
   }
 
+  getNetWorth(userId) {
+
+    return axiosInstance.get('/api/wallets/'+userId+'/current-balance/all', 
+      {params: { token: this.getToken(), uncacher: Date.now()}});   
+  }
+
   getCurrencies() {
     return axiosInstance.get('/api/currencies', {params: { token: this.getToken() }});
   }
@@ -62,6 +68,8 @@ class ApiService {
   }
 
   validateServiceResponse(response) {
+
+    console.log(response);
 
     let isValid = false;
 

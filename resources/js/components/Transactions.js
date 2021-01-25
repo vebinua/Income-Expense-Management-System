@@ -220,7 +220,7 @@ const Transactions = (props) => {
     let accountType = data.account_type;
     let transactionAmount = thousands_separators(formatAmount(data.amount));
     let secondary = data.note;
-    
+
     if (data.transaction_type == 'new wallet') {
       category = data.wallet_name;
       accountType = 'asset';
@@ -269,10 +269,14 @@ const Transactions = (props) => {
       accountType = transaction.account_type;
       transactionAmount = thousands_separators(formatAmount(transaction.amount));
 
+      console.log(transaction.transaction_type);
+
       if (transaction.transaction_type == 'new wallet') {
         category = transaction.wallet_name;
         accountType = 'asset';
         secondary = 'New wallet created with initial balance of ' + transactionAmount;
+      } else {
+        secondary = '';
       }
 
       return (
@@ -358,13 +362,17 @@ const Transactions = (props) => {
     ApiService.getFlowsByMonthYear(loggedUserId, month, year)
     .then(response => {
       
+      
       isServiceValid = ApiService.validateServiceResponse(response);
       
       if (isServiceValid) {
-        console.log(response.data.length);
-        if (response.data.length > 0) {
-          setInflows(formatAmount(response.data.income));
-          setOutflows(formatAmount(response.data.expense));
+        console.log('@fetchflows: ');
+        console.log(response.data);
+        if (response.data.count > 0) {
+          setInflows(formatAmount(response.data.transaction.income));
+          setOutflows(formatAmount(response.data.transaction.expense));
+        } else {
+          console.log('what to do?');
         }
       } else {
         showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
