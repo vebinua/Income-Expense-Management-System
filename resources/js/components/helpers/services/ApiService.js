@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Moment from 'moment';
 import authHeader from './auth-header';
 
 
@@ -31,8 +32,20 @@ class ApiService {
     return axiosInstance.get('/api/currencies', {params: { token: this.getToken() }});
   }
 
+  postUser(data) {
+     return axiosInstance.post('/api/users/login', {data}, {params: { token: this.getToken() }});
+  }
+
   postWallet(data) {
     return axiosInstance.post('/api/wallets', {data}, {params: { token: this.getToken() }});
+  }
+
+  postCategories(data) {
+    return axiosInstance.post('/api/categories', {data}, {params: { token: this.getToken() }});
+  }
+
+  putWallet(data, id) {
+    return axiosInstance.put('/api/wallets/'+id, {data}, {params: { token: this.getToken() }});
   }
 
   postTransaction(data) {
@@ -41,6 +54,11 @@ class ApiService {
 
   getWalletsByUser(userId) {
     return axiosInstance.get('/api/wallets/'+userId, 
+      {params: { token: this.getToken(), uncacher: Date.now()}});
+  }
+
+  getUserWalletById(userId, walletId) {
+    return axiosInstance.get('/api/wallets/'+userId+'/'+walletId, 
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
 
@@ -55,9 +73,24 @@ class ApiService {
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
 
+  getCategoriesByUserWithType(userId, accountType) {
+    
+    return axiosInstance.get('/api/categories/'+userId+'/'+accountType, 
+      {params: { token: this.getToken(), uncacher: Date.now()}});
+  }
+
   getFlowsByMonthYear(userId, month, year) {
     return axiosInstance.get('/api/transactions/'+userId+'/'+month+'/'+year, 
       {params: { token: this.getToken(), uncacher: Date.now()}});  
+  }
+
+  getMonthlyIncomeAndExpense(userId) {
+    let date = new Date();
+    //retrieve current month and year
+    let month = Moment(date).format('MMMM');
+    let year = Moment(date).format('YYYY');
+
+    return this.getFlowsByMonthYear(userId, month, year);
   }
 
   deleteWallet(walletId, userId) {
@@ -66,6 +99,8 @@ class ApiService {
     {params: { token: this.getToken(), walletId: walletId, userId: userId}});
 
   }
+
+
 
   validateServiceResponse(response) {
 

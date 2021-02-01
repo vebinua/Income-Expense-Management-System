@@ -11,10 +11,13 @@ import EditCategory from './EditCategory';
 import AddSubcategory from './AddSubcategory';
 import Wallets from './Wallets';
 import AddWallet from './AddWallet';
+import EditWallet from './EditWallet';
 import Transactions from './Transactions';
 import AddTransaction from './AddTransaction';
 import Login from './Login';
 import SignUp from './SignUp';
+import Canvas from './Canvas';
+import ScrollDialog from './ScrollDialog';
 
 import MainLayout from './partials/MainLayout';
 import AuthLayout from './partials/AuthLayout';
@@ -42,7 +45,7 @@ class App extends Component {
     ];
 
     return (
-      <Router basename={'iems/Income-Expense-Management-System/'}>
+      <Router basename={window.config.routeBase}>
          <div className="wrapper">
          <Switch>
             <Route path={['/login', '/signup', '/thank-you']}>
@@ -62,9 +65,11 @@ class App extends Component {
                     <PrivateRoute path={"/category/add-category"} component={AddCategory} />
                     <PrivateRoute path={"/category/:id/edit"} component={EditCategory} />
                     <PrivateRoute path={"/wallets/add"} component={AddWallet} />
+                    <PrivateRoute path={"/wallets/:id/edit"} component={EditWallet} />
                     <PrivateRoute path={"/wallets"} component={Wallets} />
                     <PrivateRoute path={"/transactions/add"} component={AddTransaction} />
                     <PrivateRoute path={"/transactions"} component={Transactions} />
+                    <PrivateRoute path={"/canvas"} component={Canvas} />
                   </Switch>
                </AuthLayout>
             </Route>

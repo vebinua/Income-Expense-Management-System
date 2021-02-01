@@ -377,15 +377,20 @@ button:focus {
   color: rgba(0,0,0,.5);
 }
 
+.tabGeneric,
 .tabTransaction {padding-bottom: 50px;}
+
+.tabGeneric .MuiAppBar-colorPrimary,
 .tabTransaction .MuiAppBar-colorPrimary {
   background-color: #fff;
   color:rgba(0,0,0,.5) !important;
 }
+.tabGeneric .MuiAppBar-root,
 .tabTransaction .MuiAppBar-root {
   box-shadow: none;
   border-bottom: rgba(0, 0, 0, 0.12) 1px solid;
 }
+.tabGeneric .MuiTabs-indicator,
 .tabTransaction .MuiTabs-indicator {
   background-color:#6d7fcc;
 }
@@ -398,6 +403,7 @@ button:focus {
   padding-top:0;
 }
 
+.tabGeneric .MuiBox-root,
 .tabTransaction .MuiBox-root {padding: 15px;}
 .inflowOutflow {padding: 0; margin: 0; font-size: .9rem}
 .inflowOutflow li {
@@ -418,3 +424,24 @@ button:focus {
 }
 
 .dashboard h6 {color:#546e7a;}
+
+
+.tabCategories {margin-top:-25px;}
+.tabCategories .MuiBox-root {padding-right: 10px;}
+.tabCategories .MuiList-root {width: 98%; font-size: .85rem;}
+.tabCategories .MuiListItem-root {border-bottom: #ccc 1px dotted; padding: 12px;}
+.tabCategories .MuiListItem-button:hover {
+  background-color: rgba(115, 134, 213, 0.1);
+}
+.dialogSearchCategories .MuiDialog-paperScrollPaper {min-height: 600px; max-height: 600px; overflow: hidden;}
+.dialogSearchCategories .MuiDialog-paper {top:50px !important; position: absolute !important;}
+.categoryIncome {
+  overflow-y: auto;
+  max-height: 350px;
+}
+.dialogSearchCategories .MuiDialogTitle-root {
+  padding-bottom: 0;
+}
+.dialogSearchCategories .MuiDialogContent-dividers {
+  border:none;
+}

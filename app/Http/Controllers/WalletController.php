@@ -47,6 +47,18 @@ class WalletController extends Controller
 		}	  
 	}
 
+	public function showByUserWithWalletId($id, $walletId) {
+		try {
+
+	  	$wallets = Wallet::where('user_id', $id)->where('wallet_id', $walletId)->get();
+
+	  	return $wallets;
+		
+		} catch(ModelNotFoundException $e) {
+			return response()->json(['status' => 'fail', 'message' => $e]);   
+		}	  	
+	}
+
 	public function showByUser($id)
 	{ 
 
@@ -129,24 +141,26 @@ class WalletController extends Controller
 		//
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
+	
 	public function update(Request $request, $id)
 	{
-		//
+		try {
+
+			$wallet = Wallet::findOrFail($id);
+
+			$input = $request->all();
+
+			$input['data']['current_balance'] = $input['data']['current_balance'] * 100;
+
+			$res = $wallet->fill($input['data'])->save();
+
+			return response()->json(['status' => 'success', 'message' => 'Wallet has been Successfully updated.']);
+		
+		} catch(ModelNotFoundException $e) {
+			return response()->json(['status' => 'fail', 'message' => 'Unable to update wallet. Please try again.']);
+		}
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
 	public function destroy(Request $request, $id)
 	{
 

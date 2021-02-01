@@ -52,9 +52,12 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://www.testing.local/iems/Income-Expense-Management-System/'),
+    //'url' => env('APP_URL', 'https://dev.edwardbinua.com/cell5/'),
+    //'asset_url' => env('ASSET_URL', 'https://dev.edwardbinua.com/cell5'),
 
-    'asset_url' => env('ASSET_URL', null),
+    
+    'url' => env('APP_URL', 'http://www.testing.local/iems/Income-Expense-Management-System/'),
+    'asset_url' => env('ASSET_URL', 'http://www.testing.local/iems/Income-Expense-Management-System'),
 
     /*
     |--------------------------------------------------------------------------

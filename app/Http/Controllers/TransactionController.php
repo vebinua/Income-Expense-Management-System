@@ -117,6 +117,12 @@ class TransactionController extends Controller
         return response()->json('  Added Successfully! ');
     }
 
+    public function showTransactionsByMonthYear($id, $month, $year) {
+
+      
+      
+    }
+
    public function showFlowsByMonthYear($id, $month, $year) {
 
       $monthYear = $month . ', ' . $year;

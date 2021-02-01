@@ -68,15 +68,16 @@ const AddWallet = (props) => {
 		setWallet(wallet);   
 	}
 
-	let showFlashMessage = (show, severity, flashMessage) => {
-		setFlash(show);
-		setSeverity(severity);
-		setFlashMessage(flashMessage);
+ 	let showFlashMessage = (show, severity, flashMessage, callback) => {
+    setFlash(show);
+    setSeverity(severity);
+    setFlashMessage(flashMessage);
 
-		setTimeout(() => {
-    	setFlash(false);
-    }, 3500);	
-	}
+    setTimeout(() => {
+      setFlash(false);
+      if (callback !== null) callback();
+    }, 3500); 
+  }
 
 	React.useEffect(() => {
 		ladda.current = Ladda.create(document.querySelector('.btn-submit'));
@@ -105,6 +106,8 @@ const AddWallet = (props) => {
 				<FadeFlash isFlash={flash} severity={severity} message={flashMessage}/>
 
 				<h2>Add wallet</h2>
+
+				<div className="line"></div>
 
 				 <div className="form-container">
 					 <div className="row">

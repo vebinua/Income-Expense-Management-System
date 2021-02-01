@@ -30,8 +30,20 @@ const TopNavLinks = props => {
 				<li className="nav-item"><Link to="/category/add-category">Add Category</Link></li>
 			</Fragment>
 		)
-	} else {
-	}
+	} else if (location.pathname.match(/^\/transaction/)) {
+    button = <li className="nav-item"><Link to="/wallets/add">Add Wallet</Link></li>;
+  
+  } else if (location.pathname.match(/^\/wallets/)) {
+  
+
+  } else if (location.pathname.match(/^\//)) {
+    button = ( 
+      <Fragment>
+        <li className="nav-item"><Link to="/wallets/add">Add Wallet</Link></li>
+        <li className="nav-item"><Link to="/transactions/add">Add Transaction</Link></li>
+      </Fragment>
+    )
+  } 
 
 	return (
 	  	<Fragment>

@@ -369,8 +369,19 @@ const Transactions = (props) => {
         console.log('@fetchflows: ');
         console.log(response.data);
         if (response.data.count > 0) {
-          setInflows(formatAmount(response.data.transaction.income));
-          setOutflows(formatAmount(response.data.transaction.expense));
+          let income = 0;
+          let expense = 0;
+
+          if (typeof response.data.transaction.income !== 'undefined') {
+            income = response.data.transaction.income;
+          }
+          if (typeof response.data.transaction.expense !== 'undefined') {
+            expense = response.data.transaction.expense;
+          }
+
+          setInflows(formatAmount(income));
+          setOutflows(formatAmount(expense));
+            
         } else {
           console.log('what to do?');
         }

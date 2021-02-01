@@ -8,9 +8,6 @@ use App\Http\Resources\Category as CategoryResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 
-header('Access-Control-Allow-Methods : POST, GET, OPTIONS, PUT, DELETE, HEAD');
-header('Allow: POST, GET, OPTIONS, PUT, DELETE, HEAD');
-header('Access-Control-Allow-Headers : X-Requested-With, Content-Type');
 
 class CategoryController extends Controller
 { 
@@ -99,24 +96,26 @@ class CategoryController extends Controller
 		}	  
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
+		public function showByUserWithType($id, $type)
+	{ 
+
+		try {
+
+		  		$categories = Category::where('user_id', $id)->where('account_type', $type)->get();
+
+		  		return $categories;
+		
+		} catch(ModelNotFoundException $e) {
+			return response()->json(['status' => 'fail', 'message' => $e]);   
+		}	  
+	}
+
+
 	public function edit($id)
 	{
 		//we don't need this since we'll be showing the edit form in a react component view
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
 	public function update(Request $request, $id)
 	{
 		try {
@@ -133,12 +132,6 @@ class CategoryController extends Controller
 		}
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
 	public function destroy(Request $request, $id)
 	{
 

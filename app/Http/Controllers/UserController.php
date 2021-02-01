@@ -36,7 +36,7 @@ class UserController extends Controller
 	 */
 	public function create($request)
 	{   
-		$data = $request['data'];
+		$data = $request['account'];
 		
 		return User::create([
 			'first_name' => $data['first_name'],

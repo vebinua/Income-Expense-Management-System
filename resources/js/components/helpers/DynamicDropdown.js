@@ -4,6 +4,8 @@ const DynamicDropdown = ({data, optionKey, optionValue, selectName, defaultValue
 
   //console.log('from dd: ' + defaultValueSelected);
 
+  if (data.length === 0) return null;
+
   let items = [];
   let itemName = '';
   let key = '';
@@ -33,7 +35,7 @@ const DynamicDropdown = ({data, optionKey, optionValue, selectName, defaultValue
 
   return(
     <div key={defaultValueSelected}>
-    <select name={selectName} id={selectName} className="form-control" onChange={onChangeCallback} key={defaultValueSelected} value={defaultValueSelected}>
+    <select name={selectName} id={selectName} className="form-control" onChange={onChangeCallback} key={defaultValueSelected} defaultValue={defaultValueSelected}>
     {items}
     </select>
     </div>

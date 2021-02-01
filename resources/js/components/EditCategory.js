@@ -246,6 +246,8 @@ class EditCategory extends React.Component {
  
 				<h2>Edit Category</h2>
 				
+				<div className="line"></div>
+				
 				<div className="form-container">
 					<div className="row">
 						<div className="col-4">

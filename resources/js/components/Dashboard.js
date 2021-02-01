@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import ReactDOM from 'react-dom';
@@ -8,30 +9,13 @@ import {
 } from '@material-ui/core';
 
 import NumberFormat from 'react-number-format';
-import NetWorth from './dashboard/NetWorth';
 import FadeFlash from './partials/FadeFlash';
 import ApiService from './helpers/services/ApiService';
-
 import { HandleLogout } from './helpers/HandleLogout';
 
-/*import Page from 'src/components/Page';
-import Budget from './Budget';
-import LatestOrders from './LatestOrders';
-import LatestProducts from './LatestProducts';
-import Sales from './Sales';
-import TasksProgress from './TasksProgress';
-import TotalCustomers from './TotalCustomers';
-import TotalProfit from './TotalProfit';
-import TrafficByDevice from './TrafficByDevice';*/
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
-  }
-}));
+import NetWorth from './dashboard/NetWorth';
+import MonthlyIncome from './dashboard/MonthlyIncome';
+import MonthlyExpense from './dashboard/MonthlyExpense';
 
 const Dashboard = (props) => {
 
@@ -41,6 +25,8 @@ const Dashboard = (props) => {
   const [severity, setSeverity] = useState('success');
   const [flashMessage, setFlashMessage] = useState('');
   const [totalWalletFunds, setTotalWalletFunds] = useState(0);
+  const [totalMonthlyInflows, setTotalMonthlyInflows] = useState(0);
+  const [totalMonthlyOutflows, setTotalMonthlyOutflows] = useState(0);
   const [flash, setFlash] = useState(false);
   
   let showFlashMessage = (show, severity, flashMessage, callback) => {
@@ -60,11 +46,18 @@ const Dashboard = (props) => {
 
   function fetchNetWorth() {
     
-    
-    ApiService.getNetWorth(loggedUserId)
-    .then(response => {
+    axios.all(
+      [
+        ApiService.getNetWorth(loggedUserId),
+        ApiService.getMonthlyIncomeAndExpense(loggedUserId)
+      ]
+    )
+    .then(axios.spread((...responses) => {
 
-      if (response.data.isUnauthorized) {
+      const netWorthResponse = responses[0];
+      const monthlyInOutResponse = responses[1];
+
+      if (netWorthResponse.data.isUnauthorized) {
         
         showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
           HandleLogout();
@@ -72,12 +65,26 @@ const Dashboard = (props) => {
         });
 
       } else {
-        let sum = response.data[0].sum / 100;
+        let inflows = 0;
+        let outflows = 0;
+        let sum = netWorthResponse.data[0].sum / 100;
         setTotalWalletFunds(sum);
+
+        if (typeof monthlyInOutResponse.data.transaction.income !== 'undefined') {
+          console.log('not undefined!');
+          inflows = monthlyInOutResponse.data.transaction.income / 100;
+        }
+
+        if (typeof monthlyInOutResponse.data.transaction.expense !== 'undefined') {
+          outflows = monthlyInOutResponse.data.transaction.expense / 100;
+        }
+
+        setTotalMonthlyInflows(inflows);
+        setTotalMonthlyOutflows(outflows);
       }
-    })
-    .catch((error) => {
-      showFlashMessage(true, 'error', 'Error on fetching net worth. ' + error, null);
+    }))
+    .catch((errors) => {
+      showFlashMessage(true, 'error', 'Error on fetching widgets data ' + errors, null);
     })
   }
 
@@ -109,7 +116,9 @@ const Dashboard = (props) => {
                 xl={3}
                 xs={12}
               >
-              abcde
+              <MonthlyIncome totalWalletFunds={
+                <NumberFormat value={totalMonthlyInflows} displayType={'text'} thousandSeparator={true} prefix={'₱'} fixedDecimalScale={true} decimalScale={2} />
+               } />
               </Grid>
               <Grid
                 item
@@ -118,7 +127,9 @@ const Dashboard = (props) => {
                 xl={3}
                 xs={12}
               >
-               abcde
+              <MonthlyExpense totalWalletFunds={
+                <NumberFormat value={totalMonthlyOutflows} displayType={'text'} thousandSeparator={true} prefix={'₱'} fixedDecimalScale={true} decimalScale={2} />
+               } />
               </Grid>
               <Grid
                 item
@@ -127,7 +138,6 @@ const Dashboard = (props) => {
                 xl={3}
                 xs={12}
               >
-              abcde
               </Grid>
               <Grid
                 item

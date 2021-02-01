@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { Fragment,useEffect,useState } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 
@@ -17,9 +16,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-export const axiosInstance = axios.create({
-  baseURL: window.config.baseUrl
-});
+import FadeFlash from './partials/FadeFlash';
+import ApiService from './helpers/services/ApiService';
 
 function Copyright() {
   return (
@@ -64,40 +62,69 @@ const Login = (props) => {
 
   const [showProgressIndicator, setShowProgressIndicator] = useState(false);
   const [redirect, setRedirect] = useState(false);
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
+  const [flash, setFlash] = useState(false);
+  const [severity, setSeverity] = useState('success');
+  const [flashMessage, setFlashMessage] = useState('');
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [errorPassword, setErrorPassword] = useState(false);
 
   let isLogged = props.isLogged;
   let loggedUserId = props.loggedUserId;
 
   let history = useHistory(); 
 
+  let [account, setAccount] = useState({
+    email_address: '',
+    password: ''
+  });
+
+  let showFlashMessage = (show, severity, flashMessage, callback) => {
+    setFlash(show);
+    setSeverity(severity);
+    setFlashMessage(flashMessage);
+
+    setTimeout(() => {
+      setFlash(false);
+      if (callback !== null) callback();
+    }, 3500); 
+  }
+
+  let handleChange = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    account[name] = value;
+    setAccount(account);
+
+    account['email_address'] != '' ? setErrorEmail(false) : '';
+    account['password'] != '' ? setErrorPassword(false) : '';
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    /* const data = {
-      'first_name': firstName,
-      'last_name': lastName,
-      'email_address': emailAddress,
-      'password': password
-    };*/
-    const data = {
-      'email_address': emailAddress,
-      'password': password
+    if (account['email_address'] == '') {
+      showFlashMessage(true, 'error', 'Username and password fields are both required. Please try again.', null);
+      setErrorEmail(true);
+
+      return false;
+    } else {
+      setErrorEmail(false);
+    } 
+
+    if (account['password'] == '') {
+      showFlashMessage(true, 'error', 'Username and password fields are both required. Please try again.', null);
+      setErrorPassword(true);
+      
+      return false;
+    } else {
+      setErrorPassword(false);
     }
 
     setShowProgressIndicator(true);
 
-    axiosInstance.post('/api/users/login/', {data}, {
-      data: null,
-      headers: { 
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      }
-    })
+    ApiService.postUser(account)
     .then(function (response) {
-
-      //console.log(response.data.user);
 
       if (response.data.access_token && response.data.expires_in){
         let access_token = response.data.access_token;
@@ -111,14 +138,18 @@ const Login = (props) => {
         localStorage.setItem("user_id", user_id);
         localStorage.setItem("first_name", first_name);
         localStorage.setItem("user", user);
-        // setRedirect(true);
+        
         history.push({pathname: '/'});
       
+      } else {
+        showFlashMessage(true, 'error', 'Invalid username or password. Please try again.', null);
       }
-
     })
     .catch(function (error) {
         setShowProgressIndicator(false);
+
+        showFlashMessage(true, 'error', 'Invalid username or password. Please try again.', null);
+    
         console.log(error);
     });
 
@@ -136,6 +167,8 @@ const Login = (props) => {
         :  <Box pt={.5}></Box> }
       </div>
 
+      <FadeFlash isFlash={flash} severity={severity} message={flashMessage}/>
+
       <Container component="main" maxWidth="xs" className="signin-wrapper">
         <CssBaseline />
         <div className={classes.paper}>
@@ -151,13 +184,14 @@ const Login = (props) => {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="email_address"
               label="Email Address"
-              name="email"
+              name="email_address"
               autoComplete="email"
               autoFocus
-              value={emailAddress}
-              onChange={e => setEmailAddress(e.target.value)}
+              onChange={handleChange}
+              helperText=""
+              error={errorEmail}
             />
             <TextField
               variant="outlined"
@@ -169,8 +203,8 @@ const Login = (props) => {
               type="password"
               id="password"
               autoComplete="current-password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={handleChange}
+              error={errorPassword}
             />
             {/*<FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -183,6 +217,7 @@ const Login = (props) => {
               color="primary"
               className={classes.submit}
               onClick={handleSubmit}
+              disableRipple
             >
               Sign In
             </Button>

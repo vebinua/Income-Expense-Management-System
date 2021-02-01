@@ -16,6 +16,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import FadeFlash from './partials/FadeFlash';
+
+
 export const axiosInstance = axios.create({
   baseURL: window.config.baseUrl
 });
@@ -65,23 +68,91 @@ const SignUp = () => {
     const classes = useStyles();
     const [showProgressIndicator, setShowProgressIndicator] = useState(false);
     const [redirect, setRedirect] = useState(false);
+    const [flash, setFlash] = useState(false);
+    const [severity, setSeverity] = useState('success');
+    const [flashMessage, setFlashMessage] = useState('');
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [emailAddress, setEmailAddress] = useState("");
     const [password, setPassword] = useState("");
 
+    const [errorFirstName, setErrorFirstName] = useState(false);
+    const [errorLastName, setErrorLastName] = useState(false);
+    const [errorEmail, setErrorEmail] = useState(false);
+    const [errorPassword, setErrorPassword] = useState(false);
+
+    
+    let [account, setAccount] = useState({
+      first_name: '',
+      last_name: '',
+      email_address: '',
+      password: ''
+    });
+
+    let handleChange = (e) => {
+      let name = e.target.name;
+      let value = e.target.value;
+
+      account[name] = value;
+      setAccount(account);
+
+      if (value == '') {
+        if (name == 'first_name') setErrorFirstName(true);
+        if (name == 'last_name') setErrorLastName(true);
+        if (name == 'email_address') setErrorEmail(true);
+        if (name == 'password') setErrorPassword(true);
+      } else  {
+        if (name == 'first_name') setErrorFirstName(false);
+        if (name == 'last_name') setErrorLastName(false);
+        if (name == 'email_address') setErrorEmail(false);
+        if (name == 'password') setErrorPassword(false);
+      }
+    }
+
+    let showFlashMessage = (show, severity, flashMessage, callback) => {
+      setFlash(show);
+      setSeverity(severity);
+      setFlashMessage(flashMessage);
+
+      setTimeout(() => {
+        setFlash(false);
+        if (callback !== null) callback();
+      }, 3500); 
+    }
+
     const handleSubmit = (e) => {
       e.preventDefault();
+
+      let hasError = false;
+
+      //basic validation
+      if (account['first_name'] == '') {
+        showFlashMessage(true, 'error', 'First name is a required field.', null);
+        setErrorFirstName(true);
+        return false;
+      }
+
+      if (account['last_name'] == '') {
+        showFlashMessage(true, 'error', 'Last name is a required field.', null);
+        setErrorLastName(true);
+        return false;
+      }
+
+      if (account['email_address'] == '') {
+        showFlashMessage(true, 'error', 'Email address is a required field.', null);
+        setErrorEmail(true);
+        return false;
+      }
+
+      if (account['password'] == '') {
+        showFlashMessage(true, 'error', 'Password is a required field.', null);
+        setErrorPassword(true);
+        return false;
+      }
+      
       setShowProgressIndicator(true);
 
-      const data = {
-        'first_name': firstName,
-        'last_name': lastName,
-        'email_address': emailAddress,
-        'password': password
-      };
-
-      axiosInstance.post('/api/users/', {data}, {
+      axiosInstance.post('/api/users', {account}, {
         data: null,
         headers: { 
           'Content-Type': 'application/json',
@@ -119,6 +190,8 @@ const SignUp = () => {
         :  <Box pt={.5}></Box> }
       </div>
 
+      <FadeFlash isFlash={flash} severity={severity} message={flashMessage}/>
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -133,15 +206,15 @@ const SignUp = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="fname"
-                  name="firstName"
+                  name="first_name"
                   variant="outlined"
                   required
                   fullWidth
-                  id="firstName"
+                  id="first_name"
                   label="First Name"
                   autoFocus
-                  onChange={e => setFirstName(e.target.value)}
-                  value={firstName}
+                  onChange={handleChange}
+                  error={errorFirstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -149,12 +222,12 @@ const SignUp = () => {
                   variant="outlined"
                   required
                   fullWidth
-                  id="lastName"
+                  id="last_name"
                   label="Last Name"
-                  name="lastName"
+                  name="last_name"
                   autoComplete="lname"
-                  onChange={e => setLastName(e.target.value)}
-                  value={lastName}
+                  onChange={handleChange}
+                  error={errorLastName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -162,12 +235,12 @@ const SignUp = () => {
                   variant="outlined"
                   required
                   fullWidth
-                  id="email"
+                  id="email_address"
                   label="Email Address"
-                  name="email"
+                  name="email_address"
                   autoComplete="email"
-                  onChange={e => setEmailAddress(e.target.value)}
-                  value={emailAddress}
+                  onChange={handleChange}
+                  error={errorEmail}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -180,8 +253,8 @@ const SignUp = () => {
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  onChange={e => setPassword(e.target.value)}
-                  value={password}  
+                  onChange={handleChange}
+                  error={errorPassword}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -198,6 +271,7 @@ const SignUp = () => {
               color="primary"
               className={classes.submit}
               onClick={handleSubmit}
+              disableRipple
             >
               Sign Up
             </Button>

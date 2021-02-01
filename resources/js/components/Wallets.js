@@ -119,7 +119,7 @@ const renderCards = (data, deleteCallback) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" href={window.config.baseUrl+"wallets/"+walletId+"/edit"}>
             Edit
           </Button>
           <Button size="small" color="secondary" data-id={walletId}
