@@ -5,7 +5,7 @@ import PrivateRoute from './helpers/PrivateRoute';
 
 import Dashboard from './Dashboard';
 import Networth from './Networth';
-import ViewCategory from './ViewCategory';
+import Categories from './Categories';
 import AddCategory from './AddCategory';
 import EditCategory from './EditCategory';
 import AddSubcategory from './AddSubcategory';
@@ -61,9 +61,10 @@ class App extends Component {
                <AuthLayout>
                   <Switch>
                     <PrivateRoute exact path={"/"} component={Dashboard} />
-                    <PrivateRoute path={"/category/view"} component={ViewCategory} />
+                    <PrivateRoute path={"/categories"} component={Categories} />
                     <PrivateRoute path={"/category/add-category"} component={AddCategory} />
                     <PrivateRoute path={"/category/:id/edit"} component={EditCategory} />
+                    <PrivateRoute path={"/category/subcategory/add"} component={AddSubcategory} />
                     <PrivateRoute path={"/wallets/add"} component={AddWallet} />
                     <PrivateRoute path={"/wallets/:id/edit"} component={EditWallet} />
                     <PrivateRoute path={"/wallets"} component={Wallets} />

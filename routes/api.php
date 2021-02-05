@@ -24,9 +24,8 @@ use Illuminate\Support\Facades\Route;
 
 });*/
 Route::group(['middleware' => ['jwt.verify']], function() {
-	Route::get('categories/{id}', 'App\Http\Controllers\CategoryController@showByUser');
+	Route::get('categories/{id}', 'App\Http\Controllers\CategoryController@show');
   Route::get('categories/{id}/{type}', 'App\Http\Controllers\CategoryController@showByUserWithType');
-  Route::get('categories/{id}/edit', 'App\Http\Controllers\CategoryController@show');
   Route::post('categories', 'App\Http\Controllers\CategoryController@store');
   Route::put('categories/{id}', 'App\Http\Controllers\CategoryController@update');
   Route::delete('categories/{id}', 'App\Http\Controllers\CategoryController@destroy');

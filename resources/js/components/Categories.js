@@ -1,8 +1,7 @@
-import axios from 'axios';
-import React, { Fragment } from 'react';
 import PropTypes from "prop-types";
 import ReactDOM from 'react-dom';
 import { Route, Link, BrowserRouter, Switch, useHistory, Redirect } from 'react-router-dom';
+import React, { useEffect, useState, useRef, Fragment } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -33,10 +32,8 @@ import Box from '@material-ui/core/Box';
 
 import { HandleLogout } from './helpers/HandleLogout';
 
-export const axiosInstance = axios.create({
-	baseURL: window.config.baseUrl,
-	//timeout: 1000
-});
+import FadeFlash from './partials/FadeFlash';
+import ApiService from './helpers/services/ApiService';
 
 const useStyles = makeStyles((theme) => ({
 	table: {
@@ -193,9 +190,8 @@ export function AlertDialog(props) {
 	);
 }
 
-const EnhancedCategories = ({ rows, handler, loggedUserId }) => {
+const EnhancedCategories = ({ rows, handler, showProgressIndicator }) => {
 
-	console.log('loggedUserId from EC: ' + loggedUserId);
 	const classes = useStyles();
 
 	const [order, setOrder] = React.useState("asc");
@@ -205,7 +201,6 @@ const EnhancedCategories = ({ rows, handler, loggedUserId }) => {
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const [open, setOpen] = React.useState(false);
 	const [itemId, setItemId] = React.useState(0);
-	const [showProgressIndicator, setShowProgressIndicator] = React.useState(false);
 	const [selectedRows, setSelectedRows] = React.useState([]);
 	const [deletedRows, setDeletedRows] = React.useState([]);
 	const [items, setItems] = React.useState(rows);
@@ -251,96 +246,26 @@ const EnhancedCategories = ({ rows, handler, loggedUserId }) => {
 		setSelected(newSelected);
 	};
 
-	const handleClickAlertDeleteOpen = (e, id, index) => {
+	const handleClickAlertDeleteOpen = (e, cateogryId, index) => {
 		setOpen(true);
-		setItemId(id);
+		setItemId(cateogryId);
 		setSelectedRows(index);
 	};
+	
 	const handleClickAlertDeleteClose = (e, action) => {
-
-		console.log(action + ' ' + loggedUserId);
 
 		if (action == 'cancel') {
 			//do nothing?
 		} else if (action == 'confirm') {
-			setShowProgressIndicator(true);
-
-			const token = localStorage.getItem('access_token');
-			const userId = loggedUserId;
-
-			let severity = 'error';
-			let flashMessage = '';
-			let forceLogout = false;
-			let redirect = false;
-
-			axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 			
-			//add a few delay to show visual affordance for delete activity
-			//could be better removed on prod
-			setTimeout(function(){
-			 
-				axiosInstance.delete('/api/categories/'+itemId,{
-					params: {
-						token: token,
-						userId: userId
-					}
-				})
-				.then(response => {
-					console.log(response);
-
-					if (response.data.action == 'JWT_FAIL_TOKEN_INVALID' || response.data.action == 'JWT_FAIL_TOKEN_EXPIRED') {
-						severity = 'error';
-						flashMessage = 'You\'re session has expired. Please login again.';
-						
-						forceLogout = true;
-					
-					} else if (response.data.action == 'JWT_FAIL_TOKEN_MISSING') {
-						severity = 'error';
-						flashMessage = 'You are not allowed to delete. We will log you out and try signing in again.';
-					 
-						forceLogout = true;
-					
-					} else {
-
-						console.log(response);
-
-						severity = 'success';
-						flashMessage = response.data.message;
-
-					 	deleteItem(selectedRows, itemId);
-					}         
-
-					var flashProps = {
-						"flash": true,
-						"flashMessage": flashMessage,
-						"severity": severity,
-						"redirect": redirect
-					}
-
-					setShowProgressIndicator(false);
-					handler(flashProps);
-
-					setTimeout(() => {
-						flashProps.flash = false;
-						handler(flashProps);
-
-						if (forceLogout) {
-							HandleLogout();
-							flashProps.redirect = true;
-							handler(flashProps);
-						}
-					}, 1500);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-
-			}, 1000);
-		}
-
+			let props = {
+				'action': 'delete_category',
+				'categoryId': itemId
+			}
+			handler(props);
+	}
 		setOpen(false);
 	};
-
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -382,7 +307,7 @@ const EnhancedCategories = ({ rows, handler, loggedUserId }) => {
 			<Paper className={classes.paper}>
 				<TableContainer>
 					<Table
-						className={classes.table}
+						className={classes.table + ' table-listings'}
 						aria-labelledby="tableTitle"
 						size="medium"
 						aria-label="enhanced table"
@@ -419,7 +344,7 @@ const EnhancedCategories = ({ rows, handler, loggedUserId }) => {
 													startIcon={<EditIcon />}
 													href={window.config.baseUrl+"category/"+row.category_id+"/edit"}
 													>
-													Edit
+												Edit
 												</Button>
 												 <Button
 													id={row.category_id}
@@ -429,7 +354,7 @@ const EnhancedCategories = ({ rows, handler, loggedUserId }) => {
 													className={classes.button}
 													startIcon={<DeleteIcon />}
 												>
-													Delete
+												Delete
 												</Button>
 											</TableCell>
 										</TableRow>
@@ -473,87 +398,111 @@ const styles = {
 };
 
 
-class ViewCategory extends React.Component {
+const Categories = (props) => {
 
-	constructor (props) {
+	let loggedUserId = props.loggedUserId;
+	let isServiceValid = false;
+	let history = useHistory();
+	
+	const [flash, setFlash] = useState(false);
+	const [shouldRedirect, setShouldRedirect] = useState(false);
+	const [severity, setSeverity] = useState('success');
+	const [flashMessage, setFlashMessage] = useState('');
+	const [categoryName, setCategoryName] = useState('');
+	const [showProgressIndicator, setShowProgressIndicator] = useState(false);
+	
+	const ladda = useRef(false);
 
-		console.log(props);
+	const [categories, setCategories] = useState([]);
 
-		super(props)
-		this.state = {
-			categories: [],
-			category: '',
-			flash: false,
-			severity: 'success',
-			flashMessage: '',
-			redirect: false,
-			userId: false,
-			isLogged: props.isLogged,
-			loggedUserId: props.loggedUserId
-		}
+	let showFlashMessage = (show, severity, flashMessage, callback) => {
+    setFlash(show);
+    setSeverity(severity);
+    setFlashMessage(flashMessage);
+
+    setTimeout(() => {
+      setFlash(false);
+      callback();
+    }, 3500); 
+  }
+
+ 	let handler = (prop) => {
+		
+ 		if (prop.action == 'delete_category') {
+ 			setShowProgressIndicator(true);
+
+ 			deleteCategory(prop.categoryId);
+ 			
+ 			return false;
+ 		}
+ 	}
+
+	let updateCategoryList = (category_id) => {
+		console.log('from deleteItem! ');
+		const filteredArray = categories.filter((res) => res.category_id !== category_id);
+
+		setCategories(filteredArray);
 	}
 
-	handler = (prop) => {
-		
-		this.setState({ flashMessage: prop.flashMessage});
-		this.setState({ flash: prop.flash});
-		this.setState({ redirect: prop.redirect});
-	}
+	let deleteCategory = (categoryId) => {
 
-	componentDidMount () {
-		
-		const token = localStorage.getItem('access_token');
-		const userId = this.state.loggedUserId;
-
-		axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-		
-		axiosInstance.get('/api/categories/'+userId, {
-			params: {
-				token: token
+	 	ApiService.deleteCategory(categoryId, loggedUserId)
+    .then(response => {
+    
+      if (response.data.isUnauthorized) {
+          showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
+          HandleLogout();
+          history.push({pathname: '/login'});
+        });
+      } else {
+      	updateCategoryList(categoryId);
+      	showFlashMessage(true, 'success', response.data.message, ()=> {
+      	});    
+    		setShowProgressIndicator(false);
 			}
-		})
-		.then(response => {
+
+    })
+ 		.catch((error) => {
+ 			showFlashMessage(true, 'error', 'Error on deleting category: ' + error, null);
+  	});
+ 	}
+
+	React.useEffect(() => {
+		
+		 ApiService.getCategories(loggedUserId)
+      .then(response => {
+      
+      if (response.data.isUnauthorized) {
+          showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
+          HandleLogout();
+          history.push({pathname: '/login'});
+        });
+      } else {
+      	setCategories(response.data);
+      }
+
+    })
+   	.catch((error) => {
+   		showFlashMessage(true, 'error', 'Error on fetching categories: ' + error, null);
+    });
+
+	}, []);
+
+
+	return (
+		<div>
 			
-			if (response.data.action == 'JWT_FAIL_TOKEN_INVALID' || response.data.action == 'JWT_FAIL_TOKEN_EXPIRED') {
+			<FadeFlash isFlash={flash} severity={severity} message={flashMessage}/>
 
-				HandleLogout();
-				this.setState({redirect: true});
-			} else {
+			<h2>Category Listings</h2>
+			
+			<div className="line"></div>
 
-				this.setState({categories: response.data});
-			}
-		})
-		.catch((error) => {
-			console.error('error on fetching category listing: ' + error)
-		})
-	}
-
-	render() {
-
-		const { categories, open, setOpen, redirect } = this.state;
-		
-		return (
-			<div>
-				{redirect ? (
-				<Fragment>
-					<Redirect to='/login' />  
-				</Fragment>
-				): null }
-
-				{
-					<Fade in={this.state.flash} timeout={{ enter: 300, exit: 1000 }}>
-					<Alert style={styles.alert} onClose={() => {}} severity={this.state.severity}>{this.state.flashMessage}</Alert>
-					</Fade>
-				}
-
-				<h2>Category Listings</h2>
-				
-				<div className="line"></div>
-
-				{<EnhancedCategories rows={categories} handler={this.handler} loggedUserId={this.state.loggedUserId} />}
-			 
-			</div>
-		)
-	}
+			<EnhancedCategories rows={categories} handler={handler} showProgressIndicator={showProgressIndicator} />
+		 
+		</div>
+	)	
 }
-export default ViewCategory;
+
+
+export default Categories;

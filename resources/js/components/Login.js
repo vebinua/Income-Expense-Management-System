@@ -68,6 +68,9 @@ const Login = (props) => {
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
 
+  const [username, setUsername] = useState('');
+
+
   let isLogged = props.isLogged;
   let loggedUserId = props.loggedUserId;
 
@@ -96,8 +99,8 @@ const Login = (props) => {
     account[name] = value;
     setAccount(account);
 
-    account['email_address'] != '' ? setErrorEmail(false) : '';
-    account['password'] != '' ? setErrorPassword(false) : '';
+    account[name] != '' ? setErrorEmail(false) : '';
+    //account['password'] != '' ? setErrorPassword(false) : '';*/
   }
 
   const handleSubmit = (e) => {

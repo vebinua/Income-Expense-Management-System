@@ -7,7 +7,7 @@ use App\Models\Category;
 use App\Http\Resources\Category as CategoryResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-
+use JWTAuth;
 
 class CategoryController extends Controller
 { 
@@ -68,18 +68,37 @@ class CategoryController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show($id)
+	public function show($userId)
 	{ 
-
 		try {
 
-			 	CategoryResource::withoutWrapping();
-				return new CategoryResource(Category::findOrFail($id));
+			 $user = Auth::user();
+			 
+			 // check if currently authenticated user is the owner of the category
+	    if ($user->user_id !== (int) $userId) {
+	    	return response()->json(['error' => 'You can only view your own categories.'], 403);
+	    }
+
+	    $categories = Category::where('user_id', $userId)->get();
+
+	    return $categories;
 		
 		} catch(ModelNotFoundException $e) {
 			return response()->json(['status' => 'fail', 'message' => $e]);   
-		}
+		}	  
 	  
+	}
+
+	public function showByUserWithCategoryId($userId, $categoryId) {
+		try {
+
+	  	$category = Category::where('user_id', $userId)->where('category_id', $categoryId)->get();
+
+	  	return $category;
+		
+		} catch(ModelNotFoundException $e) {
+			return response()->json(['status' => 'fail', 'message' => $e]);   
+		}	  	
 	}
 
 	public function showByUser($id)

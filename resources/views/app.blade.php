@@ -25,6 +25,8 @@
     <script src="{{ asset('js/fontawesome.min.js') }}"></script>
     <script src="{{ asset('js/solid.min.js') }}"></script>
     <script src="{{ asset('js/config.js')}}"></script>
+
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/fav.foo')}}"/>
 </head>
 <body>
     <div id="app"></div>

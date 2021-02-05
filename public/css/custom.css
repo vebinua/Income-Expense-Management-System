@@ -445,3 +445,8 @@ button:focus {
 .dialogSearchCategories .MuiDialogContent-dividers {
   border:none;
 }
+
+.table-listings .MuiButtonBase-root  {
+  margin:0 !important;
+  margin-left: 10px !important;
+}

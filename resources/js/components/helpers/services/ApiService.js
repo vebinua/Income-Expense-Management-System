@@ -67,14 +67,22 @@ class ApiService {
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
 
+  getUserCategoryById(userId, categoryId) {
+    return axiosInstance.get('/api/categories/'+userId+'/'+categoryId, 
+      {params: { token: this.getToken(), uncacher: Date.now()}});
+  }
+
+  getCategories(userId) {
+    return axiosInstance.get('/api/categories/'+userId, 
+      {params: { token: this.getToken(), uncacher: Date.now()}});
+  }
+
   getCategoriesByUser(userId) {
-    
     return axiosInstance.get('/api/categories/'+userId, 
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
 
   getCategoriesByUserWithType(userId, accountType) {
-    
     return axiosInstance.get('/api/categories/'+userId+'/'+accountType, 
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
@@ -94,13 +102,14 @@ class ApiService {
   }
 
   deleteWallet(walletId, userId) {
-
     return axiosInstance.delete('/api/wallets/'+walletId, 
     {params: { token: this.getToken(), walletId: walletId, userId: userId}});
-
   }
 
-
+  deleteCategory(categoryId, userId) {
+    return axiosInstance.delete('/api/categories/'+categoryId, 
+    {params: { token: this.getToken(), categoryId: categoryId, userId: userId}});
+  }
 
   validateServiceResponse(response) {
 
