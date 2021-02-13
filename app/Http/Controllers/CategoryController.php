@@ -56,18 +56,13 @@ class CategoryController extends Controller
 		Category::create([
 			'category' => $request->data['category'],
 			'account_type' => $request->data['account_type'],
-			'user_id' => $request->data['user_id']
+			'user_id' => $request->data['user_id'],
+			'parent_id' => $request->data['parent_id']
 		]);
 		
 		return response()->json('  Added Successfully! ');
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
 	public function show($userId)
 	{ 
 		try {
@@ -88,6 +83,125 @@ class CategoryController extends Controller
 		}	  
 	  
 	}
+
+	private function _remapCategoryWithSub($data) {
+
+		$collectionArray = [];
+		//structure should be like:
+		/*[1] => {
+		  ['parent'] = 'B & U',
+		  [child] => {
+		    Internet'
+		  }
+		},
+		[11] => {
+		  ['parent'] => 'What went wrong',
+		  ['child'] => {
+		    'went wrong what',
+		    'yet another wrong'
+		  }
+		},
+		[12] => {
+		  ['parent'] => 'lost'
+		}*/
+
+		foreach ($data as $key => $cat) {
+			$categoryId = $cat['category_id'];
+			$subcategoryId = $cat['subcategory_id'];
+
+			$collectionArray[$categoryId]['parent_cat'] = $cat['category'];
+
+			if (isset($cat['subcategory'])) {
+				$subcat = ($cat['subcategory'] !== null) ? $cat['subcategory'] : '';
+				$collectionArray[$categoryId]['child_cat'][$subcategoryId] = $subcat;
+			}
+
+			//echo $key . ' -> ' . $cat['category_id'] . ' ' . $cat['category'] . ', ' . $cat['subcategory'] . '<br>';
+		}
+
+		return $collectionArray;
+	}
+
+	private function _remapCategoryWithSubOptimized($data) {
+
+		$collectionArray = [];
+		$itemArray = [];
+		//structure should be like:
+		/*[1] => {
+		  ['parent'] = 'B & U',
+		  [child] => {
+		    Internet'
+		  }
+		},
+		[11] => {
+		  ['parent'] => 'What went wrong',
+		  ['child'] => {
+		    'went wrong what',
+		    'yet another wrong'
+		  }
+		},
+		[12] => {
+		  ['parent'] => 'lost'
+		}*/
+
+		foreach ($data as $key => $cat) {
+			$categoryId = $cat['category_id'];
+			$subcategoryId = $cat['subcategory_id'];
+
+			//echo $key . ' -> ' . $cat['category_id'] . ' ' . $cat['category'] . ', ' . $cat['subcategory'] . '<br>';
+		}
+
+		return $collectionArray;
+	}
+
+	public function showWithSub($userId, $accountType) {
+
+		$categories = Category::where('user_id', $userId)->where('account_type', $accountType)->get();
+
+		return $categories;
+
+	}
+
+	/*public function showWithSub($userId, $accountType)
+	{ 
+		try {
+
+			 $user = Auth::user();
+			 
+			 // check if currently authenticated user is the owner of the category
+	    if ($user->user_id !== (int) $userId) {
+	    	return response()->json(['error' => 'You can only view your own categories.'], 403);
+	    }
+
+			$selectArray = [
+				'categories.category_id',
+		 		'categories.category',
+		 		'subcategories.subcategory',
+		 		'subcategories.subcategory_id',
+		 		'categories.account_type'
+	 		];
+
+	 		$categories = Category::
+    		leftjoin('subcategories', 'subcategories.category_id', '=', 'categories.category_id')
+    		->select($selectArray)
+    		->where('categories.user_id', $userId)
+    		->where('categories.account_type', $accountType)->get()
+    		->map(function($data) {
+		      if ( ! $data->subcategory) {
+          	$data->subcategory = '';
+		      }
+
+		      return $data;
+		    });
+	    
+    	//return $this->_remapCategoryWithSub($categories);
+    	return $categories;
+
+	  } catch(ModelNotFoundException $e) {
+			return response()->json(['status' => 'fail', 'message' => $e]);   
+		}	  
+	  
+	}*/
 
 	public function showByUserWithCategoryId($userId, $categoryId) {
 		try {
@@ -115,13 +229,28 @@ class CategoryController extends Controller
 		}	  
 	}
 
-		public function showByUserWithType($id, $type)
+	public function getUserCategory($categoryId, $userId) {
+
+		try {
+
+	  	$category = Category::where('category_id', $categoryId)->where('user_id', $userId)->first();
+
+	  	return $category;
+		
+		} catch(ModelNotFoundException $e) {
+			return response()->json(['status' => 'fail on getting user category', 'message' => $e]);   
+		}	
+
+	}
+
+	public function showByUserWithType($id, $type)
 	{ 
 
 		try {
 
 		  		$categories = Category::where('user_id', $id)->where('account_type', $type)->get();
 
+		  		//var_dump($categories);
 		  		return $categories;
 		
 		} catch(ModelNotFoundException $e) {

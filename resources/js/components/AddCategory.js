@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import ReactDOM from 'react-dom';
@@ -38,7 +37,8 @@ const AddCategory = (props) => {
 		const data = {
       'category': categoryName,
       'account_type': accountType,
-      'user_id': loggedUserId
+      'user_id': loggedUserId,
+      'parent_id': 0
     };
 
 		ladda.current.start();
@@ -57,6 +57,10 @@ const AddCategory = (props) => {
         });
       }
 
+      ladda.current.stop();
+    })
+    .catch((error) => {
+      showFlashMessage(true, 'error', 'Error on saving category. ' + error);
       ladda.current.stop();
     })
 	}   

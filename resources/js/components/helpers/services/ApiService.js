@@ -40,8 +40,16 @@ class ApiService {
     return axiosInstance.post('/api/wallets', {data}, {params: { token: this.getToken() }});
   }
 
+  postSubcategory(data) {
+    return axiosInstance.post('/api/subcategories', {data}, {params: { token: this.getToken() }});
+  }  
+
   postCategories(data) {
     return axiosInstance.post('/api/categories', {data}, {params: { token: this.getToken() }});
+  }
+
+  putCategory(data, id) {
+    return axiosInstance.put('/api/categories/'+id, {data}, {params: { token: this.getToken() }});
   }
 
   putWallet(data, id) {
@@ -74,6 +82,16 @@ class ApiService {
 
   getCategories(userId) {
     return axiosInstance.get('/api/categories/'+userId, 
+      {params: { token: this.getToken(), uncacher: Date.now()}});
+  }
+
+  getUserCategory(categoryId, userId) {
+    return axiosInstance.get('/api/categories/'+categoryId+'/user/'+userId, 
+      {params: { token: this.getToken(), uncacher: Date.now()}});
+  }
+
+  getCategoriesWithSub(userId, accountType) {
+    return axiosInstance.get('/api/categories/withsub/'+userId+'/'+accountType, 
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
 

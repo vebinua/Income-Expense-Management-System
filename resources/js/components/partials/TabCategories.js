@@ -46,23 +46,13 @@ const ListItem = withStyles({
   selected: {}
 })(MuiListItem);
 
-/*const handleListItemClick = (event, index, callback) => {
-    console.log('category id is: ' + index);
-    callback;
-  };*/
-
 const RenderCategoryLists = ({data, callback}) => {
 
-  console.log('from render!');
-  //console.log(data.data.categories.length);
-  console.log(data);
-  
   const categoryLists = (data || []).map((cat) => {
 
     return (
        <ListItem
         button
-        //selected={selectedIndex === transaction.transaction_id}
         onClick={(event) => callback(cat.category_id, cat.category)}
         disableRipple
         key={'listItem-'+cat.category_id}
@@ -125,26 +115,16 @@ export default function SimpleTabs(props) {
     
     let matches = false;
     let searchVal = props.searchCategory.toLowerCase();
-    /*let matches = categories.categories.filter(item => {
-      console.log(item);
-    });*/
-    console.log('from handle change: ');
+
+    console.log('from effect!');
     console.log(props.assetCategories);
-
-
+    
     if (activeCategory == 'asset') {
       matches = props.assetCategories.filter(v => v.category.toLowerCase().includes(searchVal));
     } else {
       matches = props.liabilityCategories.filter(v => v.category.toLowerCase().includes(searchVal));
     }
     
-    //let matches = categories.filter(v => console.log(v));
-
-    console.log('use effect from tab!');
-    console.log(props.assetCategories.categories);
-    console.log('matches');
-    console.log(matches);
-
     if (props.searchCategory == '') {
       setAssetCategories(props.assetCategories);
       setLiabilityCategories(props.liabilityCategories);
@@ -179,9 +159,6 @@ export default function SimpleTabs(props) {
       </div>    
 
       <div className="clear"></div>
-      </TabPanel>
-      <TabPanel key='tab-2' value={value} index={2}>
-
       </TabPanel>
     </div>
   );

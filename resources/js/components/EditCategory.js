@@ -25,7 +25,10 @@ const EditCategory = (props) => {
 	const [flashMessage, setFlashMessage] = useState('');
 	const [categoryName, setCategoryName] = useState('');
 	const [accountType, setAccountType] = useState('asset');
+  const [parentId, setParentId] = useState(0);
 	const ladda = useRef(false);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   let clearFields = () => {
     document.getElementById('frmAddCategory').reset();
@@ -38,12 +41,13 @@ const EditCategory = (props) => {
 		const data = {
       'category': categoryName,
       'account_type': accountType,
-      'user_id': loggedUserId
+      'user_id': loggedUserId,
+      'parent_id': parentId
     };
 
 		ladda.current.start();
 
-	  ApiService.postCategories(data)
+	  ApiService.putCategory(data, props.match.params.id)
       .then(response => {
       
       if (response.data.isUnauthorized) {
@@ -74,6 +78,31 @@ const EditCategory = (props) => {
 
 	React.useEffect(() => {
 		ladda.current = Ladda.create(document.querySelector('.btn-submit'));
+
+    ApiService.getUserCategory(props.match.params.id, loggedUserId)
+    .then(response => {
+      
+      if (response.data.isUnauthorized) {
+        showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
+          HandleLogout();
+          history.push({pathname: '/login'});
+        });
+      } else {
+        
+        setCategoryName(response.data.category);
+        setAccountType(response.data.account_type);
+        setParentId(response.data.parent_id);
+
+        setIsLoading(false);
+      }
+
+      ladda.current.stop();
+    })
+    .catch((error) => {
+      showFlashMessage(true, 'error', 'Error on fetching category. ' + error);
+      ladda.current.stop();
+    });
+
 	}, []);
 
 	return(
@@ -88,31 +117,23 @@ const EditCategory = (props) => {
 					 <div className="row">
 							 	<div className="col-4">
 
-								<form id="frmAddCategory" onSubmit={handleSubmit}>
+								<form id="frmAddCategory" onSubmit={handleSubmit} className={isLoading ? "hide-form" : ""}>
 	            
 	                <div className="form-group">
-	                  <label htmlFor="Category">Category</label>
+	                  <label htmlFor="category">Category</label>
 	                  <input type="text" className="form-control" id="category" name="category" placeholder="Category" 
-	                  onChange={(e)=> {setCategoryName(e.target.value)}}  />
+	                  onChange={(e)=> {setCategoryName(e.target.value)}} value={categoryName}  />
 	                </div>
 
 	                <div className="form-group">
 	                  <label>Account Type</label>
 	                  <div className="custom-control custom-radio">
-	                      <input type="radio" id="asset" name="account_type" value="asset" className="custom-control-input" 
-	                      checked={accountType === 'asset'} 
-	                      onChange={(e)=> {setAccountType(e.target.value)}} />
-	                      <label className="custom-control-label" htmlFor="asset">Asset</label>
-	                  </div>
-	                  <div className="custom-control custom-radio">
-	                      <input type="radio" id="liability" name="account_type" value="liability" className="custom-control-input" 
-	                      checked={accountType === 'liability'} 
-	                      onChange={(e)=> {setAccountType(e.target.value)}} />
-	                      <label className="custom-control-label" htmlFor="liability">Liability</label>
+	                      <input type="radio" id="asset" name="account_type" value={accountType} className="custom-control-input" defaultChecked/>
+	                      <label className="custom-control-label" htmlFor="asset">{accountType == 'asset' ? 'Asset' : 'Liability'}</label>
 	                  </div>
 	                </div>
 
-                  <button type="submit" className="btn btn-info btn-submit ladda-button" data-style="expand-left">Add Category</button>
+                  <button type="submit" className="btn btn-info btn-submit ladda-button" data-style="expand-left">Update Category</button>
 	              </form>
 
 							 	</div>

@@ -429,7 +429,9 @@ button:focus {
 .tabCategories {margin-top:-25px;}
 .tabCategories .MuiBox-root {padding-right: 10px;}
 .tabCategories .MuiList-root {width: 98%; font-size: .85rem;}
-.tabCategories .MuiListItem-root {border-bottom: #ccc 1px dotted; padding: 12px;}
+.dialogSearchCategories .MuiDialogContent-root {overflow: hidden !important; padding-right: 5px !important; padding-left: 5px !important}
+.tabCategories div.MuiListItem-root:first-of-type {border-top: none !important}
+.tabCategories .MuiListItem-root {border-top: #ccc 1px dotted; padding: 12px;}
 .tabCategories .MuiListItem-button:hover {
   background-color: rgba(115, 134, 213, 0.1);
 }
@@ -449,4 +451,36 @@ button:focus {
 .table-listings .MuiButtonBase-root  {
   margin:0 !important;
   margin-left: 10px !important;
+}
+
+.selectedCategory {
+  position: absolute;
+    left: 25px;
+    top: 38px;
+    width: 80%;
+    background:none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+#selectCategory {
+  cursor: pointer;
+}
+
+.childCategory {
+  text-indent: 25px;
+  font-size: .9rem;
+}
+
+.tabCategories .childCategory {
+  border-top: none !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.childCategory .indentBorder {
+  display: block;
+  border-left: #ccc 1px solid;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }

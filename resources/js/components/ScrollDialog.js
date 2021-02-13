@@ -84,10 +84,10 @@ export default function ScrollDialog(props) {
         </Box>
         
         </DialogTitle>
-        <TabCategories key="key-tab" assetCategories={props.assetCategories} liabilityCategories={props.liabilityCategories} searchCategory={searchCategory} 
+        <DialogContent>
+<TabCategories key="key-tab" assetCategories={props.assetCategories} liabilityCategories={props.liabilityCategories} searchCategory={searchCategory} 
         callbackDialog={callbackSelectClicked}/>
-        <DialogContent dividers={scroll === 'paper'}>
-
+        
           <DialogContentText
             id="scroll-dialog-description"
             ref={descriptionElementRef}
@@ -95,14 +95,7 @@ export default function ScrollDialog(props) {
           >
           </DialogContentText>
         </DialogContent>
-        {/*<DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
-          </Button>
-        </DialogActions>*/}
+      
       </Dialog>
     </div>
   );
