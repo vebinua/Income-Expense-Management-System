@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useHistory, Redirect, Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
@@ -436,6 +435,7 @@ const Transactions = (props) => {
             className={classes.button}
             startIcon={<AddIcon />}
             href={window.config.baseUrl+'transactions/add'}
+            disableRipple
             >
             Add Transaction
           </Button>

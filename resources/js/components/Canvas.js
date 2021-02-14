@@ -38,9 +38,10 @@ const Canvas = (props) => {
   
   const [flash, setFlash] = useState(false);
   const [shouldRedirect, setShouldRedirect] = useState(false);
-  const [showForm, setShowForm] = useState(false);
   const [severity, setSeverity] = useState('success');
   const [flashMessage, setFlashMessage] = useState('');
+  const [showForm, setShowForm] = useState(false);
+  
   const [showProgressIndicator, setShowProgressIndicator] = useState(true);  
 
   const [categories, setCategories] = useState(null);

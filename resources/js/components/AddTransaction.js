@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import ReactDOM from 'react-dom';
@@ -6,6 +5,9 @@ import renderHTML from 'react-render-html';
 
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Box from '@material-ui/core/Box';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -23,6 +25,19 @@ import ApiService from "./helpers/services/ApiService";
 import DynamicDropdown from './helpers/DynamicDropdown';
 import { HandleLogout } from './helpers/HandleLogout';
 
+import ScrollDialogCategoryWithSub from './ScrollDialogCategoryWithSub';
+
+const useStyles = makeStyles((theme) => ({
+  progressIndicator: {
+    width: '100%',
+    backgroundColor: '#17a2b8',
+    background: '#17a2b8'
+  },
+  progressIndicatorWrapper: {
+    marginTop: theme.spacing(0),
+  }
+}));
+
 const AddTransaction = (props) => {
 
 	let loggedUserId = props.loggedUserId;
@@ -33,17 +48,22 @@ const AddTransaction = (props) => {
 	const [shouldRedirect, setShouldRedirect] = useState(false);
 	const [currencyOptions, setCurrencyOptions] = useState('');
 	const [wallets, setWallets] = useState([]);
-	const [categories, setCategories] = useState([]);
-  const [flash, setFlash] = useState(false);
+	const [flash, setFlash] = useState(false);
   const [severity, setSeverity] = useState('success');
   const [flashMessage, setFlashMessage] = useState('');
   const [alertNotifyMessage, setAlertNotifyMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showProgressIndicator, setShowProgressIndicator] = useState(true);  
   const [hasWallet, setHasWallet] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const ladda = useRef(false);
 
-
+  const [categories, setCategories] = useState([]);
+  const [assetCategories, setAssetCategories] = useState(null);
+  const [liabilityCategories, setLiabilityCategories] = useState(null);
+  const [categoryId, setCategoryId] = useState(0);
+  
   const [transaction, setTransaction] = useState({
 		category_id: '',
 		wallet_id: '',
@@ -53,6 +73,12 @@ const AddTransaction = (props) => {
 		transaction_date: new Date(),
 		user_id: loggedUserId
 	});
+
+  const classes = useStyles();
+
+  let scrollDialogCallback = (prop) => {
+    setCategoryId(prop.categoryId);
+  }
 
 	let handleSubmit = (e) => {
 		e.preventDefault();
@@ -133,6 +159,7 @@ const AddTransaction = (props) => {
         	setAlertNotifyMessage(msg);
         	setShowAlert(true);
         	setHasWallet(false);
+          setIsLoading(false);
         } else {
         	setHasWallet(true);
         	setWallets(response.data);
@@ -140,8 +167,7 @@ const AddTransaction = (props) => {
 
         	transaction['wallet_id'] = response.data[0].wallet_id;
       		setTransaction(transaction);
-        	
-      		//var el = document.getElementById('wallet_name');
+        	//var el = document.getElementById('wallet_name');
 					//el.dispatchEvent(new Event('change'));
 					//transaction['wallet_name'] = 2;
 					//setTransaction(transaction);
@@ -183,7 +209,7 @@ const AddTransaction = (props) => {
 		})
 	}
 	
-	function fetchCategories() {
+	/*function fetchCategories() {
 		ApiService.getCategoriesByUser(loggedUserId)
     .then(response => {
       
@@ -212,7 +238,52 @@ const AddTransaction = (props) => {
     .catch((error) => {
       showFlashMessage(true, 'error', 'Error on fetching categories. ' + error, null);
     })
-	}
+	}*/
+
+  function fetchCategories() {
+    axios.all(
+      [
+        ApiService.getCategoriesWithSub(loggedUserId, 'asset'),
+        ApiService.getCategoriesWithSub(loggedUserId, 'liability')
+      ]
+    )
+    .then(axios.spread((...responses) => {
+
+      console.log('responses!');
+
+      const assetResponse = responses[0];
+      const liabilityResponse = responses[1];
+      
+      if (assetResponse.data.isUnauthorized || assetResponse.data.isUnauthorized) {
+        showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
+        window.clearTimeout(timeoutRef);
+        history.push({pathname: '/login'});
+        })
+      } else {
+
+          console.log('categories with sub');
+          console.log(assetResponse.data);
+        
+
+        if (assetResponse.data.length == 0) {
+          /*let msg = renderHTML("No wallets found. You must have a wallet to make a transaction. Would you like to <a href='"+window.config.baseUrl+"wallets/add'>add wallet</a> now?");
+          setAlertNotifyMessage(msg);
+          setShowAlert(true);*/
+        } else {
+          console.log(assetResponse);
+
+          setAssetCategories(assetResponse.data);
+          setLiabilityCategories(liabilityResponse.data);
+          setShowProgressIndicator(false);
+          setIsLoading(false);
+        }
+
+      }
+    }))
+    .catch((errors) => {
+      showFlashMessage(true, 'error', 'Error on fetching categories ' + errors, null);
+    })
+  }
 
 	React.useEffect(() => {
 		fetchWallets();
@@ -233,8 +304,17 @@ const AddTransaction = (props) => {
 		 	<div className="form-container">
 			 	<div className="row">
 					<div className="col-4">
-					{ hasWallet ? (
-						<form onSubmit={handleSubmit}>
+					<div className={classes.progressIndicatorWrapper}>
+            { showProgressIndicator ?
+            <div className={classes.progressIndicator}>
+              <LinearProgress className="progressIndicator" />
+            </div>
+            :  <Box pt={.5}></Box> }
+          </div>
+            
+          { hasWallet ? (
+
+            <form onSubmit={handleSubmit} className={isLoading ? "hide-form" : ""}>
 							<div className="form-row">
 								<div className="form-group col-md-6 mb-0"></div>
 								<div className="form-group col-md-6 mb-0">
@@ -262,14 +342,12 @@ const AddTransaction = (props) => {
 									optionValue={'wallet_name'} 
 									onChangeCallback={handleChange} />
 							</div>
-							<div className="form-group">
-								<label htmlFor="wallet_name">Category</label>
-								<DynamicDropdown data={categories} 
-									optionKey={'category_id'} 
-									optionValue={'category'} 
-									pleaseSelectMessage="Please select category..." 
-									onChangeCallback={handleChange} />
-							</div>
+							<div className="form-row">
+                <div className="form-group col-lg-12">
+                    <label htmlFor="selectCategory">Category</label>
+                    <ScrollDialogCategoryWithSub assetCategories={assetCategories} liabilityCategories={liabilityCategories} scrollDialogCallback={scrollDialogCallback} />
+                </div>
+              </div>
 							<div className="form-row">
 								<div className="form-group col-md-6">
 									<label htmlFor="amount">Amount</label>

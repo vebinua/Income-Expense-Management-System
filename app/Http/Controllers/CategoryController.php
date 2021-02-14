@@ -243,7 +243,19 @@ class CategoryController extends Controller
 
 	}
 
-	public function showByUserWithType($id, $type)
+	public function getUserCategoriesByType($userId, $type) {
+		try {
+
+  		$categories = Category::where('user_id', $userId)->where('account_type', $type)->where('parent_id', 0)->get();
+
+  		return $categories;
+		
+		} catch(ModelNotFoundException $e) {
+			return response()->json(['status' => 'fail', 'message' => $e]);   
+		}	  
+	}
+
+	/*public function showByUserWithType($id, $type)
 	{ 
 
 		try {
@@ -256,7 +268,7 @@ class CategoryController extends Controller
 		} catch(ModelNotFoundException $e) {
 			return response()->json(['status' => 'fail', 'message' => $e]);   
 		}	  
-	}
+	}*/
 
 
 	public function edit($id)

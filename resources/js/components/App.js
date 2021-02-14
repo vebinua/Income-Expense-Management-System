@@ -62,7 +62,7 @@ class App extends Component {
                   <Switch>
                     <PrivateRoute exact path={"/"} component={Dashboard} />
                     <PrivateRoute path={"/categories"} component={Categories} />
-                    <PrivateRoute path={"/category/add-category"} component={AddCategory} />
+                    <PrivateRoute path={"/category/add"} component={AddCategory} />
                     <PrivateRoute path={"/category/:id/edit"} component={EditCategory} />
                     <PrivateRoute path={"/category/subcategory/add"} component={AddSubcategory} />
                     <PrivateRoute path={"/wallets/add"} component={AddWallet} />

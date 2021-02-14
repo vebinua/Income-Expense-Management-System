@@ -100,7 +100,8 @@ class ApiService {
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }
 
-  getCategoriesByUserWithType(userId, accountType) {
+  /*returns only the parent categories*/
+  getUserCategoriesByType(userId, accountType) {
     return axiosInstance.get('/api/categories/'+userId+'/'+accountType, 
       {params: { token: this.getToken(), uncacher: Date.now()}});
   }

@@ -47,26 +47,30 @@ const AddSubcategory = (props) => {
   const [assetCategories, setAssetCategories] = useState(null);
   const [liabilityCategories, setLiabilityCategories] = useState(null);
   const [categoryId, setCategoryId] = useState(0);
-  const [subcategory, setSubcategory] = useState(''); 
+  const [subcategory, setSubcategory] = useState('');
+  const [accountType, setAccountType] = useState('asset');
   
 	const ladda = useRef(false);
 	let timeoutRef = useRef(false);
 
 	let scrollDialogCallback = (prop) => {
 		setCategoryId(prop.categoryId);
+    setAccountType(prop.accountType);
  	}
 
  	let handleSubmit = (e) => {
 		e.preventDefault();
 
 		const data = {
-      'subcategory': subcategory,
-      'category_id': categoryId
+      'category': subcategory,
+      'account_type': accountType,
+      'user_id': loggedUserId,
+      'parent_id': categoryId
     };
 
     ladda.current.start();
 
-	  ApiService.postSubcategory(data)
+    ApiService.postCategories(data)
       .then(response => {
       
       if (response.data.isUnauthorized) {
@@ -88,15 +92,7 @@ const AddSubcategory = (props) => {
 		})
 	}   
 
-	let handleSelectCategoryClick = (e) => {
-		e.preventDefault();
-
-		alert('show dialog here');
-
-		return false;
-	}
-
- 	let showFlashMessage = (show, severity, flashMessage, callback) => {
+	let showFlashMessage = (show, severity, flashMessage, callback) => {
     setFlash(show);
     setSeverity(severity);
     setFlashMessage(flashMessage);
@@ -113,8 +109,8 @@ const AddSubcategory = (props) => {
 
 	    axios.all(
 	      [
-	        ApiService.getCategoriesByUserWithType(loggedUserId, 'asset'),
-	        ApiService.getCategoriesByUserWithType(loggedUserId, 'liability')
+	        ApiService.getUserCategoriesByType(loggedUserId, 'asset'),
+	        ApiService.getUserCategoriesByType(loggedUserId, 'liability')
 	      ]
 	    )
 	    .then(axios.spread((...responses) => {

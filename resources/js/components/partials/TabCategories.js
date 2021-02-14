@@ -53,7 +53,7 @@ const RenderCategoryLists = ({data, callback}) => {
     return (
        <ListItem
         button
-        onClick={(event) => callback(cat.category_id, cat.category)}
+        onClick={(event) => callback(cat.category_id, cat.category, cat.account_type)}
         disableRipple
         key={'listItem-'+cat.category_id}
         data-category-id={cat.category_id}
