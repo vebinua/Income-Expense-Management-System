@@ -398,14 +398,16 @@ button:focus {
   border-top-right-radius: 0;
   border-top-left-radius: 0;
   border-top: 1px solid rgba(0,0,0,0.2);
+  margin-top: 50px;
 }
 #transactionWrapper nav.MuiList-root {
   padding-top:0;
 }
 
-.tabGeneric .MuiBox-root,
-.tabTransaction .MuiBox-root {padding: 15px;}
-.inflowOutflow {padding: 0; margin: 0; font-size: .9rem}
+.tabPanel {background-color:#fff;}
+.tabTransaction .MuiBox-root {padding: 0px;}
+.tabGeneric .MuiBox-root {padding: 15px;}
+.inflowOutflow {padding: 15px; margin: 0; font-size: .9rem}
 .inflowOutflow li {
   display: inline; float: left; clear: left; width: 100%;
   color: rgba(0, 0, 0, 0.87);

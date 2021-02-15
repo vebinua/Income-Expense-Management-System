@@ -43,7 +43,10 @@ Route::group(['middleware' => ['jwt.verify']], function() {
   Route::get('wallets/{id}/current-balance/all', 'App\Http\Controllers\WalletController@showAllCurrentBalance');
 
   Route::post('transactions', 'App\Http\Controllers\TransactionController@store');
-  Route::get('transactions/{id}/{month}/{year}', 'App\Http\Controllers\TransactionController@showFlowsByMonthYear');  
+  Route::get('transactions/flows/last-month/{id}', 'App\Http\Controllers\TransactionController@getFlowsLastMonth');  
+  Route::get('transactions/flows/{id}/{month}/{year}', 'App\Http\Controllers\TransactionController@showFlowsByMonthYear');  
+  Route::get('transactions/last-month/{id}', 'App\Http\Controllers\TransactionController@getUserTransactionsLastMonth');    
+  Route::get('transactions/{id}/{month}/{year}', 'App\Http\Controllers\TransactionController@getUserTransactionsByMonthYear');  
   Route::get('transactions/{id}', 'App\Http\Controllers\TransactionController@showByUser');    
 });
 

@@ -76,8 +76,12 @@ const AddTransaction = (props) => {
 
   const classes = useStyles();
 
-  let scrollDialogCallback = (prop) => {
-    setCategoryId(prop.categoryId);
+  let scrollDialogCallback = (props) => {
+    console.log('from scrollDialogCallback: ' + props.categoryId);
+    setCategoryId(props.categoryId);
+
+    transaction['category_id'] = props.categoryId;
+    setTransaction(transaction);
   }
 
 	let handleSubmit = (e) => {
@@ -103,7 +107,7 @@ const AddTransaction = (props) => {
 			console.log(isServiceValid);
 		})
 		.catch((error) => {
-			showFlashMessage(true, 'error', 'Error on saving transaction. ' + error);
+			showFlashMessage(true, 'error', 'Error on saving transaction. ' + error,  ()=> {});
 			ladda.current.stop();
 		})
 	}   

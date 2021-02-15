@@ -4,142 +4,155 @@ import authHeader from './auth-header';
 
 
 const axiosInstance = axios.create({
-  baseURL: window.config.baseUrl,
-  headers: {
-    "Access-Control-Allow-Origin": "*"
-  }
+	baseURL: window.config.baseUrl,
+	headers: {
+		"Access-Control-Allow-Origin": "*"
+	}
 });
 
 axiosInstance.defaults.headers.common['Authorization'] = authHeader();
 axiosInstance.defaults.headers = {
-  'Cache-Control': 'no-cache',
-  'Pragma': 'no-cache'
+	'Cache-Control': 'no-cache',
+	'Pragma': 'no-cache'
 };      
 
 class ApiService {
 
-  getToken() {
-    return localStorage.getItem('access_token');    
-  }
+	getToken() {
+		return localStorage.getItem('access_token');    
+	}
 
-  getNetWorth(userId) {
+	getNetWorth(userId) {
 
-    return axiosInstance.get('/api/wallets/'+userId+'/current-balance/all', 
-      {params: { token: this.getToken(), uncacher: Date.now()}});   
-  }
+		return axiosInstance.get('/api/wallets/'+userId+'/current-balance/all', 
+			{params: { token: this.getToken(), uncacher: Date.now()}});   
+	}
 
-  getCurrencies() {
-    return axiosInstance.get('/api/currencies', {params: { token: this.getToken() }});
-  }
+	getCurrencies() {
+		return axiosInstance.get('/api/currencies', {params: { token: this.getToken() }});
+	}
 
-  postUser(data) {
-     return axiosInstance.post('/api/users/login', {data}, {params: { token: this.getToken() }});
-  }
+	postUser(data) {
+		 return axiosInstance.post('/api/users/login', {data}, {params: { token: this.getToken() }});
+	}
 
-  postWallet(data) {
-    return axiosInstance.post('/api/wallets', {data}, {params: { token: this.getToken() }});
-  }
+	postWallet(data) {
+		return axiosInstance.post('/api/wallets', {data}, {params: { token: this.getToken() }});
+	}
 
-  postSubcategory(data) {
-    return axiosInstance.post('/api/subcategories', {data}, {params: { token: this.getToken() }});
-  }  
+	postSubcategory(data) {
+		return axiosInstance.post('/api/subcategories', {data}, {params: { token: this.getToken() }});
+	}  
 
-  postCategories(data) {
-    return axiosInstance.post('/api/categories', {data}, {params: { token: this.getToken() }});
-  }
+	postCategories(data) {
+		return axiosInstance.post('/api/categories', {data}, {params: { token: this.getToken() }});
+	}
 
-  putCategory(data, id) {
-    return axiosInstance.put('/api/categories/'+id, {data}, {params: { token: this.getToken() }});
-  }
+	putCategory(data, id) {
+		return axiosInstance.put('/api/categories/'+id, {data}, {params: { token: this.getToken() }});
+	}
 
-  putWallet(data, id) {
-    return axiosInstance.put('/api/wallets/'+id, {data}, {params: { token: this.getToken() }});
-  }
+	putWallet(data, id) {
+		return axiosInstance.put('/api/wallets/'+id, {data}, {params: { token: this.getToken() }});
+	}
 
-  postTransaction(data) {
-    return axiosInstance.post('/api/transactions', {data}, {params: { token: this.getToken() }});
-  }
+	postTransaction(data) {
+		return axiosInstance.post('/api/transactions', {data}, {params: { token: this.getToken() }});
+	}
 
-  getWalletsByUser(userId) {
-    return axiosInstance.get('/api/wallets/'+userId, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});
-  }
+	getWalletsByUser(userId) {
+		return axiosInstance.get('/api/wallets/'+userId, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});
+	}
 
-  getUserWalletById(userId, walletId) {
-    return axiosInstance.get('/api/wallets/'+userId+'/'+walletId, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});
-  }
+	getUserWalletById(userId, walletId) {
+		return axiosInstance.get('/api/wallets/'+userId+'/'+walletId, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});
+	}
 
-  getTransactionsByUser(userId) {
-    return axiosInstance.get('/api/transactions/'+userId, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});
-  }
+	getTransactionsByUser(userId) {
+		return axiosInstance.get('/api/transactions/'+userId, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});
+	}
 
-  getUserCategoryById(userId, categoryId) {
-    return axiosInstance.get('/api/categories/'+userId+'/'+categoryId, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});
-  }
+	getUserTransactionsByMonthYear(userId, month, year) {
+		return axiosInstance.get('/api/transactions/'+userId+'/'+month+'/'+year, {params: { token: this.getToken(), uncacher: Date.now()}});  
+	}
 
-  getCategories(userId) {
-    return axiosInstance.get('/api/categories/'+userId, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});
-  }
+	getFlowsByMonthYear(userId, month, year) {
+		return axiosInstance.get('/api/transactions/flows/'+userId+'/'+month+'/'+year, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});  
+	}
 
-  getUserCategory(categoryId, userId) {
-    return axiosInstance.get('/api/categories/'+categoryId+'/user/'+userId, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});
-  }
+	getUserTransactionsLastMonth(userId) {
+		return axiosInstance.get('/api/transactions/last-month/'+userId, {params: { token: this.getToken(), uncacher: Date.now()}});  
+	}
 
-  getCategoriesWithSub(userId, accountType) {
-    return axiosInstance.get('/api/categories/withsub/'+userId+'/'+accountType, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});
-  }
+	getFlowsLastMonth(userId) {
+		return axiosInstance.get('/api/transactions/flows/last-month/'+userId, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});  
+	}
 
-  getCategoriesByUser(userId) {
-    return axiosInstance.get('/api/categories/'+userId, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});
-  }
+	getMonthlyIncomeAndExpense(userId) {
+		let date = new Date();
+		//retrieve current month and year
+		let month = Moment(date).format('MMMM');
+		let year = Moment(date).format('YYYY');
 
-  /*returns only the parent categories*/
-  getUserCategoriesByType(userId, accountType) {
-    return axiosInstance.get('/api/categories/'+userId+'/'+accountType, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});
-  }
+		return this.getFlowsByMonthYear(userId, month, year);
+	}
 
-  getFlowsByMonthYear(userId, month, year) {
-    return axiosInstance.get('/api/transactions/'+userId+'/'+month+'/'+year, 
-      {params: { token: this.getToken(), uncacher: Date.now()}});  
-  }
+	getUserCategoryById(userId, categoryId) {
+		return axiosInstance.get('/api/categories/'+userId+'/'+categoryId, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});
+	}
 
-  getMonthlyIncomeAndExpense(userId) {
-    let date = new Date();
-    //retrieve current month and year
-    let month = Moment(date).format('MMMM');
-    let year = Moment(date).format('YYYY');
+	getCategories(userId) {
+		return axiosInstance.get('/api/categories/'+userId, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});
+	}
 
-    return this.getFlowsByMonthYear(userId, month, year);
-  }
+	getUserCategory(categoryId, userId) {
+		return axiosInstance.get('/api/categories/'+categoryId+'/user/'+userId, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});
+	}
 
-  deleteWallet(walletId, userId) {
-    return axiosInstance.delete('/api/wallets/'+walletId, 
-    {params: { token: this.getToken(), walletId: walletId, userId: userId}});
-  }
+	getCategoriesWithSub(userId, accountType) {
+		return axiosInstance.get('/api/categories/withsub/'+userId+'/'+accountType, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});
+	}
 
-  deleteCategory(categoryId, userId) {
-    return axiosInstance.delete('/api/categories/'+categoryId, 
-    {params: { token: this.getToken(), categoryId: categoryId, userId: userId}});
-  }
+	getCategoriesByUser(userId) {
+		return axiosInstance.get('/api/categories/'+userId, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});
+	}
 
-  validateServiceResponse(response) {
+	/*returns only the parent categories*/
+	getUserCategoriesByType(userId, accountType) {
+		return axiosInstance.get('/api/categories/'+userId+'/'+accountType, 
+			{params: { token: this.getToken(), uncacher: Date.now()}});
+	}
 
-    console.log(response);
+	deleteWallet(walletId, userId) {
+		return axiosInstance.delete('/api/wallets/'+walletId, 
+		{params: { token: this.getToken(), walletId: walletId, userId: userId}});
+	}
 
-    let isValid = false;
+	deleteCategory(categoryId, userId) {
+		return axiosInstance.delete('/api/categories/'+categoryId, 
+		{params: { token: this.getToken(), categoryId: categoryId, userId: userId}});
+	}
 
-    isValid = (response.data.isUnauthorized && response.data.isUnauthorized) ? false : true;
-    
-    return isValid;
-  }
+	validateServiceResponse(response) {
+
+		console.log(response);
+
+		let isValid = false;
+
+		isValid = (response.data.isUnauthorized && response.data.isUnauthorized) ? false : true;
+		
+		return isValid;
+	}
 }
 
 export default new ApiService();

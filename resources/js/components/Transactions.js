@@ -28,7 +28,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NumberFormat from 'react-number-format';
-import List from '@material-ui/core/List';
 import MuiListItem from "@material-ui/core/ListItem";
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -36,6 +35,7 @@ import Divider from '@material-ui/core/Divider';
 import InboxIcon from '@material-ui/icons/Inbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import Paper from '@material-ui/core/Paper'
+import List from '@material-ui/core/List';
 import Slide from '@material-ui/core/Slide';
 import Avatar from '@material-ui/core/Avatar';
 import { withStyles } from '@material-ui/core/styles';
@@ -129,6 +129,7 @@ const Transactions = (props) => {
 
   const [myTransactions, setMyTransactions] = useState([]);
   const [remappedData, setRemappedData] = useState([]);
+  const [lastMonthRemappedData, setLastMonthRemappedData] = useState([]);
   const [severity, setSeverity] = useState('success');
   const [flashMessage, setFlashMessage] = useState('');
   const [flash, setFlash] = useState(false);
@@ -140,6 +141,19 @@ const Transactions = (props) => {
   const [transactionDetails, setTransactionDetails] = useState('');
   const [inflows, setInflows] = useState(0);
   const [outflows, setOutflows] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [thisMonth, setThisMonth] = useState({
+    inflows: 0,
+    outflows: 0,
+    transactions: []
+  });
+
+  const [lastMonth, setLastMonth] = useState({
+    inflows: 0,
+    outflows: 0,
+    transactions: []
+  });
   
   let showFlashMessage = (show, severity, flashMessage, callback) => {
     setFlash(show);
@@ -150,28 +164,6 @@ const Transactions = (props) => {
       setFlash(false);
       callback();
     }, 3500); 
-  }
-
-  function fetchWallets() {
-
-    ApiService.getWalletsByUser(loggedUserId)
-    .then(response => {
-      
-      isServiceValid = ApiService.validateServiceResponse(response);
-      
-      if (isServiceValid) {
-        //setItemId(itemId);
-       
-      } else {
-        showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
-          HandleLogout();
-          history.push({pathname: '/login'});
-        });
-      }
-    })
-    .catch((error) => {
-      showFlashMessage(true, 'error', 'Error on fetching wallets. ' + error, null);
-    })
   }
 
   function formatAmount(amount) {
@@ -195,7 +187,7 @@ const Transactions = (props) => {
     return num_parts.join(".");
   }
 
-  function reMappedTransactionData(data) {
+  function reMappedTransactionData(activeTab, data) {
 
     console.log('remappping');
     let remappedArray = [];
@@ -207,14 +199,26 @@ const Transactions = (props) => {
 
       remappedArray[transactionId] = data[i];
     }
+    console.log('remapped array:');
     console.log(remappedArray);
-    setRemappedData(remappedArray);
+    if (activeTab == 0) {
+      setRemappedData(remappedArray);  
+    } else if (activeTab == 1) {
+      setLastMonthRemappedData(remappedArray);
+    }
+    
   }
 
-  function renderTransactionDetails(e, transactionId) {
+  function renderTransactionDetails(transactionId, activeTab) {
 
-    let data = remappedData[transactionId];
+    let data = 0;
 
+    if (activeTab == 0) {
+      data = remappedData[transactionId];
+    } else if (activeTab == 1) {
+      data = lastMonthRemappedData[transactionId];
+    }
+    
     let category = data.category;
     let accountType = data.account_type;
     let transactionAmount = thousands_separators(formatAmount(data.amount));
@@ -325,10 +329,15 @@ const Transactions = (props) => {
     return transactionLists;
   }
 
-
+  /*
   function fetchTransaction() {
 
-    ApiService.getTransactionsByUser(loggedUserId)
+    let date = new Date();
+    //retrieve current month and year
+    let month = Moment(date).format('MMMM');
+    let year = Moment(date).format('YYYY');
+
+    ApiService.getUserTransactionsByMonthYear(loggedUserId, month, year)
     .then(response => {
       
       isServiceValid = ApiService.validateServiceResponse(response);
@@ -399,23 +408,121 @@ const Transactions = (props) => {
   React.useEffect(() => {
     fetchTransaction();
     fetchFlows();
+  }, []);*/
+
+  function fetchTransactionsTabContent(isMounted) {
+    
+    let date = new Date();
+    //retrieve current month and year
+    let month = Moment(date).format('MMMM');
+    let year = Moment(date).format('YYYY');
+    let prevMonth = Moment(date).subtract(1, 'month').format('MMMM YYYY');
+    
+    axios.all(
+      [
+        ApiService.getUserTransactionsByMonthYear(loggedUserId, month, year),
+        ApiService.getFlowsByMonthYear(loggedUserId, month, year),
+        ApiService.getUserTransactionsLastMonth(loggedUserId),
+        ApiService.getFlowsLastMonth(loggedUserId)
+      ]
+    )
+    .then(axios.spread((...responses) => {
+
+      const transThisMonthResponse = responses[0];
+      const flowsThisMonthResponse = responses[1];
+      const transLastMonthResponse = responses[2];
+      const flowsLastMonthResponse = responses[3];
+
+      if (transThisMonthResponse.data.isUnauthorized) {
+        
+        showFlashMessage(true, 'error', 'Your session may have already expired, please login again.', ()=> {
+          HandleLogout();
+          history.push({pathname: '/login'});
+        });
+
+      } else {
+        /*TAB This Month*/
+        //setMyTransactions(transThisMonthResponse.data); 
+        //reMappedTransactionData(transThisMonthResponse.data);
+        if (flowsLastMonthResponse.data.count > 0) {
+          let income = 0;
+          let expense = 0;
+
+          if (typeof flowsLastMonthResponse.data.transaction.income !== 'undefined') {
+            income = flowsLastMonthResponse.data.transaction.income;
+          }
+          if (typeof flowsLastMonthResponse.data.transaction.expense !== 'undefined') {
+            expense = flowsLastMonthResponse.data.transaction.expense;
+          }
+
+          lastMonth['inflows'] = formatAmount(income);
+          lastMonth['outflows'] = formatAmount(expense);
+          lastMonth['transactions'] = transLastMonthResponse.data;
+        }        
+
+        if (flowsThisMonthResponse.data.count > 0) {
+          let income = 0;
+          let expense = 0;
+
+          if (typeof flowsThisMonthResponse.data.transaction.income !== 'undefined') {
+            income = flowsThisMonthResponse.data.transaction.income;
+          }
+          if (typeof flowsThisMonthResponse.data.transaction.expense !== 'undefined') {
+            expense = flowsThisMonthResponse.data.transaction.expense;
+          }
+
+          //setInflows(formatAmount(income));
+          //setOutflows(formatAmount(expense));
+          thisMonth['inflows'] = formatAmount(income);
+          thisMonth['outflows'] = formatAmount(expense);
+          thisMonth['transactions'] = transThisMonthResponse.data;
+
+
+          reMappedTransactionData(0, transThisMonthResponse.data);
+          reMappedTransactionData(1, transLastMonthResponse.data);
+          //reMappedTransactionData(1, transLastMonthResponse.data);
+        } else {
+          console.log('what to do?');
+        }
+
+        if (isMounted) {
+          setThisMonth(thisMonth);
+          setLastMonth(lastMonth);
+        }
+          
+        setIsLoading(false);
+        /**/
+      }
+    }))
+    .catch((errors) => {
+      showFlashMessage(true, 'error', 'Error on fetching transactions data on tab ' + errors, ()=> {});
+    })
+  }
+
+  React.useEffect(() => {
+    let isMounted = true; // note this flag denote mount status
+
+    fetchTransactionsTabContent(isMounted);
+
+    return () => { isMounted = false }; 
   }, []);
 
-  const [selectedIndex, setSelectedIndex] = React.useState(false);
-  const [checked, setChecked] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(false);
+  const [checked, setChecked] = useState(false);
 
-  const handleListItemClick = (event, index) => {
+  const handleListItemClick = (index, activeTab) => {
     
-    setSelectedIndex(index);
+    //setSelectedIndex(index);
 
-    event.target.selected = true;
-
+    //event.target.selected = true;
+    console.log('active tab ' + activeTab);
     
-    let transactionDetails = renderTransactionDetails(event, index);
+    let transactionDetails = renderTransactionDetails(index, activeTab);
 
     setTransactionDetails(transactionDetails);
     
     setChecked(true);
+    //console.log('handleListItemClick ' + index);
   };
 
   let classNameHolder = [classes.orange, classes.purple, classes.lightGreen, classes.teal, classes.cyan];
@@ -451,13 +558,15 @@ const Transactions = (props) => {
           
           <Grid container spacing={3}>
             <Grid item xs={5}>
-            <TabTransaction key="key-tab" inflows={inflows} outflows={outflows} />
+            
 
-            <Paper id="transactionWrapper">
+            {isLoading ? null : <TabTransaction key="key-tab" thisMonth={thisMonth} lastMonth={lastMonth} listItemCallback={handleListItemClick} />}
+
+            {/*<Paper id="transactionWrapper">
               <List component="nav" aria-label="main mailbox folders">
                 <RenderTransactions data={myTransactions} />  
               </List>
-            </Paper>
+            </Paper>*/}
             </Grid>
             <Grid item xs={7}>
               <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
@@ -490,3 +599,5 @@ const Transactions = (props) => {
 }
 
 export default Transactions;
+
+//571
