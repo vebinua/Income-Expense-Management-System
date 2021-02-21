@@ -20,9 +20,11 @@ class CreateCurrenciesTable extends Migration
             $table->timestamps();
         });
 
+        $createdAt = DB::raw('CURRENT_TIMESTAMP');
+
         DB::table('currencies')->insert([
-            ['currency_name' => 'Philippine Peso', 'currency_symbol' => 'PHP'],
-            ['currency_name' => 'United States Dollar', 'votes' => 'USD']
+            ['currency_name' => 'Philippine Peso', 'currency_symbol' => 'PHP', 'created_at' => $createdAt],
+            ['currency_name' => 'United States Dollar', 'votes' => 'USD', 'created_at' => $createdAt]
         ]);
     }
 

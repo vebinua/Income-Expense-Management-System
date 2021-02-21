@@ -109,8 +109,8 @@ const AddSubcategory = (props) => {
 
 	    axios.all(
 	      [
-	        ApiService.getUserCategoriesByType(loggedUserId, 'asset'),
-	        ApiService.getUserCategoriesByType(loggedUserId, 'liability')
+	        ApiService.getUserCategoriesByType('asset', loggedUserId),
+	        ApiService.getUserCategoriesByType('liability', loggedUserId)
 	      ]
 	    )
 	    .then(axios.spread((...responses) => {

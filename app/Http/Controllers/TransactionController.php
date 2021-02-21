@@ -80,7 +80,6 @@ class TransactionController extends Controller
 			'note' => $request->data['note'],
 			'transaction_status' => $transactionStatus,
 			'category_id' => $categoryId,
-			'subcategory_id' => 0,
 			'currency_id' => $request->data['currency_id'],
 			'user_id' => $userId
 		 ]);
@@ -150,7 +149,6 @@ class TransactionController extends Controller
 		 orderBy('transaction_date', 'desc')
 		 ->leftjoin('categories', 'categories.category_id', '=', 'transactions.category_id')
 		 ->join('wallets', 'wallets.wallet_id', '=', 'transactions.wallet_id')
-		 ->leftJoin('subcategories', 'subcategories.subcategory_id', '=', 'transactions.subcategory_id')
 		 ->select($selectArray)
 		 ->whereDate('transaction_date', '>=', $firstDayofMonth)
 		 ->whereDate('transaction_date', '<=', $lastDayofMonth)
@@ -220,7 +218,6 @@ class TransactionController extends Controller
 		 orderBy('transaction_date', 'desc')
 		 ->leftjoin('categories', 'categories.category_id', '=', 'transactions.category_id')
 		 ->join('wallets', 'wallets.wallet_id', '=', 'transactions.wallet_id')
-		 ->leftJoin('subcategories', 'subcategories.subcategory_id', '=', 'transactions.subcategory_id')
 		 ->select($selectArray)
 		 ->whereDate('transaction_date', '>=', $firstDayofMonth)
 		 ->whereDate('transaction_date', '<=', $lastDayofMonth)
@@ -287,7 +284,6 @@ class TransactionController extends Controller
 		 orderBy('transaction_date', 'desc')
 		 ->leftjoin('categories', 'categories.category_id', '=', 'transactions.category_id')
 		 ->join('wallets', 'wallets.wallet_id', '=', 'transactions.wallet_id')
-		 ->leftJoin('subcategories', 'subcategories.subcategory_id', '=', 'transactions.subcategory_id')
 		 ->select($selectArray)
 		 ->where('transactions.user_id', $id)->get();
 

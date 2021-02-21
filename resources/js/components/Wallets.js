@@ -34,6 +34,8 @@ import AlertNotify from './partials/AlertNotify';
 import FadeFlash from './partials/FadeFlash';
 import ApiService from "./helpers/services/ApiService";
 import { HandleLogout } from './helpers/HandleLogout';
+import { createMuiTheme } from '@material-ui/core';
+//import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const styles = {
   alert: {
@@ -55,6 +57,16 @@ const styles = {
     width: 100
   }
 };
+
+const theme = createMuiTheme({
+  props: {
+    // Name of the component ⚛️
+    MuiButtonBase: {
+      // The properties to apply
+      disableRipple: true, // No more ripple, on the whole application 💣!
+    },
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -259,7 +271,7 @@ const Wallets = (props) => {
     .then(response => {
       
       isServiceValid = ApiService.validateServiceResponse(response);
-      
+
       if (isServiceValid) {
         setMyWallets(renderCards(response.data, (itemId, action) => {
           setAlert(true);
@@ -304,6 +316,7 @@ const Wallets = (props) => {
             className={classes.button}
             startIcon={<AddIcon />}
             href={window.config.baseUrl+'wallets/add'}
+            disableRipple
             >
             Add Wallet
           </Button>

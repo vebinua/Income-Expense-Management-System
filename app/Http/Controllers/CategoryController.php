@@ -243,10 +243,10 @@ class CategoryController extends Controller
 
 	}
 
-	public function getUserCategoriesByType($userId, $type) {
+	public function getUserCategoriesByType($type, $userId) {
 		try {
 
-  		$categories = Category::where('user_id', $userId)->where('account_type', $type)->where('parent_id', 0)->get();
+			$categories = Category::where('user_id', $userId)->where('account_type', $type)->where('parent_id', 0)->get();
 
   		return $categories;
 		

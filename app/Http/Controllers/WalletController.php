@@ -111,7 +111,6 @@ class WalletController extends Controller
       'note' => 'New wallet created with initial balance of '.$request->data['initial_balance'],
       'transaction_status' => $transactionStatus,
       'category_id' => $categoryId,
-      'subcategory_id' => 0,
       'currency_id' => $request->data['currency_id'],
       'user_id' => $userId
     ]);

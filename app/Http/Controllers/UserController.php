@@ -51,7 +51,14 @@ class UserController extends Controller
     //create default categories for user here
     DB::table('categories')->insert([
         ['category' => 'Bills & Utilities', 'account_type' => 'liability', 'user_id' => $userId],
-        ['category' => 'Salary', 'account_type' => 'asset', 'user_id' => $userId]
+        ['category' => 'Gifts & Donations', 'account_type' => 'liability', 'user_id' => $userId],
+        ['category' => 'Shopping', 'account_type' => 'liability', 'user_id' => $userId],
+        ['category' => 'Grocery', 'account_type' => 'liability', 'user_id' => $userId],
+        ['category' => 'Transportation', 'account_type' => 'liability', 'user_id' => $userId],
+        ['category' => 'Family', 'account_type' => 'liability', 'user_id' => $userId],
+        ['category' => 'Entertainment', 'account_type' => 'liability', 'user_id' => $userId],
+        ['category' => 'Salary', 'account_type' => 'asset', 'user_id' => $userId],
+        ['category' => 'Interest Money', 'account_type' => 'asset', 'user_id' => $userId]
     ]);
   }
 

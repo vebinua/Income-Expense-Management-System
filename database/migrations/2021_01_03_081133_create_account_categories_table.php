@@ -18,10 +18,12 @@ class CreateAccountCategoriesTable extends Migration
             $table->string('category', 50);
             $table->enum('account_type',['asset','liability'])->default('asset');
             $table->integer('user_id')->unsigned();
-            $table->integer('parent_id')->unsigned();
+            $table->integer('parent_id')->unsigned()->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users');
         });
+
+        $createdAt = DB::raw('CURRENT_TIMESTAMP');
     }
 
     /**
